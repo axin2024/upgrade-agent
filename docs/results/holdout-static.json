@@ -1,0 +1,212 @@
+[
+  {
+    "analysis_ms": 0,
+    "case": "caret-upper-bound",
+    "composer_ms": 2723,
+    "composer_resolved": true,
+    "expected": "candidate",
+    "kind": "dependency",
+    "solver_steps": 2,
+    "state": "candidate"
+  },
+  {
+    "analysis_ms": 0,
+    "case": "upper-bound-exclusive",
+    "composer_ms": 2705,
+    "composer_resolved": false,
+    "expected": "blocked",
+    "kind": "dependency",
+    "solver_steps": 1,
+    "state": "blocked"
+  },
+  {
+    "analysis_ms": 0,
+    "case": "platform-php-minimum",
+    "composer_ms": 2811,
+    "composer_resolved": false,
+    "expected": "blocked",
+    "kind": "dependency",
+    "solver_steps": 2,
+    "state": "blocked"
+  },
+  {
+    "analysis_ms": 0,
+    "case": "platform-extension-present",
+    "composer_ms": 2777,
+    "composer_resolved": true,
+    "expected": "candidate",
+    "kind": "dependency",
+    "solver_steps": 3,
+    "state": "candidate"
+  },
+  {
+    "analysis_ms": 0,
+    "case": "platform-extension-missing",
+    "composer_ms": 2828,
+    "composer_resolved": false,
+    "expected": "blocked",
+    "kind": "dependency",
+    "solver_steps": 2,
+    "state": "needs-composer"
+  },
+  {
+    "analysis_ms": 0,
+    "case": "transitive-shared-pin",
+    "composer_ms": 2884,
+    "composer_resolved": true,
+    "expected": "candidate",
+    "kind": "dependency",
+    "solver_steps": 5,
+    "state": "candidate"
+  },
+  {
+    "analysis_ms": 0,
+    "case": "transitive-unsatisfied",
+    "composer_ms": 2917,
+    "composer_resolved": false,
+    "expected": "blocked",
+    "kind": "dependency",
+    "solver_steps": 4,
+    "state": "blocked"
+  },
+  {
+    "analysis_ms": 0,
+    "case": "root-conflict-exclusion",
+    "composer_ms": 2822,
+    "composer_resolved": true,
+    "expected": "candidate",
+    "kind": "dependency",
+    "solver_steps": 2,
+    "state": "candidate"
+  },
+  {
+    "analysis_ms": 0,
+    "case": "alternative-constraint",
+    "composer_ms": 2892,
+    "composer_resolved": true,
+    "expected": "candidate",
+    "kind": "dependency",
+    "solver_steps": 2,
+    "state": "candidate"
+  },
+  {
+    "analysis_ms": 0,
+    "case": "transitive-backtracking",
+    "composer_ms": 2647,
+    "composer_resolved": true,
+    "expected": "candidate",
+    "kind": "dependency",
+    "solver_steps": 4,
+    "state": "candidate"
+  },
+  {
+    "analysis_ms": 0,
+    "case": "checkout-units",
+    "expected_functions": [
+      "cart_quantity"
+    ],
+    "findings_exact": 1,
+    "kind": "php",
+    "review_and_execution_ms": 245,
+    "reviewed_regression_passed": true,
+    "rule_regression_passed": true
+  },
+  {
+    "analysis_ms": 0,
+    "case": "signed-return-voucher",
+    "expected_functions": [
+      "sales_quantity"
+    ],
+    "findings_exact": 2,
+    "kind": "php",
+    "review_and_execution_ms": 334,
+    "reviewed_regression_passed": true,
+    "rule_regression_passed": false
+  },
+  {
+    "analysis_ms": 0,
+    "case": "inventory-writeoff",
+    "expected_functions": [
+      "reserve_units"
+    ],
+    "findings_exact": 2,
+    "kind": "php",
+    "review_and_execution_ms": 276,
+    "reviewed_regression_passed": true,
+    "rule_regression_passed": false
+  },
+  {
+    "analysis_ms": 0,
+    "case": "line-item-comment",
+    "expected_functions": [
+      "line_item"
+    ],
+    "findings_exact": 1,
+    "kind": "php",
+    "review_and_execution_ms": 315,
+    "reviewed_regression_passed": true,
+    "rule_regression_passed": true
+  },
+  {
+    "analysis_ms": 0,
+    "case": "audit-literal",
+    "expected_functions": [
+      "usage_total"
+    ],
+    "findings_exact": 1,
+    "kind": "php",
+    "review_and_execution_ms": 261,
+    "reviewed_regression_passed": true,
+    "rule_regression_passed": true
+  },
+  {
+    "analysis_ms": 0,
+    "case": "unrelated-short-name",
+    "expected_functions": null,
+    "findings_exact": 0,
+    "kind": "php"
+  },
+  {
+    "analysis_ms": 0,
+    "case": "dynamic-class",
+    "expected_functions": null,
+    "findings_exact": 0,
+    "kind": "php"
+  },
+  {
+    "analysis_ms": 0,
+    "case": "warehouse-receipt",
+    "expected_functions": [
+      "receipt_units"
+    ],
+    "findings_exact": 1,
+    "kind": "php",
+    "review_and_execution_ms": 268,
+    "reviewed_regression_passed": true,
+    "rule_regression_passed": true
+  },
+  {
+    "analysis_ms": 0,
+    "case": "carrier-return",
+    "expected_functions": [
+      "delivery_units"
+    ],
+    "findings_exact": 2,
+    "kind": "php",
+    "review_and_execution_ms": 273,
+    "reviewed_regression_passed": true,
+    "rule_regression_passed": false
+  },
+  {
+    "analysis_ms": 0,
+    "case": "work-order-reversal",
+    "expected_functions": [
+      "production_units"
+    ],
+    "findings_exact": 2,
+    "kind": "php",
+    "review_and_execution_ms": 302,
+    "reviewed_regression_passed": true,
+    "rule_regression_passed": false
+  }
+]

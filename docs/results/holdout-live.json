@@ -1,0 +1,352 @@
+[
+  {
+    "analysis_ms": 0,
+    "case": "caret-upper-bound",
+    "composer_ms": 2505,
+    "composer_resolved": true,
+    "expected": "candidate",
+    "kind": "dependency",
+    "solver_steps": 2,
+    "state": "candidate"
+  },
+  {
+    "analysis_ms": 0,
+    "case": "upper-bound-exclusive",
+    "composer_ms": 2438,
+    "composer_resolved": false,
+    "expected": "blocked",
+    "kind": "dependency",
+    "solver_steps": 1,
+    "state": "blocked"
+  },
+  {
+    "analysis_ms": 0,
+    "case": "platform-php-minimum",
+    "composer_ms": 2521,
+    "composer_resolved": false,
+    "expected": "blocked",
+    "kind": "dependency",
+    "solver_steps": 2,
+    "state": "blocked"
+  },
+  {
+    "analysis_ms": 0,
+    "case": "platform-extension-present",
+    "composer_ms": 2414,
+    "composer_resolved": true,
+    "expected": "candidate",
+    "kind": "dependency",
+    "solver_steps": 3,
+    "state": "candidate"
+  },
+  {
+    "analysis_ms": 0,
+    "case": "platform-extension-missing",
+    "composer_ms": 2526,
+    "composer_resolved": false,
+    "expected": "blocked",
+    "kind": "dependency",
+    "solver_steps": 2,
+    "state": "needs-composer"
+  },
+  {
+    "analysis_ms": 0,
+    "case": "transitive-shared-pin",
+    "composer_ms": 2488,
+    "composer_resolved": true,
+    "expected": "candidate",
+    "kind": "dependency",
+    "solver_steps": 5,
+    "state": "candidate"
+  },
+  {
+    "analysis_ms": 0,
+    "case": "transitive-unsatisfied",
+    "composer_ms": 2445,
+    "composer_resolved": false,
+    "expected": "blocked",
+    "kind": "dependency",
+    "solver_steps": 4,
+    "state": "blocked"
+  },
+  {
+    "analysis_ms": 0,
+    "case": "root-conflict-exclusion",
+    "composer_ms": 2472,
+    "composer_resolved": true,
+    "expected": "candidate",
+    "kind": "dependency",
+    "solver_steps": 2,
+    "state": "candidate"
+  },
+  {
+    "analysis_ms": 0,
+    "case": "alternative-constraint",
+    "composer_ms": 2428,
+    "composer_resolved": true,
+    "expected": "candidate",
+    "kind": "dependency",
+    "solver_steps": 2,
+    "state": "candidate"
+  },
+  {
+    "analysis_ms": 0,
+    "case": "transitive-backtracking",
+    "composer_ms": 2518,
+    "composer_resolved": true,
+    "expected": "candidate",
+    "kind": "dependency",
+    "solver_steps": 4,
+    "state": "candidate"
+  },
+  {
+    "analysis_ms": 0,
+    "case": "checkout-units",
+    "expected_functions": [
+      "cart_quantity"
+    ],
+    "findings_exact": 1,
+    "kind": "php",
+    "model_exact_selection": true,
+    "model_indices": [
+      0
+    ],
+    "model_regression_passed": true,
+    "model_usage": {
+      "provider": "openai-compatible",
+      "model": "qwen2.5-0.5b",
+      "mode": "live",
+      "request_sha256": "b3eef0006fcd9881e4bd52103046e4e80c66822bacff3bafdb9149b1a6455992",
+      "response_sha256": "1c03329812ce6d68e36b83166397415230339c9c81a1512000fccbfbf483d91b",
+      "state": "complete",
+      "prompt_tokens": 118,
+      "completion_tokens": 18,
+      "metered": true,
+      "duration_ms": 1300
+    },
+    "review_and_execution_ms": 258,
+    "reviewed_regression_passed": true,
+    "rule_regression_passed": true
+  },
+  {
+    "analysis_ms": 0,
+    "case": "signed-return-voucher",
+    "expected_functions": [
+      "sales_quantity"
+    ],
+    "findings_exact": 2,
+    "kind": "php",
+    "model_exact_selection": false,
+    "model_indices": [
+      0,
+      1
+    ],
+    "model_regression_passed": false,
+    "model_usage": {
+      "provider": "openai-compatible",
+      "model": "qwen2.5-0.5b",
+      "mode": "live",
+      "request_sha256": "2643a917c04b301007fb488ad3dbea4e6798c7efa86bb24bb80d24dd90fd8174",
+      "response_sha256": "a2e42a39280b75b5f1cb07a98a03e723596ae2251fc2710385dd12378e8f86e5",
+      "state": "complete",
+      "prompt_tokens": 176,
+      "completion_tokens": 22,
+      "metered": true,
+      "duration_ms": 1071
+    },
+    "review_and_execution_ms": 243,
+    "reviewed_regression_passed": true,
+    "rule_regression_passed": false
+  },
+  {
+    "analysis_ms": 0,
+    "case": "inventory-writeoff",
+    "expected_functions": [
+      "reserve_units"
+    ],
+    "findings_exact": 2,
+    "kind": "php",
+    "model_exact_selection": false,
+    "model_indices": [
+      0,
+      1
+    ],
+    "model_regression_passed": false,
+    "model_usage": {
+      "provider": "openai-compatible",
+      "model": "qwen2.5-0.5b",
+      "mode": "live",
+      "request_sha256": "d1a5eea31f1366f538f7a8a140aea67bf694f735a4a6cb18842b2d3d1bd2a77c",
+      "response_sha256": "8b2cb1ab26443a1e7f654b1e9a403ae26e6fb30c95788e9f4758b6cc7c8cf8ae",
+      "state": "complete",
+      "prompt_tokens": 177,
+      "completion_tokens": 22,
+      "metered": true,
+      "duration_ms": 1205
+    },
+    "review_and_execution_ms": 236,
+    "reviewed_regression_passed": true,
+    "rule_regression_passed": false
+  },
+  {
+    "analysis_ms": 0,
+    "case": "line-item-comment",
+    "expected_functions": [
+      "line_item"
+    ],
+    "findings_exact": 1,
+    "kind": "php",
+    "model_exact_selection": true,
+    "model_indices": [
+      0
+    ],
+    "model_regression_passed": true,
+    "model_usage": {
+      "provider": "openai-compatible",
+      "model": "qwen2.5-0.5b",
+      "mode": "live",
+      "request_sha256": "bbe50d3da76b31e09aed65f8eaa8ec523c7c2de25eb0caa62e785cd16460fe20",
+      "response_sha256": "22f395229800ab342b736a059fada7a6bb41cd997e0a77d2859b14a0c321b525",
+      "state": "complete",
+      "prompt_tokens": 124,
+      "completion_tokens": 18,
+      "metered": true,
+      "duration_ms": 707
+    },
+    "review_and_execution_ms": 249,
+    "reviewed_regression_passed": true,
+    "rule_regression_passed": true
+  },
+  {
+    "analysis_ms": 0,
+    "case": "audit-literal",
+    "expected_functions": [
+      "usage_total"
+    ],
+    "findings_exact": 1,
+    "kind": "php",
+    "model_exact_selection": true,
+    "model_indices": [
+      0
+    ],
+    "model_regression_passed": true,
+    "model_usage": {
+      "provider": "openai-compatible",
+      "model": "qwen2.5-0.5b",
+      "mode": "live",
+      "request_sha256": "af2d3a16bf749df54ce23e626e45ce7253d41510ff47c8f3bf7a3095e914a5f6",
+      "response_sha256": "0d640bda9cc171933409d9db38f5ad4cf156e30cec6364fb002ecfc082e8154a",
+      "state": "complete",
+      "prompt_tokens": 124,
+      "completion_tokens": 18,
+      "metered": true,
+      "duration_ms": 719
+    },
+    "review_and_execution_ms": 281,
+    "reviewed_regression_passed": true,
+    "rule_regression_passed": true
+  },
+  {
+    "analysis_ms": 0,
+    "case": "unrelated-short-name",
+    "expected_functions": null,
+    "findings_exact": 0,
+    "kind": "php"
+  },
+  {
+    "analysis_ms": 0,
+    "case": "dynamic-class",
+    "expected_functions": null,
+    "findings_exact": 0,
+    "kind": "php"
+  },
+  {
+    "analysis_ms": 0,
+    "case": "warehouse-receipt",
+    "expected_functions": [
+      "receipt_units"
+    ],
+    "findings_exact": 1,
+    "kind": "php",
+    "model_exact_selection": true,
+    "model_indices": [
+      0
+    ],
+    "model_regression_passed": true,
+    "model_usage": {
+      "provider": "openai-compatible",
+      "model": "qwen2.5-0.5b",
+      "mode": "live",
+      "request_sha256": "56c88644ba319bc97e988f541f38709cd2bab6c81553943b3b8444fa8b8cee94",
+      "response_sha256": "80fefb119e0ecfb60693f2c4cfac087c775b9d70eaf84a1910b9de4443d2b954",
+      "state": "complete",
+      "prompt_tokens": 131,
+      "completion_tokens": 18,
+      "metered": true,
+      "duration_ms": 898
+    },
+    "review_and_execution_ms": 232,
+    "reviewed_regression_passed": true,
+    "rule_regression_passed": true
+  },
+  {
+    "analysis_ms": 0,
+    "case": "carrier-return",
+    "expected_functions": [
+      "delivery_units"
+    ],
+    "findings_exact": 2,
+    "kind": "php",
+    "model_exact_selection": false,
+    "model_indices": [
+      0,
+      1
+    ],
+    "model_regression_passed": false,
+    "model_usage": {
+      "provider": "openai-compatible",
+      "model": "qwen2.5-0.5b",
+      "mode": "live",
+      "request_sha256": "eedbdd079afd5857713217a08b4bd4270de980c460faa83fe8f6822642d6e868",
+      "response_sha256": "27594fe522a08c76f12c4253863a018529a80a9b9261946421f60b2a3e32346d",
+      "state": "complete",
+      "prompt_tokens": 187,
+      "completion_tokens": 22,
+      "metered": true,
+      "duration_ms": 1295
+    },
+    "review_and_execution_ms": 285,
+    "reviewed_regression_passed": true,
+    "rule_regression_passed": false
+  },
+  {
+    "analysis_ms": 0,
+    "case": "work-order-reversal",
+    "expected_functions": [
+      "production_units"
+    ],
+    "findings_exact": 2,
+    "kind": "php",
+    "model_exact_selection": false,
+    "model_indices": [
+      0,
+      1
+    ],
+    "model_regression_passed": false,
+    "model_usage": {
+      "provider": "openai-compatible",
+      "model": "qwen2.5-0.5b",
+      "mode": "live",
+      "request_sha256": "f87d4728447a8ef3ad17d7d3aa339b9c8a88d8fc3ce2d0d309d6cd3297d89448",
+      "response_sha256": "6fd3aaaa8cc61025eb9c7ae00edcbf62473cab9773830e5ff7bc760db9ca9100",
+      "state": "complete",
+      "prompt_tokens": 180,
+      "completion_tokens": 22,
+      "metered": true,
+      "duration_ms": 1177
+    },
+    "review_and_execution_ms": 464,
+    "reviewed_regression_passed": true,
+    "rule_regression_passed": false
+  }
+]

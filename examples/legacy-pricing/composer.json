@@ -1,0 +1,35 @@
+{
+    "name": "upgrade-lab/legacy-pricing",
+    "description": "Offline demonstration of an original PHP pricing migration.",
+    "type": "project",
+    "license": "Apache-2.0",
+    "require": {
+        "php": "^8.2",
+        "upgrade-lab/framework": "^1.0",
+        "upgrade-lab/legacy-discounts": "^1.0",
+        "upgrade-lab/legacy-rounding": "^1.0"
+    },
+    "repositories": [
+        { "packagist.org": false },
+        {
+            "type": "package",
+            "package": [
+                { "name": "upgrade-lab/framework", "version": "1.0.0", "type": "metapackage",
+                  "require": { "upgrade-lab/contracts": "^1.0" } },
+                { "name": "upgrade-lab/framework", "version": "2.0.0", "type": "metapackage",
+                  "require": { "upgrade-lab/contracts": "^2.0" } },
+                { "name": "upgrade-lab/contracts", "version": "1.0.0", "type": "metapackage" },
+                { "name": "upgrade-lab/contracts", "version": "2.0.0", "type": "metapackage" },
+                { "name": "upgrade-lab/legacy-discounts", "version": "1.0.0", "type": "metapackage",
+                  "require": { "upgrade-lab/contracts": "^1.0" } },
+                { "name": "upgrade-lab/legacy-discounts", "version": "2.0.0", "type": "metapackage",
+                  "require": { "upgrade-lab/contracts": "^2.0" } },
+                { "name": "upgrade-lab/legacy-rounding", "version": "1.0.0", "type": "metapackage",
+                  "require": { "upgrade-lab/contracts": "^1.0" } },
+                { "name": "upgrade-lab/legacy-rounding", "version": "2.0.0", "type": "metapackage",
+                  "require": { "upgrade-lab/contracts": "^2.0" } }
+            ]
+        }
+    ],
+    "config": { "allow-plugins": false }
+}

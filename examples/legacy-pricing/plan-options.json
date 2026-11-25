@@ -1,0 +1,38 @@
+{
+  "targets": {
+    "upgrade-lab/framework": "^2.0",
+    "upgrade-lab/legacy-discounts": "^2.0",
+    "upgrade-lab/legacy-rounding": "^2.0"
+  },
+  "catalog": {
+    "platform": { "php": "8.2.30" },
+    "packages": [
+      { "name": "upgrade-lab/framework", "version": "2.0.0", "require": { "upgrade-lab/contracts": "^2.0" } },
+      { "name": "upgrade-lab/contracts", "version": "2.0.0" },
+      { "name": "upgrade-lab/legacy-discounts", "version": "2.0.0", "require": { "upgrade-lab/contracts": "^2.0" } },
+      { "name": "upgrade-lab/legacy-rounding", "version": "2.0.0", "require": { "upgrade-lab/contracts": "^2.0" } }
+    ]
+  },
+  "rule_version": "pricing-1.0",
+  "rules": [
+    {
+      "id": "sale-price", "old_type": "UpgradeLab\\Pricing\\LegacyPrice", "old_method": "estimate",
+      "new_type": "UpgradeLab\\Pricing\\Quote", "new_method": "estimate",
+      "guide": "https://github.com/axin2024/upgrade-agent/blob/main/examples/legacy-pricing/MIGRATION.md",
+      "risk": "high", "requires_targets": ["upgrade-lab/framework"],
+      "verify": ["Apply in estimateSale. Credit notes in estimateCredit can be negative and must retain the original call."]
+    },
+    {
+      "id": "currency-display", "old_type": "UpgradeLab\\Pricing\\LegacyCurrency", "old_method": "display",
+      "new_type": "UpgradeLab\\Pricing\\Currency", "new_method": "format",
+      "guide": "https://github.com/axin2024/upgrade-agent/blob/main/examples/legacy-pricing/MIGRATION.md",
+      "risk": "low", "verify": ["check integer cents display"]
+    }
+  ],
+  "tasks": [
+    { "id": "dependency-lock", "kind": "composer-lock" },
+    { "id": "syntax", "kind": "php-lint" },
+    { "id": "pricing-contract", "kind": "php-test", "path": "tests/check.php" }
+  ],
+  "model_budget_tokens": 5000
+}

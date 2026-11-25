@@ -1,0 +1,20 @@
+CREATE TABLE work_jobs (
+    tenant VARCHAR(64) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    workspace VARCHAR(64) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    actor VARCHAR(64) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    request_id VARCHAR(96) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    request_digest CHAR(64) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    owner_mark CHAR(32) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    kind ENUM('candidate','validation') NOT NULL,
+    plan CHAR(64) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    baseline_revision BIGINT UNSIGNED NOT NULL,
+    state ENUM('running','completed','failed') NOT NULL,
+    budget_charge INT UNSIGNED NOT NULL DEFAULT 0,
+    deadline DATETIME(6) NOT NULL,
+    result JSON NOT NULL,
+    created_at DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
+    updated_at DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
+    PRIMARY KEY (tenant, workspace, actor, request_id),
+    KEY plan_budget (tenant, workspace, plan, budget_charge),
+    FOREIGN KEY (tenant, workspace, plan) REFERENCES plans(tenant, workspace, digest)
+) ENGINE=InnoDB;

@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Upgrade Agent</title>
+  <link rel="stylesheet" href="/app.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/">Upgrade Agent</a>
+    <span id="connection" class="connection">工作区未连接</span>
+  </header>
+  <main>
+    <section class="card access">
+      <div><h1>依赖升级工作台</h1><p id="identity">输入工作区凭据查看升级计划和验证证据。</p></div>
+      <form id="connect">
+        <label for="token">工作区凭据</label>
+        <div class="inline"><input id="token" type="password" required autocomplete="off"><button>连接</button></div>
+      </form>
+    </section>
+    <p id="notice" class="notice" role="status" hidden></p>
+    <div id="workspace" hidden>
+      <section class="baseline card">
+        <div><span class="muted">当前基线</span><strong id="baseline">—</strong></div>
+        <div><span class="muted">修订</span><strong id="revision">—</strong></div>
+        <button id="refresh" class="secondary">刷新记录</button>
+      </section>
+      <div class="grid">
+        <div class="stack">
+          <section class="card">
+            <h2>升级计划</h2>
+            <form id="load-plan" class="inline"><input id="plan-id" placeholder="计划 SHA-256" required aria-label="计划摘要"><button>查看</button></form>
+            <div id="plan-summary" hidden>
+              <div class="plan-heading"><span>依赖解析</span><strong id="resolution"></strong><button id="export" class="secondary">导出已采纳批次</button></div>
+              <div id="blockers"></div>
+              <div class="table-wrap"><table><thead><tr><th>批次</th><th>影响</th><th>前置批</th><th>候选</th></tr></thead><tbody id="batches"></tbody></table></div>
+              <details><summary>盘点与调用位置</summary><pre id="findings"></pre></details>
+            </div>
+          </section>
+          <section class="card">
+            <h2>补丁审阅</h2>
+            <form id="load-candidate" class="inline"><input id="candidate-id" placeholder="候选 SHA-256" required aria-label="候选摘要"><button>查看</button></form>
+            <div id="candidate-summary" hidden>
+              <p id="candidate-info"></p>
+              <pre class="patch" id="patch"></pre>
+              <button id="save-patch" class="secondary">下载补丁</button>
+              <form id="verify">
+                <label for="parents">前置候选 SHA-256，多个用逗号分隔</label>
+                <div class="inline"><input id="parents" autocomplete="off"><button>运行验证</button></div>
+              </form>
+              <details id="report-panel" hidden><summary>验证报告 <span id="report-state"></span></summary><pre id="report"></pre></details>
+              <form id="review">
+                <div class="fields">
+                  <label>决定<select id="decision"><option value="adopt">采纳</option><option value="reject">退回</option><option value="withdraw">撤回</option></select></label>
+                  <label>验证报告 SHA-256<input id="evidence-id" autocomplete="off"></label>
+                </div>
+                <label for="reason">审阅理由</label><textarea id="reason" required minlength="3" maxlength="500" rows="2"></textarea>
+                <label for="affected">确认连带撤回的批次，多个用逗号分隔</label>
+                <div class="inline"><input id="affected" autocomplete="off"><button>记录决定</button></div>
+              </form>
+            </div>
+          </section>
+        </div>
+        <aside class="stack">
+          <section class="card">
+            <h2>操作记录</h2>
+            <ol class="history" id="history"></ol>
+            <button id="more" class="secondary" hidden>查看更多记录</button>
+          </section>
+          <section class="card" id="setup">
+            <h2>导入与规划</h2>
+            <form id="pin">
+              <label for="snapshot-file">经授权的快照 JSON</label>
+              <input id="snapshot-file" type="file" accept=".json,application/json" required>
+              <button>固定基线</button>
+            </form>
+            <form id="create-plan">
+              <label for="plan-file">升级规则与工具配置 JSON</label>
+              <input id="plan-file" type="file" accept=".json,application/json" required>
+              <button>创建计划</button>
+            </form>
+          </section>
+          <section class="card">
+            <h2>查询任务</h2>
+            <form id="job" class="inline"><input id="request-id" placeholder="请求标识" required aria-label="请求标识"><button>查询</button></form>
+            <pre id="job-status" hidden></pre>
+          </section>
+        </aside>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

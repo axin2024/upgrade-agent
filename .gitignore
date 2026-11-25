@@ -1,0 +1,6 @@
+/.local/
+/dist/
+/bin/
+/.env
+*.exe
+*.test

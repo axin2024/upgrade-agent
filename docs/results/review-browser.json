@@ -1,0 +1,48 @@
+{
+  "browser": "158.0.8127.36",
+  "request_id": "73152813-4e07-4916-bfb5-fb408c39d87e",
+  "persisted_across_reload": true,
+  "dropped_prepare_response": true,
+  "dropped_execution_response": true,
+  "prepares": 1,
+  "executions": 1,
+  "queries": 3,
+  "receipt_items": [
+    {
+      "candidate": "f1ee59b6808f8f214014f3533b89de0ec27e9a95e1f557cb2068700b8eb6d9cd",
+      "action": "reject",
+      "baseline": "630d4a5011c124ef09d67d911a594bcc286ccfdc9ddb84a928f54448980e7abe",
+      "reason": "Retain the signed credit behavior",
+      "state": "applied",
+      "receipt": {
+        "action": "reject",
+        "plan": "fbc2c0d97119f05b28dc63cde03c799b5fd1be88b8f06beb87298f315cb73a28",
+        "candidate": "f1ee59b6808f8f214014f3533b89de0ec27e9a95e1f557cb2068700b8eb6d9cd",
+        "batch": "rule-sale-price",
+        "baseline": "630d4a5011c124ef09d67d911a594bcc286ccfdc9ddb84a928f54448980e7abe",
+        "revision": 1,
+        "reason": "Retain the signed credit behavior",
+        "review_batch": "73152813-4e07-4916-bfb5-fb408c39d87e"
+      }
+    },
+    {
+      "candidate": "65fa2a92716664ae51a8ba66f27870411b57e949336907b902fa494fdf955a3b",
+      "action": "adopt",
+      "baseline": "630d4a5011c124ef09d67d911a594bcc286ccfdc9ddb84a928f54448980e7abe",
+      "validation": "1fd3c0befc4f6df1e949229d31b9418b425d0a3302a092805a993d1080cc754a",
+      "reason": "Confirm the saved historical report",
+      "state": "rejected",
+      "error": "request conflicts with current workspace state: latest validation for this baseline revision must pass"
+    }
+  ],
+  "applied_audit_count": 1,
+  "source_location": "app/Calculator.php:35",
+  "found_migrated_plan_by_target": true,
+  "baseline_preview": {
+    "before_revision": 1,
+    "concurrent_revision": 2,
+    "confirmed_revision": 3,
+    "stale_preview_rejected": true,
+    "removed_file": "composer.lock"
+  }
+}

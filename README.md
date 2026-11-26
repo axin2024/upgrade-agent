@@ -37,6 +37,8 @@ MySQL 账户只需要该数据库的权限。给开发者和测试负责人分�
 
 完整操作见 [定价升级演练](docs/pricing-walkthrough.md)。已经跑通的验证和环境见 [验收记录](docs/validation.md)，功能范围和边界见 [原始需求](docs/requirements/01-产品总览-prd.md)。
 
+[Laravel 定价升级案例](examples/laravel-pricing/MIGRATION.md)使用实际的 Laravel 12 和 13、固定的 Composer 依赖以及一条负数信用单业务契约，可复现依赖冲突、回归拦截和人工审核后的补丁导出。
+
 ## 验证镜像
 
 ```bash

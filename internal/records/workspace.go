@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"maps"
 	"slices"
+	"strings"
 	"time"
 
 	"github.com/axin2024/upgrade-agent/internal/planning"
@@ -15,8 +16,9 @@ import (
 )
 
 type BaselineInput struct {
-	Expected string            `json:"expected_baseline"`
-	Snapshot snapshot.Snapshot `json:"snapshot"`
+	Expected         string            `json:"expected_baseline"`
+	ExpectedRevision *uint64           `json:"expected_revision,omitempty"`
+	Snapshot         snapshot.Snapshot `json:"snapshot"`
 }
 
 type PathDelta struct {
@@ -30,18 +32,60 @@ type BaselineResult struct {
 	Delta    []PathDelta `json:"delta"`
 }
 
+type BaselinePreview struct {
+	Workspace
+	Proposed string      `json:"proposed"`
+	Delta    []PathDelta `json:"delta"`
+}
+
+type FindingSource struct {
+	Path      string   `json:"path"`
+	Line      int      `json:"line"`
+	FirstLine int      `json:"first_line"`
+	Lines     []string `json:"lines"`
+}
+
 const selectSnapshot = "SELECT payload FROM snapshots WHERE tenant=? AND workspace=? AND digest=?"
 const selectPlan = "SELECT payload FROM plans WHERE tenant=? AND workspace=? AND digest=?"
 const selectCandidate = "SELECT payload FROM candidates WHERE tenant=? AND workspace=? AND digest=?"
 const selectReport = "SELECT payload FROM reports WHERE tenant=? AND workspace=? AND digest=?"
 
+func (s *Store) PreviewPin(ctx context.Context, i Identity, proposed snapshot.Snapshot) (BaselinePreview, error) {
+	if !i.Can("maintainer") {
+		return BaselinePreview{}, ErrDenied
+	}
+	if err := proposed.Verify(); err != nil {
+		return BaselinePreview{}, fmt.Errorf("%w: %s", ErrInvalid, err)
+	}
+	return transaction(ctx, s, func(tx *sql.Tx) (BaselinePreview, error) {
+		ws, err := current(ctx, tx, i, true)
+		if err != nil {
+			return BaselinePreview{}, err
+		}
+		var previous snapshot.Snapshot
+		if ws.Baseline != "" {
+			previous, err = readJSON[snapshot.Snapshot](ctx, tx, i, ws.Baseline, selectSnapshot)
+			if err != nil {
+				return BaselinePreview{}, err
+			}
+		}
+		return BaselinePreview{Workspace: ws, Proposed: proposed.Digest, Delta: baselineDelta(previous, proposed)}, nil
+	})
+}
+
 func (s *Store) Pin(ctx context.Context, i Identity, key string, in BaselineInput) (BaselineResult, error) {
 	if err := in.Snapshot.Verify(); err != nil {
 		return BaselineResult{}, fmt.Errorf("%w: %s", ErrInvalid, err)
 	}
-	signature := struct{ Expected, Proposed string }{in.Expected, in.Snapshot.Digest}
+	signature := struct {
+		Expected, Proposed string
+		Revision           *uint64 `json:"Revision,omitempty"`
+	}{in.Expected, in.Snapshot.Digest, in.ExpectedRevision}
 	return mutate(ctx, s, i, key, "pin-snapshot", signature, []string{"maintainer"}, func(tx *sql.Tx, ws Workspace) (BaselineResult, error) {
 		out := BaselineResult{Workspace: ws, Previous: ws.Baseline, Delta: make([]PathDelta, 0)}
+		if in.ExpectedRevision != nil && (ws.Revision != *in.ExpectedRevision || ws.Baseline != in.Expected) {
+			return out, fmt.Errorf("%w: current baseline %.64s revision %d", ErrConflict, ws.Baseline, ws.Revision)
+		}
 		if ws.Baseline == in.Snapshot.Digest {
 			return out, nil
 		}
@@ -105,6 +149,42 @@ func (s *Store) Snapshot(ctx context.Context, i Identity, id string) (snapshot.S
 	return readJSON[snapshot.Snapshot](ctx, s.db, i, id, selectSnapshot)
 }
 
+func (s *Store) FindingSource(ctx context.Context, i Identity, plan, path string, line int) (FindingSource, error) {
+	if !snapshot.SafePath(path) || line < 1 {
+		return FindingSource{}, ErrInvalid
+	}
+	p, err := s.Plan(ctx, i, plan)
+	if err != nil {
+		return FindingSource{}, err
+	}
+	for _, finding := range p.Findings {
+		if finding.Path != path || finding.Line != line {
+			continue
+		}
+		baseline, err := s.Snapshot(ctx, i, p.Baseline)
+		if err != nil {
+			return FindingSource{}, err
+		}
+		file, found := baseline.Find(path)
+		if !found || file.SHA256 != finding.FileSHA256 {
+			return FindingSource{}, ErrMissing
+		}
+		source := FindingSource{Path: path, Line: line, FirstLine: max(1, line-6), Lines: make([]string, 0, 13)}
+		number := 0
+		for content := range strings.SplitSeq(file.Content, "\n") {
+			number++
+			if number > line+6 {
+				break
+			}
+			if number >= source.FirstLine {
+				source.Lines = append(source.Lines, strings.TrimSuffix(content, "\r"))
+			}
+		}
+		return source, nil
+	}
+	return FindingSource{}, ErrMissing
+}
+
 type PlanInput struct {
 	Baseline string         `json:"baseline"`
 	Options  planning.Input `json:"options"`
@@ -141,6 +221,13 @@ func (s *Store) CreatePlan(ctx context.Context, i Identity, key string, in PlanI
 			return Ref{}, err
 		}
 		if rows, _ := result.RowsAffected(); rows > 0 {
+			for _, name := range slices.Sorted(maps.Keys(plan.Targets)) {
+				if _, err := tx.ExecContext(ctx, `INSERT INTO plan_targets(tenant,workspace,digest,package_name,version_digest)
+					VALUES(?,?,?,?,UNHEX(SHA2(?,256))) ON DUPLICATE KEY UPDATE digest=digest`,
+					i.Tenant, i.Workspace, plan.Digest, name, plan.Targets[name]); err != nil {
+					return Ref{}, err
+				}
+			}
 			err = audit(ctx, tx, i, "create-plan", plan.Digest, map[string]string{"baseline": plan.Baseline})
 		}
 		return Ref{plan.Digest}, err

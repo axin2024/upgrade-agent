@@ -66,6 +66,8 @@ func run(ctx context.Context, args []string) error {
 		return records.Migrate(os.Getenv("UPGRADE_MYSQL_DSN"), *steps)
 	case "provision", "revoke":
 		return access(ctx, args[0], args[1:])
+	case "prune":
+		return prune(ctx, args[1:])
 	case "serve":
 		return serve(ctx, args[1:])
 	default:
@@ -79,6 +81,7 @@ func usage() {
   migrate    Apply the embedded MySQL migrations.
   provision  Create a workspace-scoped operator credential.
   revoke     Revoke an operator's workspace credentials.
+  prune      Preview or remove expired, unreferenced workspace records.
   serve      Start the workspace API and browser workbench.
   request    Call a workspace API endpoint with a scoped credential.
   version    Print the installed version.
@@ -142,6 +145,31 @@ func access(ctx context.Context, action string, args []string) error {
 		return err
 	}
 	return printJSON(grant)
+}
+
+func prune(ctx context.Context, args []string) error {
+	opts := flag.NewFlagSet("prune", flag.ContinueOnError)
+	tenant := opts.String("tenant", "", "tenant identifier")
+	workspace := opts.String("workspace", "", "repository workspace identifier")
+	cutoff := opts.String("before", "", "exclusive expiration cutoff (RFC3339)")
+	apply := opts.Bool("apply", false, "remove the displayed eligible records")
+	if err := opts.Parse(args); err != nil {
+		return err
+	}
+	before, err := time.Parse(time.RFC3339, *cutoff)
+	if err != nil || opts.NArg() != 0 {
+		return errors.New("provide one RFC3339 cutoff with -before")
+	}
+	store, err := records.Open(ctx, os.Getenv("UPGRADE_MYSQL_DSN"))
+	if err != nil {
+		return errors.New("cannot connect to workspace MySQL")
+	}
+	defer store.Close()
+	result, err := store.Prune(ctx, *tenant, *workspace, before, *apply)
+	if err != nil {
+		return err
+	}
+	return printJSON(result)
 }
 
 func serve(ctx context.Context, args []string) error {

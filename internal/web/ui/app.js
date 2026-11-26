@@ -13,6 +13,11 @@ let currentPlan;
 let currentCandidate;
 let currentPatch = '';
 let cursor = 0;
+let planSearch;
+let pinDraft;
+let reviewDraft = [];
+let reviewPreparation;
+let reviewBatch;
 
 function notice(message, failed = false) {
   const node = field('notice');
@@ -41,7 +46,9 @@ async function api(path, data, key) {
     throw new Error('工作区凭据已更换');
   }
   if (!response.ok) {
-    throw new Error(body.error || '工作区操作失败');
+    const error = new Error(body.error || '工作区操作失败');
+    error.status = response.status;
+    throw error;
   }
   return body;
 }
@@ -72,6 +79,7 @@ async function reloadWorkspace() {
   field('setup').hidden = !can('maintainer');
   field('verify').hidden = !can('maintainer', 'verifier');
   field('review').hidden = !can('maintainer', 'reviewer');
+  field('review-batches').hidden = field('review').hidden;
   field('export').hidden = !can('maintainer', 'reviewer');
 }
 
@@ -132,8 +140,18 @@ async function loadPlan(id) {
   currentPlan = result;
   field('plan-id').value = id;
   field('plan-summary').hidden = false;
-  text('resolution', result.resolution.state);
-  text('findings', json({ constraints: result.inventory.constraints, findings: result.findings, toolchain_gaps: result.inventory.toolchain_gaps }));
+  const states = {
+    candidate: '有待 Composer 验证的候选',
+    missing_lock: '缺少锁文件。请生成 composer.lock 后重新固定基线，才能复现依赖解析。',
+    blocked: '存在阻断约束',
+    'needs-composer': '需补充 Composer 审核证据',
+    unchanged: '无依赖变更',
+  };
+  text('resolution', states[result.resolution.state] || result.resolution.state);
+  field('model-budget').hidden = result.model_budget_tokens === 0;
+  text('model-budget', '模型预算上限 ' + result.model_budget_tokens.toLocaleString() + ' token');
+  text('findings', json({ constraints: result.inventory.constraints, toolchain_gaps: result.inventory.toolchain_gaps }));
+  renderFindings(result);
   field('blockers').replaceChildren();
   for (const blocker of result.resolution.blockers || []) {
     const item = document.createElement('p');
@@ -144,7 +162,8 @@ async function loadPlan(id) {
   field('batches').replaceChildren();
   for (const batch of result.batches) {
     const row = document.createElement('tr');
-    for (const item of [batch.id + ' · ' + batch.state, batch.expected_files.join(', '), (batch.prerequisites || []).join(', ') || '—']) {
+    for (const item of [batch.id + ' · ' + batch.state, batch.expected_files.join(', '),
+      (batch.prerequisites || []).join(', ') || '—', (batch.tasks || []).map((task) => task.id).join(', ') || '—']) {
       const cell = document.createElement('td');
       cell.textContent = item;
       row.append(cell);
@@ -161,6 +180,72 @@ async function loadPlan(id) {
     row.append(controls);
     field('batches').append(row);
   }
+}
+
+async function findPlans(reset) {
+  if (reset) {
+    planSearch = { package: value('target-package'), version: value('target-version') };
+    field('plan-matches').replaceChildren();
+    field('more-plans').hidden = true;
+  }
+  const search = planSearch;
+  if (!search) return;
+  const page = await api('plans?' + new URLSearchParams(search));
+  if (search !== planSearch) return;
+  for (const plan of page.items) {
+    const row = document.createElement('li');
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'link';
+    button.textContent = (plan.repository_ref || plan.baseline.slice(0, 12)) + ' · ' + plan.sha256.slice(0, 12);
+    button.addEventListener('click', () => loadPlan(plan.sha256).catch((error) => notice(error.message, true)));
+    const detail = document.createElement('small');
+    detail.textContent = plan.rule_version + ' · ' + new Date(plan.created_at).toLocaleString();
+    row.append(button, detail);
+    field('plan-matches').append(row);
+  }
+  if (reset && !page.items.length) text('plan-matches', '当前工作区没有匹配的计划。');
+  search.after = page.next || '';
+  field('more-plans').hidden = !page.next;
+}
+
+function renderFindings(plan) {
+  field('finding-source').hidden = true;
+  field('finding-locations').replaceChildren();
+  for (const finding of plan.findings || []) {
+    const row = document.createElement('li');
+    const link = document.createElement('button');
+    link.className = 'link';
+    link.type = 'button';
+    link.textContent = finding.path + ':' + finding.line;
+    link.addEventListener('click', () => loadFindingSource(plan.sha256, finding).catch((error) => notice(error.message, true)));
+    const detail = document.createElement('small');
+    detail.textContent = [finding.state === 'exact' ? '已定位' : '待核', finding.risk, finding.original, finding.replacement,
+      ...(finding.verify || [])].filter(Boolean).join(' · ');
+    const guide = document.createElement('a');
+    guide.textContent = '升级依据';
+    guide.href = finding.guide;
+    guide.target = '_blank';
+    guide.rel = 'noopener noreferrer';
+    row.append(link, detail, guide);
+    field('finding-locations').append(row);
+  }
+}
+
+async function loadFindingSource(plan, finding) {
+  const params = new URLSearchParams({ path: finding.path, line: finding.line });
+  const source = await api('plans/' + plan + '/source?' + params);
+  if (currentPlan?.sha256 !== plan) return;
+  text('source-title', source.path + ':' + source.line);
+  field('source-lines').replaceChildren(...source.lines.map((line, index) => {
+    const row = document.createElement('span');
+    const number = source.first_line + index;
+    row.textContent = number + '  ' + line;
+    row.classList.toggle('matched', number === source.line);
+    return row;
+  }));
+  field('finding-source').hidden = false;
+  field('source-lines').focus();
 }
 
 function addCandidateButton(parent, plan, batch, source, caption) {
@@ -222,14 +307,100 @@ async function fileJSON(id, limit) {
   return JSON.parse(await file.text());
 }
 
+function clearPinPreview() {
+  pinDraft = undefined;
+  field('pin-preview').hidden = true;
+  field('pin-delta').replaceChildren();
+}
+
+async function previewPin(snapshot, file) {
+  const preview = await api('snapshots/preview', { snapshot });
+  if (field('snapshot-file').files[0] !== file) return;
+  pinDraft = { snapshot, file, preview, key: crypto.randomUUID() };
+  text('pin-comparison', '修订 ' + preview.revision + ' · ' + (preview.baseline || '尚未固定') + ' → ' + preview.proposed);
+  const labels = { added: '新增', modified: '修改', removed: '移除' };
+  field('pin-delta').replaceChildren(...preview.delta.map((change) => {
+    const item = document.createElement('li');
+    item.textContent = labels[change.state] + ' · ' + change.path;
+    return item;
+  }));
+  field('pin-preview').hidden = false;
+}
+
+const reviewActions = { adopt: '采纳', reject: '退回', withdraw: '撤回' };
+const reviewStates = { pending: '未开始', applied: '已记录', rejected: '未通过' };
+
+function reviewInput() {
+  return {
+    candidate: currentCandidate.sha256,
+    action: value('decision'),
+    baseline: workspace.baseline,
+    validation: value('evidence-id'),
+    reason: value('reason'),
+    confirm_affected: parts('affected'),
+  };
+}
+
+function renderReviewDraft() {
+  const items = reviewDraft.map((item) => {
+    const row = document.createElement('li');
+    row.textContent = reviewActions[item.action] + ' · ' + item.candidate.slice(0, 12) + ' · ' + item.reason;
+    return row;
+  });
+  field('review-draft').replaceChildren(...items);
+}
+
+async function refreshReviewBatches() {
+  if (!can('reviewer', 'maintainer')) return;
+  const ids = await api('review-batches');
+  const options = ids.map((id) => new Option(id, id));
+  field('recent-reviews').replaceChildren(new Option('选择批次', ''), ...options);
+  if (ids.includes(reviewBatch?.request_id)) field('recent-reviews').value = reviewBatch.request_id;
+}
+
+function showReviewBatch(batch) {
+  reviewBatch = batch;
+  field('review-key').value = batch.request_id;
+  if (Array.from(field('recent-reviews').options).some((item) => item.value === batch.request_id)) {
+    field('recent-reviews').value = batch.request_id;
+  }
+  field('review-result').hidden = false;
+  field('run-reviews').hidden = batch.completed === batch.items.length;
+  text('review-progress', '已处理 ' + batch.completed + ' / ' + batch.items.length + ' · 基线修订 ' + batch.revision);
+  field('review-items').replaceChildren(...batch.items.map((item) => {
+    const row = document.createElement('tr');
+    row.insertCell().textContent = item.candidate.slice(0, 12);
+    row.insertCell().textContent = reviewActions[item.action];
+    row.insertCell().textContent = reviewStates[item.state];
+    row.insertCell().textContent = item.receipt
+      ? item.receipt.batch + ' · ' + item.receipt.reason
+      : (item.error || '—');
+    return row;
+  }));
+}
+
+async function loadReviewBatch(key) {
+  showReviewBatch(await api('review-batches/' + encodeURIComponent(key)));
+}
+
 handle('connect', 'submit', async () => {
   generation++;
   token = value('token');
   currentCandidate = currentPlan = workspace = undefined;
+  planSearch = undefined;
+  field('plan-matches').replaceChildren();
+  field('more-plans').hidden = true;
+  clearPinPreview();
+  reviewDraft = [];
+  reviewPreparation = reviewBatch = undefined;
+  renderReviewDraft();
+  field('recent-reviews').replaceChildren(new Option('选择批次', ''));
+  field('review-result').hidden = true;
   currentPatch = '';
   field('workspace').hidden = true;
   field('plan-summary').hidden = field('candidate-summary').hidden = field('job-status').hidden = true;
-  for (const id of ['plan-id', 'candidate-id', 'request-id', 'parents', 'evidence-id', 'reason', 'affected', 'snapshot-file', 'plan-file']) {
+  for (const id of ['plan-id', 'target-package', 'target-version', 'candidate-id', 'request-id', 'parents', 'evidence-id',
+    'reason', 'affected', 'snapshot-file', 'plan-file', 'review-key']) {
     field(id).value = '';
   }
   text('connection', '工作区未连接');
@@ -239,17 +410,38 @@ handle('connect', 'submit', async () => {
   } finally {
     field('token').value = '';
   }
-  await history(true);
+  await Promise.all([history(true), refreshReviewBatches()]);
 });
-handle('refresh', 'click', async () => { await reloadWorkspace(); await history(true); });
+handle('refresh', 'click', async () => { await reloadWorkspace(); await Promise.all([history(true), refreshReviewBatches()]); });
 handle('more', 'click', () => history(false));
 handle('load-plan', 'submit', () => loadPlan(value('plan-id')));
+handle('find-plans', 'submit', () => findPlans(true));
+handle('more-plans', 'click', () => findPlans(false));
 handle('load-candidate', 'submit', () => loadCandidate(value('candidate-id')));
 handle('save-patch', 'click', () => download('migration.patch', currentPatch, 'text/x-diff'));
+field('snapshot-file').addEventListener('change', clearPinPreview);
 handle('pin', 'submit', async () => {
+  const expected = generation;
+  const file = field('snapshot-file').files[0];
   const input = await fileJSON('snapshot-file', 32 * 1024 * 1024);
-  const snapshot = input.snapshot || input;
-  const result = await api('snapshots', { expected_baseline: workspace.baseline, snapshot });
+  if (expected !== generation || field('snapshot-file').files[0] !== file) return;
+  await previewPin(input.snapshot || input, file);
+});
+handle('apply-pin', 'click', async () => {
+  if (!pinDraft) return;
+  const { preview, snapshot, file, key } = pinDraft;
+  let result;
+  try {
+    result = await api('snapshots', {
+      expected_baseline: preview.baseline, expected_revision: preview.revision, snapshot,
+    }, key);
+  } catch (error) {
+    if (error.status !== 409 || pinDraft?.key !== key) throw error;
+    await previewPin(snapshot, file);
+    notice('基线已移动，请核对更新后的差异并重新确认。', true);
+    return;
+  }
+  if (pinDraft?.key === key) clearPinPreview();
   await reloadWorkspace();
   notice('基线已固定 · 修订 ' + result.revision + ' · ' + result.delta.length + ' 个文件变更');
   await history(true);
@@ -268,11 +460,58 @@ handle('verify', 'submit', async () => {
   await history(true);
 });
 handle('review', 'submit', async () => {
-  const decision = await api('candidates/' + currentCandidate.sha256 + '/decisions', {
-    action: value('decision'), baseline: workspace.baseline, validation: value('evidence-id'),
-    reason: value('reason'), confirm_affected: parts('affected'),
-  });
+  const { candidate, ...input } = reviewInput();
+  const decision = await api('candidates/' + candidate + '/decisions', input);
   notice('已记录 ' + decision.action + ' · ' + decision.batch);
+  await history(true);
+});
+handle('queue-review', 'click', async () => {
+  if (reviewPreparation) throw new Error('请先重试保存或清空原选集');
+  const item = reviewInput();
+  if (item.reason.length < 3) throw new Error('请填写至少 3 个字符的审阅理由');
+  if (reviewDraft.length >= 20) throw new Error('每次最多保存 20 个候选');
+  if (reviewDraft.some((queued) => queued.candidate === item.candidate)) throw new Error('此候选已在选集中');
+  reviewDraft.push(item);
+  renderReviewDraft();
+});
+handle('clear-reviews', 'click', async () => {
+  if (field('prepare-reviews').disabled) return;
+  reviewDraft = [];
+  reviewPreparation = undefined;
+  renderReviewDraft();
+});
+handle('prepare-reviews', 'click', async () => {
+  if (!reviewDraft.length) throw new Error('请先加入候选');
+  reviewPreparation ??= { key: crypto.randomUUID(), input: { revision: workspace.revision, items: reviewDraft } };
+  const { key, input } = reviewPreparation;
+  field('review-key').value = key;
+  try {
+    showReviewBatch(await api('review-batches', input, key));
+  } catch (error) {
+    if (reviewPreparation?.key !== key) throw error;
+    try { await loadReviewBatch(key); } catch { throw error; }
+  }
+  reviewPreparation = undefined;
+  reviewDraft = [];
+  renderReviewDraft();
+  await refreshReviewBatches();
+});
+handle('load-reviews', 'submit', () => loadReviewBatch(value('review-key')));
+handle('recent-reviews', 'change', async () => {
+  const key = value('recent-reviews');
+  if (key) await loadReviewBatch(key);
+});
+handle('run-reviews', 'click', async () => {
+  const key = reviewBatch.request_id;
+  const expected = generation;
+  try {
+    const result = await api('review-batches/' + encodeURIComponent(key) + '/run', {}, key);
+    if (reviewBatch.request_id === key) showReviewBatch(result);
+  } catch (error) {
+    if (expected !== generation || reviewBatch?.request_id !== key) throw error;
+    try { await loadReviewBatch(key); } catch { throw error; }
+    if (reviewBatch.completed !== reviewBatch.items.length) throw error;
+  }
   await history(true);
 });
 handle('export', 'click', async () => {

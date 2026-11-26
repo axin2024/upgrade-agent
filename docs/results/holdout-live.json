@@ -2,7 +2,7 @@
   {
     "analysis_ms": 0,
     "case": "caret-upper-bound",
-    "composer_ms": 2505,
+    "composer_ms": 2420,
     "composer_resolved": true,
     "expected": "candidate",
     "kind": "dependency",
@@ -12,7 +12,7 @@
   {
     "analysis_ms": 0,
     "case": "upper-bound-exclusive",
-    "composer_ms": 2438,
+    "composer_ms": 2447,
     "composer_resolved": false,
     "expected": "blocked",
     "kind": "dependency",
@@ -22,7 +22,7 @@
   {
     "analysis_ms": 0,
     "case": "platform-php-minimum",
-    "composer_ms": 2521,
+    "composer_ms": 2480,
     "composer_resolved": false,
     "expected": "blocked",
     "kind": "dependency",
@@ -32,7 +32,7 @@
   {
     "analysis_ms": 0,
     "case": "platform-extension-present",
-    "composer_ms": 2414,
+    "composer_ms": 2674,
     "composer_resolved": true,
     "expected": "candidate",
     "kind": "dependency",
@@ -42,7 +42,7 @@
   {
     "analysis_ms": 0,
     "case": "platform-extension-missing",
-    "composer_ms": 2526,
+    "composer_ms": 2519,
     "composer_resolved": false,
     "expected": "blocked",
     "kind": "dependency",
@@ -52,7 +52,7 @@
   {
     "analysis_ms": 0,
     "case": "transitive-shared-pin",
-    "composer_ms": 2488,
+    "composer_ms": 2474,
     "composer_resolved": true,
     "expected": "candidate",
     "kind": "dependency",
@@ -62,7 +62,7 @@
   {
     "analysis_ms": 0,
     "case": "transitive-unsatisfied",
-    "composer_ms": 2445,
+    "composer_ms": 2525,
     "composer_resolved": false,
     "expected": "blocked",
     "kind": "dependency",
@@ -72,7 +72,7 @@
   {
     "analysis_ms": 0,
     "case": "root-conflict-exclusion",
-    "composer_ms": 2472,
+    "composer_ms": 2433,
     "composer_resolved": true,
     "expected": "candidate",
     "kind": "dependency",
@@ -82,7 +82,7 @@
   {
     "analysis_ms": 0,
     "case": "alternative-constraint",
-    "composer_ms": 2428,
+    "composer_ms": 2512,
     "composer_resolved": true,
     "expected": "candidate",
     "kind": "dependency",
@@ -92,7 +92,7 @@
   {
     "analysis_ms": 0,
     "case": "transitive-backtracking",
-    "composer_ms": 2518,
+    "composer_ms": 2560,
     "composer_resolved": true,
     "expected": "candidate",
     "kind": "dependency",
@@ -114,17 +114,17 @@
     "model_regression_passed": true,
     "model_usage": {
       "provider": "openai-compatible",
-      "model": "qwen2.5-0.5b",
+      "model": "Qwen2.5-0.5B-Instruct",
       "mode": "live",
-      "request_sha256": "b3eef0006fcd9881e4bd52103046e4e80c66822bacff3bafdb9149b1a6455992",
-      "response_sha256": "1c03329812ce6d68e36b83166397415230339c9c81a1512000fccbfbf483d91b",
+      "request_sha256": "d24ffc7d9a5185762c02f123584cb117b4386a1c73db517155cf2b7081258d7b",
+      "response_sha256": "6a95c4f76290a499bd0fd09a068991f0bbb46042171687030c1e715d74b25fc4",
       "state": "complete",
       "prompt_tokens": 118,
       "completion_tokens": 18,
       "metered": true,
-      "duration_ms": 1300
+      "duration_ms": 714
     },
-    "review_and_execution_ms": 258,
+    "review_and_execution_ms": 263,
     "reviewed_regression_passed": true,
     "rule_regression_passed": true
   },
@@ -144,17 +144,17 @@
     "model_regression_passed": false,
     "model_usage": {
       "provider": "openai-compatible",
-      "model": "qwen2.5-0.5b",
+      "model": "Qwen2.5-0.5B-Instruct",
       "mode": "live",
-      "request_sha256": "2643a917c04b301007fb488ad3dbea4e6798c7efa86bb24bb80d24dd90fd8174",
-      "response_sha256": "a2e42a39280b75b5f1cb07a98a03e723596ae2251fc2710385dd12378e8f86e5",
+      "request_sha256": "98c1c5fe550efe8617ef0bb78add269d2085e9d20dc05f9dd50dead039528fbf",
+      "response_sha256": "9c088d6f094a6f95488dfcee02d1963b728ebc9d2e77fc3aedcc0c191be87408",
       "state": "complete",
       "prompt_tokens": 176,
       "completion_tokens": 22,
       "metered": true,
-      "duration_ms": 1071
+      "duration_ms": 563
     },
-    "review_and_execution_ms": 243,
+    "review_and_execution_ms": 283,
     "reviewed_regression_passed": true,
     "rule_regression_passed": false
   },
@@ -174,17 +174,17 @@
     "model_regression_passed": false,
     "model_usage": {
       "provider": "openai-compatible",
-      "model": "qwen2.5-0.5b",
+      "model": "Qwen2.5-0.5B-Instruct",
       "mode": "live",
-      "request_sha256": "d1a5eea31f1366f538f7a8a140aea67bf694f735a4a6cb18842b2d3d1bd2a77c",
-      "response_sha256": "8b2cb1ab26443a1e7f654b1e9a403ae26e6fb30c95788e9f4758b6cc7c8cf8ae",
+      "request_sha256": "f350892ed0c4fa396da34eae7874c610d44e7edee6563b3f07604cb93d1a5e6d",
+      "response_sha256": "4cfbc1f344e7da8dfedfaf31b3a672356f1fb67b93391550da8c0e3dbedadc0f",
       "state": "complete",
       "prompt_tokens": 177,
       "completion_tokens": 22,
       "metered": true,
-      "duration_ms": 1205
+      "duration_ms": 630
     },
-    "review_and_execution_ms": 236,
+    "review_and_execution_ms": 271,
     "reviewed_regression_passed": true,
     "rule_regression_passed": false
   },
@@ -203,17 +203,17 @@
     "model_regression_passed": true,
     "model_usage": {
       "provider": "openai-compatible",
-      "model": "qwen2.5-0.5b",
+      "model": "Qwen2.5-0.5B-Instruct",
       "mode": "live",
-      "request_sha256": "bbe50d3da76b31e09aed65f8eaa8ec523c7c2de25eb0caa62e785cd16460fe20",
-      "response_sha256": "22f395229800ab342b736a059fada7a6bb41cd997e0a77d2859b14a0c321b525",
+      "request_sha256": "c787a04c24682bb5697987a793ec22a5b4b0f1c0574535dfb43ae1564c1f5d19",
+      "response_sha256": "92996b4d16042eaec10afe1bdc18056780160096f4561203169df61a300ba246",
       "state": "complete",
       "prompt_tokens": 124,
       "completion_tokens": 18,
       "metered": true,
-      "duration_ms": 707
+      "duration_ms": 414
     },
-    "review_and_execution_ms": 249,
+    "review_and_execution_ms": 274,
     "reviewed_regression_passed": true,
     "rule_regression_passed": true
   },
@@ -232,17 +232,17 @@
     "model_regression_passed": true,
     "model_usage": {
       "provider": "openai-compatible",
-      "model": "qwen2.5-0.5b",
+      "model": "Qwen2.5-0.5B-Instruct",
       "mode": "live",
-      "request_sha256": "af2d3a16bf749df54ce23e626e45ce7253d41510ff47c8f3bf7a3095e914a5f6",
-      "response_sha256": "0d640bda9cc171933409d9db38f5ad4cf156e30cec6364fb002ecfc082e8154a",
+      "request_sha256": "601737d5542549f93b1c4d6e09ed684b78c28102115a1230a96dce4c0090691e",
+      "response_sha256": "fc98488ce6b26120d2e911cb79fe2149ee7b272ef61183ea709a7017899edbaf",
       "state": "complete",
       "prompt_tokens": 124,
       "completion_tokens": 18,
       "metered": true,
-      "duration_ms": 719
+      "duration_ms": 395
     },
-    "review_and_execution_ms": 281,
+    "review_and_execution_ms": 260,
     "reviewed_regression_passed": true,
     "rule_regression_passed": true
   },
@@ -275,17 +275,17 @@
     "model_regression_passed": true,
     "model_usage": {
       "provider": "openai-compatible",
-      "model": "qwen2.5-0.5b",
+      "model": "Qwen2.5-0.5B-Instruct",
       "mode": "live",
-      "request_sha256": "56c88644ba319bc97e988f541f38709cd2bab6c81553943b3b8444fa8b8cee94",
-      "response_sha256": "80fefb119e0ecfb60693f2c4cfac087c775b9d70eaf84a1910b9de4443d2b954",
+      "request_sha256": "7ec394e66214356f2797f4ebd195cc5a062f052040679e10f9905fa429d16d47",
+      "response_sha256": "1dcba14e77bb479a322c75ee7b23fd552b59e202180a0e4662e2ef8c2554f9c9",
       "state": "complete",
       "prompt_tokens": 131,
       "completion_tokens": 18,
       "metered": true,
-      "duration_ms": 898
+      "duration_ms": 495
     },
-    "review_and_execution_ms": 232,
+    "review_and_execution_ms": 264,
     "reviewed_regression_passed": true,
     "rule_regression_passed": true
   },
@@ -305,17 +305,17 @@
     "model_regression_passed": false,
     "model_usage": {
       "provider": "openai-compatible",
-      "model": "qwen2.5-0.5b",
+      "model": "Qwen2.5-0.5B-Instruct",
       "mode": "live",
-      "request_sha256": "eedbdd079afd5857713217a08b4bd4270de980c460faa83fe8f6822642d6e868",
-      "response_sha256": "27594fe522a08c76f12c4253863a018529a80a9b9261946421f60b2a3e32346d",
+      "request_sha256": "40c75e85006238479a8f4dbd740f2f7eb7b2698365bf6d950bba79a113f9fc40",
+      "response_sha256": "ad2f8fbd501dabdc518b0a4af7311580fd8c04dd571617a44092256035cb6256",
       "state": "complete",
       "prompt_tokens": 187,
       "completion_tokens": 22,
       "metered": true,
-      "duration_ms": 1295
+      "duration_ms": 673
     },
-    "review_and_execution_ms": 285,
+    "review_and_execution_ms": 275,
     "reviewed_regression_passed": true,
     "rule_regression_passed": false
   },
@@ -335,17 +335,17 @@
     "model_regression_passed": false,
     "model_usage": {
       "provider": "openai-compatible",
-      "model": "qwen2.5-0.5b",
+      "model": "Qwen2.5-0.5B-Instruct",
       "mode": "live",
-      "request_sha256": "f87d4728447a8ef3ad17d7d3aa339b9c8a88d8fc3ce2d0d309d6cd3297d89448",
-      "response_sha256": "6fd3aaaa8cc61025eb9c7ae00edcbf62473cab9773830e5ff7bc760db9ca9100",
+      "request_sha256": "b631e47dca590e8a89386d9b45454fbc526af0031c1c2a9b5e55a55623f1ff06",
+      "response_sha256": "dc627e4837bcbe21a42e64f8d08da2d5d3cc9943401217ab9c209224601dbb69",
       "state": "complete",
       "prompt_tokens": 180,
       "completion_tokens": 22,
       "metered": true,
-      "duration_ms": 1177
+      "duration_ms": 603
     },
-    "review_and_execution_ms": 464,
+    "review_and_execution_ms": 298,
     "reviewed_regression_passed": true,
     "rule_regression_passed": false
   }

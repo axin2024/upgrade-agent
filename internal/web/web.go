@@ -78,6 +78,14 @@ func (a App) Handler() http.Handler {
 		result, err := a.Store.Pin(r.Context(), i, r.Header.Get("Idempotency-Key"), in)
 		a.result(w, result, err)
 	}))
+	mux.HandleFunc("POST "+root+"/snapshots/preview", a.auth(func(w http.ResponseWriter, r *http.Request, i records.Identity) {
+		var in records.BaselineInput
+		if !a.read(w, r, &in, 32<<20) {
+			return
+		}
+		result, err := a.Store.PreviewPin(r.Context(), i, in.Snapshot)
+		a.result(w, result, err)
+	}))
 	mux.HandleFunc("POST "+root+"/plans", a.auth(func(w http.ResponseWriter, r *http.Request, i records.Identity) {
 		var in records.PlanInput
 		if !a.read(w, r, &in, 2<<20) {
@@ -86,8 +94,23 @@ func (a App) Handler() http.Handler {
 		result, err := a.Store.CreatePlan(r.Context(), i, r.Header.Get("Idempotency-Key"), in)
 		a.result(w, result, err)
 	}))
+	mux.HandleFunc("GET "+root+"/plans", a.auth(func(w http.ResponseWriter, r *http.Request, i records.Identity) {
+		query := r.URL.Query()
+		result, err := a.Store.FindPlans(r.Context(), i, query.Get("package"), query.Get("version"), query.Get("after"))
+		a.result(w, result, err)
+	}))
 	mux.HandleFunc("GET "+root+"/plans/{plan}", a.auth(func(w http.ResponseWriter, r *http.Request, i records.Identity) {
 		result, err := a.Store.Plan(r.Context(), i, r.PathValue("plan"))
+		a.result(w, result, err)
+	}))
+	mux.HandleFunc("GET "+root+"/plans/{plan}/source", a.auth(func(w http.ResponseWriter, r *http.Request, i records.Identity) {
+		loc := r.URL.Query()
+		line, err := strconv.Atoi(loc.Get("line"))
+		if err != nil {
+			a.result(w, nil, records.ErrInvalid)
+			return
+		}
+		result, err := a.Store.FindingSource(r.Context(), i, r.PathValue("plan"), loc.Get("path"), line)
 		a.result(w, result, err)
 	}))
 	mux.HandleFunc("POST "+root+"/plans/{plan}/batches/{batch}/candidates", a.auth(func(w http.ResponseWriter, r *http.Request, i records.Identity) {
@@ -131,6 +154,26 @@ func (a App) Handler() http.Handler {
 			return
 		}
 		result, err := a.Store.Decide(r.Context(), i, r.Header.Get("Idempotency-Key"), r.PathValue("candidate"), in)
+		a.result(w, result, err)
+	}))
+	mux.HandleFunc("GET "+root+"/review-batches", a.auth(func(w http.ResponseWriter, r *http.Request, i records.Identity) {
+		ids, err := a.Store.ReviewBatchIDs(r.Context(), i)
+		a.result(w, ids, err)
+	}))
+	mux.HandleFunc("POST "+root+"/review-batches", a.auth(func(w http.ResponseWriter, r *http.Request, i records.Identity) {
+		var in records.ReviewBatchInput
+		if !a.read(w, r, &in, 256<<10) {
+			return
+		}
+		result, err := a.Store.PrepareReviewBatch(r.Context(), i, r.Header.Get("Idempotency-Key"), in)
+		a.result(w, result, err)
+	}))
+	mux.HandleFunc("GET "+root+"/review-batches/{request}", a.auth(func(w http.ResponseWriter, r *http.Request, i records.Identity) {
+		result, err := a.Store.ReviewBatch(r.Context(), i, r.PathValue("request"))
+		a.result(w, result, err)
+	}))
+	mux.HandleFunc("POST "+root+"/review-batches/{request}/run", a.auth(func(w http.ResponseWriter, r *http.Request, i records.Identity) {
+		result, err := a.Store.RunReviewBatch(r.Context(), i, r.PathValue("request"))
 		a.result(w, result, err)
 	}))
 	mux.HandleFunc("POST "+root+"/plans/{plan}/exports", a.auth(func(w http.ResponseWriter, r *http.Request, i records.Identity) {

@@ -32,11 +32,27 @@
           <section class="card">
             <h2>升级计划</h2>
             <form id="load-plan" class="inline"><input id="plan-id" placeholder="计划 SHA-256" required aria-label="计划摘要"><button>查看</button></form>
+            <details id="plan-search">
+              <summary>按目标版本查找</summary>
+              <form id="find-plans" class="inline">
+                <input id="target-package" placeholder="laravel/framework" maxlength="160" required aria-label="目标依赖">
+                <input id="target-version" placeholder="^13.0" maxlength="512" required aria-label="目标版本约束">
+                <button>查找</button>
+              </form>
+              <ul id="plan-matches" class="history"></ul>
+              <button id="more-plans" type="button" hidden>更多计划</button>
+            </details>
             <div id="plan-summary" hidden>
               <div class="plan-heading"><span>依赖解析</span><strong id="resolution"></strong><button id="export" class="secondary">导出已采纳批次</button></div>
+              <p id="model-budget" class="muted"></p>
               <div id="blockers"></div>
-              <div class="table-wrap"><table><thead><tr><th>批次</th><th>影响</th><th>前置批</th><th>候选</th></tr></thead><tbody id="batches"></tbody></table></div>
-              <details><summary>盘点与调用位置</summary><pre id="findings"></pre></details>
+              <div class="table-wrap"><table><thead><tr><th>批次</th><th>影响</th><th>前置批</th><th>验证任务</th><th>候选</th></tr></thead><tbody id="batches"></tbody></table></div>
+              <details id="impact">
+                <summary>盘点与调用位置</summary>
+                <ul class="history" id="finding-locations"></ul>
+                <div id="finding-source" hidden><h3 id="source-title"></h3><pre id="source-lines" tabindex="0"></pre></div>
+                <details><summary>依赖约束与工具链</summary><pre id="findings"></pre></details>
+              </details>
             </div>
           </section>
           <section class="card">
@@ -58,8 +74,30 @@
                 </div>
                 <label for="reason">审阅理由</label><textarea id="reason" required minlength="3" maxlength="500" rows="2"></textarea>
                 <label for="affected">确认连带撤回的批次，多个用逗号分隔</label>
-                <div class="inline"><input id="affected" autocomplete="off"><button>记录决定</button></div>
+                <div class="inline"><input id="affected" autocomplete="off"><button>记录决定</button><button id="queue-review" type="button" class="secondary">加入批量审阅</button></div>
               </form>
+            </div>
+          </section>
+          <section class="card" id="review-batches" hidden>
+            <h2>批量审阅</h2>
+            <p class="muted">候选按加入顺序执行。采纳后继时，前置批次须已采纳。</p>
+            <ol id="review-draft" class="history"></ol>
+            <div class="inline">
+              <button id="prepare-reviews" type="button">保存选集</button>
+              <button id="clear-reviews" type="button" class="secondary">清空选集</button>
+            </div>
+            <form id="load-reviews" class="inline">
+              <input id="review-key" placeholder="批量审阅请求标识" aria-label="批量审阅请求标识" required>
+              <button class="secondary">查询</button>
+            </form>
+            <label for="recent-reviews">最近保存的选集</label>
+            <select id="recent-reviews"><option value="">选择批次</option></select>
+            <div id="review-result" hidden>
+              <p id="review-progress" role="status"></p>
+              <div class="table-wrap">
+                <table><thead><tr><th>候选</th><th>决定</th><th>状态</th><th>回执</th></tr></thead><tbody id="review-items"></tbody></table>
+              </div>
+              <button id="run-reviews" type="button">执行未处理项目</button>
             </div>
           </section>
         </div>
@@ -74,8 +112,13 @@
             <form id="pin">
               <label for="snapshot-file">经授权的快照 JSON</label>
               <input id="snapshot-file" type="file" accept=".json,application/json" required>
-              <button>固定基线</button>
+              <button>核对基线变更</button>
             </form>
+            <div id="pin-preview" hidden>
+              <p id="pin-comparison" class="muted"></p>
+              <ul id="pin-delta" class="history"></ul>
+              <button id="apply-pin" type="button">确认并固定基线</button>
+            </div>
             <form id="create-plan">
               <label for="plan-file">升级规则与工具配置 JSON</label>
               <input id="plan-file" type="file" accept=".json,application/json" required>

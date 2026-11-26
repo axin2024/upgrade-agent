@@ -19,6 +19,9 @@ try {
     if ($LASTEXITCODE -ne 0) { throw 'Cannot detect the build toolchain' }
     $destination = (New-Item -ItemType Directory -Path (Join-Path $project ".local/release-$Version") -Force).FullName
     $stage = (New-Item -ItemType Directory -Path (Join-Path $destination ('stage-' + [guid]::NewGuid().ToString('N')))).FullName
+    $source = Join-Path $stage 'tracked-docs-and-examples.zip'
+    git archive --format=zip "--output=$source" $commit -- README.md CHANGELOG.md LICENSE NOTICE THIRD_PARTY.md CONTRIBUTING.md SECURITY.md licenses docs examples deploy
+    if ($LASTEXITCODE -ne 0) { throw 'Could not export tracked release files' }
     $archiveFiles = @()
     foreach ($os in 'linux', 'windows') {
         $target = "upgrade-agent-$Version-$os-amd64"
@@ -30,9 +33,7 @@ try {
         $executable = Join-Path $package $filename
         go build -trimpath -buildvcs=false -ldflags "-s -w -buildid= -X main.version=$Version -X main.revision=$commit" -o $executable ./cmd/upgrade-agent
         if ($LASTEXITCODE -ne 0) { throw "Could not build $target" }
-        foreach ($name in 'README.md', 'LICENSE', 'NOTICE', 'THIRD_PARTY.md', 'licenses', 'docs', 'examples', 'deploy') {
-            Copy-Item -LiteralPath (Join-Path $project $name) -Destination $package -Recurse -Force
-        }
+        Expand-Archive -LiteralPath $source -DestinationPath $package
         @{
             version = $Version; commit = $commit; platform = "$os/amd64"; toolchain = $toolchain
             binary = $filename; sha256 = (Get-FileHash -LiteralPath $executable -Algorithm SHA256).Hash.ToLowerInvariant()

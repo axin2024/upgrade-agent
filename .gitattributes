@@ -6,3 +6,4 @@
 *.sql text eol=lf
 *.yml text eol=lf
 *.md text eol=lf
+examples/laravel-pricing/** text eol=lf

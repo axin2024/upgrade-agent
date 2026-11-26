@@ -1,0 +1,30 @@
+{
+  "php": "8.4.28",
+  "composer": "2.10.0",
+  "mysql": "8.4.13",
+  "runtime": "Windows native trusted fixture, Composer offline during the workbench run",
+  "baseline": {
+    "laravel": "12.74.0",
+    "lock_sha256": "d0c402d7290e0a103418e5c14551dd11c215229b9cfe6fd3b802e96b11a35ea2",
+    "response": {"order": 100, "credit": -25, "balance": 75}
+  },
+  "candidate": {
+    "laravel": "13.44.1",
+    "composer_lock_sha256": "5ef0363eb9c5e5478e2806e6b9773c9ff855c2e342471f99cdc244c803e4d9ed",
+    "framework_only_exit": 2,
+    "blocking_plugins": ["upgrade-lab/credit-ledger", "upgrade-lab/price-catalog"],
+    "all_call_replacements_exit": 1,
+    "all_call_replacements_response": {"order": 100, "credit": 0, "balance": 100},
+    "reviewed_response": {"order": 100, "credit": -25, "balance": 75}
+  },
+  "workbench_test": {
+    "name": "TestLaravelPricingLifecycle",
+    "duration_seconds": 136.62,
+    "baseline_sha256": "12dce6e3dec1c51d8310440ba3651a5e48dbfe51e21dd2bd900768aaef3fd3f6",
+    "plan_sha256": "99edc7d3bbb78496b7956ee8cb87dfb9e33cba7e2cad30a7791489adfb6ace37",
+    "dependency_report_sha256": "987822d5851432bd3ccc7b47e091e2119ad2e80adc63935f40f8748b117c8384",
+    "blocked_report_sha256": "c3335dfe374a2480eef8de49b863097942a4de32985dfc93f72d4426f42edb40",
+    "reviewed_report_sha256": "bfbc40457725fb4f0d07687340a1ee60ef0eaad84566adc8e0dbd145830b2de6",
+    "export_sha256": "3b74a5268e3cbf27d04cf6c7d4f5353a884af566dec8c9f31a6d51a99a116853"
+  }
+}

@@ -1,0 +1,1023 @@
+{
+  "targets": {
+    "laravel/framework": "^13.0",
+    "upgrade-lab/credit-ledger": "^2.0",
+    "upgrade-lab/price-catalog": "^2.0"
+  },
+  "catalog": {
+    "platform": {
+      "composer": "2.10.0",
+      "composer-plugin-api": "2.9.0",
+      "composer-runtime-api": "2.2.2",
+      "ext-bcmath": "8.4.28",
+      "ext-calendar": "8.4.28",
+      "ext-ctype": "8.4.28",
+      "ext-curl": "8.4.28",
+      "ext-date": "8.4.28",
+      "ext-dom": "20031129",
+      "ext-fileinfo": "8.4.28",
+      "ext-filter": "8.4.28",
+      "ext-hash": "8.4.28",
+      "ext-iconv": "8.4.28",
+      "ext-json": "8.4.28",
+      "ext-libxml": "8.4.28",
+      "ext-mbstring": "8.4.28",
+      "ext-mysqlnd": "0",
+      "ext-openssl": "8.4.28",
+      "ext-pcre": "8.4.28",
+      "ext-pdo": "8.4.28",
+      "ext-phar": "8.4.28",
+      "ext-random": "8.4.28",
+      "ext-readline": "8.4.28",
+      "ext-reflection": "8.4.28",
+      "ext-session": "8.4.28",
+      "ext-simplexml": "8.4.28",
+      "ext-spl": "8.4.28",
+      "ext-tokenizer": "8.4.28",
+      "ext-xml": "8.4.28",
+      "ext-xmlreader": "8.4.28",
+      "ext-xmlwriter": "8.4.28",
+      "ext-zip": "1.22.8",
+      "ext-zlib": "8.4.28",
+      "lib-curl": "8.23.0",
+      "lib-curl-libssh2": "1.11.1",
+      "lib-curl-openssl": "3.0.22",
+      "lib-curl-zlib": "1.4",
+      "lib-date-timelib": "2022.17",
+      "lib-date-zoneinfo": "2026.6",
+      "lib-fileinfo-libmagic": "545",
+      "lib-iconv": "1.19",
+      "lib-libxml": "2.11.9",
+      "lib-mbstring-libmbfl": "1.3.2",
+      "lib-mbstring-oniguruma": "6.9.10",
+      "lib-openssl": "3.0.22",
+      "lib-pcre": "10.44",
+      "lib-pcre-unicode": "15.0.0",
+      "lib-zip-libzip": "1.12.1",
+      "lib-zlib": "1.4",
+      "php": "8.4.28",
+      "php-64bit": "8.4.28",
+      "php-ipv6": "8.4.28"
+    },
+    "packages": [
+      {
+        "name": "brick/math",
+        "version": "1.0.0",
+        "require": {
+          "php": "^8.2"
+        },
+        "type": "library"
+      },
+      {
+        "name": "carbonphp/carbon-doctrine-types",
+        "version": "3.2.1",
+        "require": {
+          "php": "^8.1"
+        },
+        "conflict": {
+          "doctrine/dbal": "<4.0.0 || >=5.0.0"
+        },
+        "type": "library"
+      },
+      {
+        "name": "dflydev/dot-access-data",
+        "version": "v3.0.3",
+        "require": {
+          "php": "^7.1 || ^8.0"
+        },
+        "type": "library"
+      },
+      {
+        "name": "doctrine/inflector",
+        "version": "2.1.1",
+        "require": {
+          "php": "^7.2 || ^8.0"
+        },
+        "type": "library"
+      },
+      {
+        "name": "doctrine/lexer",
+        "version": "3.0.3",
+        "require": {
+          "php": "^8.1"
+        },
+        "type": "library"
+      },
+      {
+        "name": "dragonmantank/cron-expression",
+        "version": "v3.6.1",
+        "require": {
+          "php": "^8.2|^8.3|^8.4|^8.5"
+        },
+        "replace": {
+          "mtdowling/cron-expression": "^1.0"
+        },
+        "type": "library"
+      },
+      {
+        "name": "egulias/email-validator",
+        "version": "4.0.5",
+        "require": {
+          "doctrine/lexer": "^3.0.3",
+          "php": ">=8.1",
+          "symfony/polyfill-intl-idn": "^1.43"
+        },
+        "type": "library"
+      },
+      {
+        "name": "fruitcake/php-cors",
+        "version": "v1.4.0",
+        "require": {
+          "php": "^8.1",
+          "symfony/http-foundation": "^5.4|^6.4|^7.3|^8"
+        },
+        "type": "library"
+      },
+      {
+        "name": "graham-campbell/result-type",
+        "version": "v1.2.0",
+        "require": {
+          "php": "^7.2.5 || ^8.0",
+          "phpoption/phpoption": "^1.10"
+        },
+        "type": "library"
+      },
+      {
+        "name": "guzzlehttp/guzzle",
+        "version": "8.6.0",
+        "require": {
+          "ext-json": "*",
+          "guzzlehttp/promises": "^3.2",
+          "guzzlehttp/psr7": "^3.6",
+          "php": "^7.4 || ^8.0",
+          "psr/http-client": "^1.0",
+          "psr/http-factory": "^1.0",
+          "symfony/deprecation-contracts": "^2.5 || ^3.0",
+          "symfony/polyfill-php80": "^1.25",
+          "symfony/polyfill-php82": "^1.27"
+        },
+        "provide": {
+          "psr/http-client-implementation": "1.0"
+        },
+        "type": "library"
+      },
+      {
+        "name": "guzzlehttp/promises",
+        "version": "3.2.0",
+        "require": {
+          "php": "^7.4 || ^8.0",
+          "symfony/deprecation-contracts": "^2.5 || ^3.0"
+        },
+        "type": "library"
+      },
+      {
+        "name": "guzzlehttp/psr7",
+        "version": "3.6.0",
+        "require": {
+          "php": "^7.4 || ^8.0",
+          "psr/http-factory": "^1.1",
+          "psr/http-message": "^2.0",
+          "symfony/deprecation-contracts": "^2.5 || ^3.0",
+          "symfony/polyfill-php80": "^1.25",
+          "symfony/polyfill-php82": "^1.27"
+        },
+        "provide": {
+          "psr/http-factory-implementation": "1.1",
+          "psr/http-message-implementation": "2.0"
+        },
+        "type": "library"
+      },
+      {
+        "name": "guzzlehttp/uri-template",
+        "version": "v2.0.1",
+        "require": {
+          "php": "^7.4 || ^8.0",
+          "symfony/polyfill-php80": "^1.25"
+        },
+        "type": "library"
+      },
+      {
+        "name": "laravel/framework",
+        "version": "v13.44.1",
+        "require": {
+          "brick/math": "^0.14.2 || ^0.15 || ^0.16 || ^0.17 || ^0.18 || ^0.19 || ^0.20 || ^1.0",
+          "composer-runtime-api": "^2.2",
+          "doctrine/inflector": "^2.0.5",
+          "dragonmantank/cron-expression": "^3.4",
+          "egulias/email-validator": "^4.0",
+          "ext-ctype": "*",
+          "ext-filter": "*",
+          "ext-hash": "*",
+          "ext-mbstring": "*",
+          "ext-openssl": "*",
+          "ext-session": "*",
+          "ext-tokenizer": "*",
+          "fruitcake/php-cors": "^1.3",
+          "guzzlehttp/guzzle": "^7.8.2 || ^8.0",
+          "guzzlehttp/promises": "^2.0.3 || ^3.0",
+          "guzzlehttp/psr7": "^2.9 || ^3.0",
+          "guzzlehttp/uri-template": "^1.0 || ^2.0",
+          "laravel/prompts": "^0.3.25",
+          "laravel/serializable-closure": "^2.0.10",
+          "league/commonmark": "^2.8.1",
+          "league/flysystem": "^3.25.1",
+          "league/flysystem-local": "^3.25.1",
+          "league/uri": "^7.6",
+          "monolog/monolog": "^3.10",
+          "nesbot/carbon": "^3.8.4",
+          "nunomaduro/termwind": "^2.0",
+          "php": "^8.3",
+          "psr/container": "^1.1.1 || ^2.0.1",
+          "psr/http-message": "^1.0 || ^2.0",
+          "psr/log": "^1.0 || ^2.0 || ^3.0",
+          "psr/simple-cache": "^1.0 || ^2.0 || ^3.0",
+          "ramsey/uuid": "^4.7",
+          "symfony/console": "^7.4.0 || ^8.0.0",
+          "symfony/error-handler": "^7.4.0 || ^8.0.0",
+          "symfony/finder": "^7.4.0 || ^8.0.0",
+          "symfony/http-foundation": "^7.4.0 || ^8.0.0",
+          "symfony/http-kernel": "^7.4.0 || ^8.0.0",
+          "symfony/mailer": "^7.4.0 || ^8.0.0",
+          "symfony/mime": "^7.4.0 || ^8.0.0",
+          "symfony/polyfill-php84": "^1.36",
+          "symfony/polyfill-php85": "^1.36",
+          "symfony/polyfill-php86": "^1.36",
+          "symfony/process": "^7.4.5 || ^8.0.5",
+          "symfony/routing": "^7.4.0 || ^8.0.0",
+          "symfony/uid": "^7.4.0 || ^8.0.0",
+          "symfony/var-dumper": "^7.4.0 || ^8.0.0",
+          "tijsverkoyen/css-to-inline-styles": "^2.2.5",
+          "vlucas/phpdotenv": "^5.6.1",
+          "voku/portable-ascii": "^2.0.2"
+        },
+        "conflict": {
+          "laravel/horizon": "<5.47.0",
+          "tightenco/collect": "<5.5.33"
+        },
+        "provide": {
+          "psr/container-implementation": "1.1 || 2.0",
+          "psr/log-implementation": "1.0 || 2.0 || 3.0",
+          "psr/simple-cache-implementation": "1.0 || 2.0 || 3.0"
+        },
+        "replace": {
+          "illuminate/auth": "self.version",
+          "illuminate/broadcasting": "self.version",
+          "illuminate/bus": "self.version",
+          "illuminate/cache": "self.version",
+          "illuminate/collections": "self.version",
+          "illuminate/concurrency": "self.version",
+          "illuminate/conditionable": "self.version",
+          "illuminate/config": "self.version",
+          "illuminate/console": "self.version",
+          "illuminate/container": "self.version",
+          "illuminate/contracts": "self.version",
+          "illuminate/cookie": "self.version",
+          "illuminate/database": "self.version",
+          "illuminate/encryption": "self.version",
+          "illuminate/events": "self.version",
+          "illuminate/filesystem": "self.version",
+          "illuminate/hashing": "self.version",
+          "illuminate/http": "self.version",
+          "illuminate/image": "self.version",
+          "illuminate/json-schema": "self.version",
+          "illuminate/log": "self.version",
+          "illuminate/macroable": "self.version",
+          "illuminate/mail": "self.version",
+          "illuminate/notifications": "self.version",
+          "illuminate/pagination": "self.version",
+          "illuminate/pipeline": "self.version",
+          "illuminate/process": "self.version",
+          "illuminate/queue": "self.version",
+          "illuminate/redis": "self.version",
+          "illuminate/reflection": "self.version",
+          "illuminate/routing": "self.version",
+          "illuminate/session": "self.version",
+          "illuminate/support": "self.version",
+          "illuminate/testing": "self.version",
+          "illuminate/translation": "self.version",
+          "illuminate/validation": "self.version",
+          "illuminate/view": "self.version",
+          "spatie/once": "*"
+        },
+        "type": "library"
+      },
+      {
+        "name": "laravel/prompts",
+        "version": "v0.3.28",
+        "require": {
+          "composer-runtime-api": "^2.2",
+          "ext-mbstring": "*",
+          "php": "^8.1",
+          "symfony/console": "^6.2|^7.0|^8.0"
+        },
+        "conflict": {
+          "illuminate/console": ">=10.17.0 <10.25.0",
+          "laravel/framework": ">=10.17.0 <10.25.0"
+        },
+        "type": "library"
+      },
+      {
+        "name": "laravel/serializable-closure",
+        "version": "v2.2.0",
+        "require": {
+          "php": "^8.1"
+        },
+        "type": "library"
+      },
+      {
+        "name": "league/commonmark",
+        "version": "2.10.9",
+        "require": {
+          "ext-mbstring": "*",
+          "league/config": "^1.1.1",
+          "php": "^7.4 || ^8.0",
+          "psr/event-dispatcher": "^1.0",
+          "symfony/deprecation-contracts": "^2.1 || ^3.0",
+          "symfony/polyfill-php80": "^1.16"
+        },
+        "type": "library"
+      },
+      {
+        "name": "league/config",
+        "version": "v1.2.0",
+        "require": {
+          "dflydev/dot-access-data": "^3.0.1",
+          "nette/schema": "^1.2",
+          "php": "^7.4 || ^8.0"
+        },
+        "type": "library"
+      },
+      {
+        "name": "league/flysystem",
+        "version": "3.36.0",
+        "require": {
+          "league/flysystem-local": "^3.0.0",
+          "league/mime-type-detection": "^1.0.0",
+          "php": "^8.0.2"
+        },
+        "conflict": {
+          "async-aws/core": "<1.19.0",
+          "async-aws/s3": "<1.14.0",
+          "aws/aws-sdk-php": "3.209.31 || 3.210.0",
+          "guzzlehttp/guzzle": "<7.0",
+          "guzzlehttp/ringphp": "<1.1.1",
+          "phpseclib/phpseclib": "3.0.15",
+          "symfony/http-client": "<5.2"
+        },
+        "type": "library"
+      },
+      {
+        "name": "league/flysystem-local",
+        "version": "3.35.3",
+        "require": {
+          "ext-fileinfo": "*",
+          "league/flysystem": "^3.0.0",
+          "league/mime-type-detection": "^1.0.0",
+          "php": "^8.0.2"
+        },
+        "type": "library"
+      },
+      {
+        "name": "league/mime-type-detection",
+        "version": "1.17.0",
+        "require": {
+          "ext-fileinfo": "*",
+          "php": "^7.4 || ^8.0"
+        },
+        "type": "library"
+      },
+      {
+        "name": "league/uri",
+        "version": "7.10.0",
+        "require": {
+          "ext-mbstring": "*",
+          "league/uri-interfaces": "^7.10.0",
+          "php": "^8.1",
+          "psr/http-factory": "^1"
+        },
+        "conflict": {
+          "league/uri-schemes": "^1.0"
+        },
+        "type": "library"
+      },
+      {
+        "name": "league/uri-interfaces",
+        "version": "7.10.0",
+        "require": {
+          "ext-filter": "*",
+          "php": "^8.1",
+          "psr/http-message": "^1.1 || ^2.0"
+        },
+        "type": "library"
+      },
+      {
+        "name": "monolog/monolog",
+        "version": "3.13.0",
+        "require": {
+          "php": ">=8.1",
+          "psr/log": "^2.0 || ^3.0"
+        },
+        "provide": {
+          "psr/log-implementation": "3.0.0"
+        },
+        "type": "library"
+      },
+      {
+        "name": "nesbot/carbon",
+        "version": "3.15.1",
+        "require": {
+          "carbonphp/carbon-doctrine-types": "<100.0",
+          "ext-json": "*",
+          "php": "^8.1",
+          "psr/clock": "^1.0",
+          "symfony/clock": "^6.3.12 || ^7.0 || ^8.0",
+          "symfony/polyfill-mbstring": "^1.0",
+          "symfony/polyfill-time": "^1.0",
+          "symfony/translation": "^4.4.18 || ^5.2.1 || ^6.0 || ^7.0 || ^8.0"
+        },
+        "provide": {
+          "psr/clock-implementation": "1.0"
+        },
+        "type": "library"
+      },
+      {
+        "name": "nette/schema",
+        "version": "v1.4.0",
+        "require": {
+          "nette/utils": "^4.0",
+          "php": "8.1 - 8.6"
+        },
+        "type": "library"
+      },
+      {
+        "name": "nette/utils",
+        "version": "v4.1.6",
+        "require": {
+          "php": "8.2 - 8.6"
+        },
+        "conflict": {
+          "nette/finder": "<3",
+          "nette/schema": "<1.2.2"
+        },
+        "type": "library"
+      },
+      {
+        "name": "nunomaduro/termwind",
+        "version": "v2.4.1",
+        "require": {
+          "ext-mbstring": "*",
+          "php": "^8.2",
+          "symfony/console": "^7.4.23 || ^8.1.11"
+        },
+        "type": "library"
+      },
+      {
+        "name": "phpoption/phpoption",
+        "version": "1.10.0",
+        "require": {
+          "php": "^7.2.5 || ^8.0"
+        },
+        "type": "library"
+      },
+      {
+        "name": "psr/clock",
+        "version": "1.0.0",
+        "require": {
+          "php": "^7.0 || ^8.0"
+        },
+        "type": "library"
+      },
+      {
+        "name": "psr/container",
+        "version": "2.0.2",
+        "require": {
+          "php": ">=7.4.0"
+        },
+        "type": "library"
+      },
+      {
+        "name": "psr/event-dispatcher",
+        "version": "1.0.0",
+        "require": {
+          "php": ">=7.2.0"
+        },
+        "type": "library"
+      },
+      {
+        "name": "psr/http-client",
+        "version": "1.0.3",
+        "require": {
+          "php": "^7.0 || ^8.0",
+          "psr/http-message": "^1.0 || ^2.0"
+        },
+        "type": "library"
+      },
+      {
+        "name": "psr/http-factory",
+        "version": "1.1.0",
+        "require": {
+          "php": ">=7.1",
+          "psr/http-message": "^1.0 || ^2.0"
+        },
+        "type": "library"
+      },
+      {
+        "name": "psr/http-message",
+        "version": "2.0",
+        "require": {
+          "php": "^7.2 || ^8.0"
+        },
+        "type": "library"
+      },
+      {
+        "name": "psr/log",
+        "version": "3.0.2",
+        "require": {
+          "php": ">=8.0.0"
+        },
+        "type": "library"
+      },
+      {
+        "name": "psr/simple-cache",
+        "version": "3.0.0",
+        "require": {
+          "php": ">=8.0.0"
+        },
+        "type": "library"
+      },
+      {
+        "name": "ramsey/collection",
+        "version": "2.1.1",
+        "require": {
+          "php": "^8.1"
+        },
+        "type": "library"
+      },
+      {
+        "name": "ramsey/uuid",
+        "version": "4.10.0",
+        "require": {
+          "brick/math": "^0.8.16 || ^0.9 || ^0.10 || ^0.11 || ^0.12 || ^0.13 || ^0.14 || ^0.15 || ^0.16 || ^0.17 || ^0.18 || ^0.19 || ^0.20 || ^1.0",
+          "php": "^8.0",
+          "ramsey/collection": "^1.2 || ^2.0"
+        },
+        "replace": {
+          "rhumsaa/uuid": "self.version"
+        },
+        "type": "library"
+      },
+      {
+        "name": "symfony/clock",
+        "version": "v8.1.9",
+        "require": {
+          "php": ">=8.4.1",
+          "psr/clock": "^1.0"
+        },
+        "provide": {
+          "psr/clock-implementation": "1.0"
+        },
+        "type": "library"
+      },
+      {
+        "name": "symfony/console",
+        "version": "v8.1.12",
+        "require": {
+          "php": ">=8.4.1",
+          "symfony/deprecation-contracts": "^2.5|^3",
+          "symfony/polyfill-mbstring": "^1.0",
+          "symfony/polyfill-php85": "^1.33",
+          "symfony/service-contracts": "^2.5|^3",
+          "symfony/string": "^7.4.6|^8.0.6"
+        },
+        "conflict": {
+          "symfony/dependency-injection": "<8.1",
+          "symfony/event-dispatcher": "<8.1"
+        },
+        "provide": {
+          "psr/log-implementation": "1.0|2.0|3.0"
+        },
+        "type": "library"
+      },
+      {
+        "name": "symfony/css-selector",
+        "version": "v8.1.10",
+        "require": {
+          "php": ">=8.4.1"
+        },
+        "type": "library"
+      },
+      {
+        "name": "symfony/deprecation-contracts",
+        "version": "v3.8.1",
+        "require": {
+          "php": ">=8.1"
+        },
+        "type": "library"
+      },
+      {
+        "name": "symfony/error-handler",
+        "version": "v8.1.10",
+        "require": {
+          "php": ">=8.4.1",
+          "psr/log": "^1|^2|^3",
+          "symfony/polyfill-php85": "^1.32",
+          "symfony/var-dumper": "^7.4|^8.0"
+        },
+        "conflict": {
+          "symfony/deprecation-contracts": "<2.5"
+        },
+        "type": "library"
+      },
+      {
+        "name": "symfony/event-dispatcher",
+        "version": "v8.1.5",
+        "require": {
+          "php": ">=8.4.1",
+          "symfony/deprecation-contracts": "^2.5|^3",
+          "symfony/event-dispatcher-contracts": "^2.5|^3"
+        },
+        "conflict": {
+          "symfony/security-http": "<7.4",
+          "symfony/service-contracts": "<2.5"
+        },
+        "provide": {
+          "psr/event-dispatcher-implementation": "1.0",
+          "symfony/event-dispatcher-implementation": "2.0|3.0"
+        },
+        "type": "library"
+      },
+      {
+        "name": "symfony/event-dispatcher-contracts",
+        "version": "v3.8.1",
+        "require": {
+          "php": ">=8.1",
+          "psr/event-dispatcher": "^1"
+        },
+        "type": "library"
+      },
+      {
+        "name": "symfony/finder",
+        "version": "v8.1.12",
+        "require": {
+          "php": ">=8.4.1"
+        },
+        "type": "library"
+      },
+      {
+        "name": "symfony/http-foundation",
+        "version": "v8.1.12",
+        "require": {
+          "php": ">=8.4.1",
+          "symfony/deprecation-contracts": "^2.5|^3",
+          "symfony/polyfill-mbstring": "^1.1"
+        },
+        "conflict": {
+          "doctrine/dbal": "<4.3"
+        },
+        "type": "library"
+      },
+      {
+        "name": "symfony/http-kernel",
+        "version": "v8.1.12",
+        "require": {
+          "php": ">=8.4.1",
+          "psr/log": "^1|^2|^3",
+          "symfony/deprecation-contracts": "^2.5|^3",
+          "symfony/error-handler": "^7.4|^8.0",
+          "symfony/event-dispatcher": "^7.4|^8.0",
+          "symfony/http-foundation": "^7.4.24|^8.1.12",
+          "symfony/polyfill-ctype": "^1.8"
+        },
+        "conflict": {
+          "symfony/dependency-injection": "<8.1.12",
+          "symfony/flex": "<2.10",
+          "symfony/http-client-contracts": "<2.5",
+          "symfony/serializer": "<7.4.15|>=8.0,<8.0.15|>=8.1,<8.1.2",
+          "symfony/translation-contracts": "<2.5",
+          "symfony/var-dumper": "<8.1",
+          "symfony/web-profiler-bundle": "<8.1",
+          "twig/twig": "<3.21"
+        },
+        "provide": {
+          "psr/log-implementation": "1.0|2.0|3.0"
+        },
+        "type": "library"
+      },
+      {
+        "name": "symfony/mailer",
+        "version": "v8.1.12",
+        "require": {
+          "egulias/email-validator": "^2.1.10|^3|^4",
+          "php": ">=8.4.1",
+          "psr/event-dispatcher": "^1",
+          "psr/log": "^1|^2|^3",
+          "symfony/event-dispatcher": "^7.4|^8.0",
+          "symfony/mime": "^7.4|^8.0",
+          "symfony/service-contracts": "^2.5|^3"
+        },
+        "conflict": {
+          "symfony/http-client-contracts": "<2.5"
+        },
+        "type": "library"
+      },
+      {
+        "name": "symfony/mime",
+        "version": "v8.1.12",
+        "require": {
+          "php": ">=8.4.1",
+          "symfony/polyfill-intl-idn": "^1.10",
+          "symfony/polyfill-mbstring": "^1.0"
+        },
+        "conflict": {
+          "egulias/email-validator": "~3.0.0",
+          "phpdocumentor/reflection-docblock": "<5.2|>=7",
+          "phpdocumentor/type-resolver": "<1.5.1"
+        },
+        "type": "library"
+      },
+      {
+        "name": "symfony/polyfill-ctype",
+        "version": "v1.37.0",
+        "require": {
+          "php": ">=7.2"
+        },
+        "provide": {
+          "ext-ctype": "*"
+        },
+        "type": "library"
+      },
+      {
+        "name": "symfony/polyfill-intl-grapheme",
+        "version": "v1.43.3",
+        "require": {
+          "php": ">=7.2"
+        },
+        "type": "library"
+      },
+      {
+        "name": "symfony/polyfill-intl-idn",
+        "version": "v1.43.0",
+        "require": {
+          "php": ">=7.2",
+          "symfony/polyfill-intl-normalizer": "^1.10"
+        },
+        "type": "library"
+      },
+      {
+        "name": "symfony/polyfill-intl-normalizer",
+        "version": "v1.43.0",
+        "require": {
+          "php": ">=7.2"
+        },
+        "type": "library"
+      },
+      {
+        "name": "symfony/polyfill-mbstring",
+        "version": "v1.43.3",
+        "require": {
+          "ext-iconv": "*",
+          "php": ">=7.2"
+        },
+        "provide": {
+          "ext-mbstring": "*"
+        },
+        "type": "library"
+      },
+      {
+        "name": "symfony/polyfill-php80",
+        "version": "v1.43.0",
+        "require": {
+          "php": ">=7.2"
+        },
+        "type": "library"
+      },
+      {
+        "name": "symfony/polyfill-php82",
+        "version": "v1.43.0",
+        "require": {
+          "php": ">=7.2"
+        },
+        "type": "library"
+      },
+      {
+        "name": "symfony/polyfill-php84",
+        "version": "v1.43.0",
+        "require": {
+          "php": ">=7.2"
+        },
+        "type": "library"
+      },
+      {
+        "name": "symfony/polyfill-php85",
+        "version": "v1.44.0",
+        "require": {
+          "php": ">=7.2"
+        },
+        "type": "library"
+      },
+      {
+        "name": "symfony/polyfill-php86",
+        "version": "v1.43.0",
+        "require": {
+          "php": ">=7.2"
+        },
+        "type": "library"
+      },
+      {
+        "name": "symfony/polyfill-time",
+        "version": "v1.42.0",
+        "require": {
+          "php": ">=8.1"
+        },
+        "type": "library"
+      },
+      {
+        "name": "symfony/polyfill-uuid",
+        "version": "v1.43.0",
+        "require": {
+          "php": ">=7.2"
+        },
+        "provide": {
+          "ext-uuid": "*"
+        },
+        "type": "library"
+      },
+      {
+        "name": "symfony/process",
+        "version": "v8.1.12",
+        "require": {
+          "php": ">=8.4.1"
+        },
+        "type": "library"
+      },
+      {
+        "name": "symfony/routing",
+        "version": "v8.1.12",
+        "require": {
+          "php": ">=8.4.1",
+          "symfony/deprecation-contracts": "^2.5|^3"
+        },
+        "type": "library"
+      },
+      {
+        "name": "symfony/service-contracts",
+        "version": "v3.8.1",
+        "require": {
+          "php": ">=8.1",
+          "psr/container": "^1.1|^2.0",
+          "symfony/deprecation-contracts": "^2.5|^3"
+        },
+        "conflict": {
+          "ext-psr": "<1.1|>=2"
+        },
+        "type": "library"
+      },
+      {
+        "name": "symfony/string",
+        "version": "v8.1.12",
+        "require": {
+          "php": ">=8.4.1",
+          "symfony/polyfill-ctype": "^1.8",
+          "symfony/polyfill-intl-grapheme": "^1.33",
+          "symfony/polyfill-intl-normalizer": "^1.0",
+          "symfony/polyfill-mbstring": "^1.0"
+        },
+        "conflict": {
+          "symfony/translation-contracts": "<2.5"
+        },
+        "type": "library"
+      },
+      {
+        "name": "symfony/translation",
+        "version": "v8.1.12",
+        "require": {
+          "php": ">=8.4.1",
+          "symfony/polyfill-mbstring": "^1.0",
+          "symfony/translation-contracts": "^3.6.1"
+        },
+        "conflict": {
+          "nikic/php-parser": "<5.0",
+          "symfony/http-client-contracts": "<2.5",
+          "symfony/service-contracts": "<2.5"
+        },
+        "provide": {
+          "symfony/translation-implementation": "2.3|3.0"
+        },
+        "type": "library"
+      },
+      {
+        "name": "symfony/translation-contracts",
+        "version": "v3.8.1",
+        "require": {
+          "php": ">=8.1"
+        },
+        "type": "library"
+      },
+      {
+        "name": "symfony/uid",
+        "version": "v8.1.9",
+        "require": {
+          "php": ">=8.4.1",
+          "symfony/polyfill-uuid": "^1.15"
+        },
+        "type": "library"
+      },
+      {
+        "name": "symfony/var-dumper",
+        "version": "v8.1.12",
+        "require": {
+          "php": ">=8.4.1",
+          "symfony/polyfill-mbstring": "^1.0"
+        },
+        "conflict": {
+          "symfony/console": "<7.4",
+          "symfony/error-handler": "<7.4"
+        },
+        "type": "library"
+      },
+      {
+        "name": "tijsverkoyen/css-to-inline-styles",
+        "version": "v2.4.0",
+        "require": {
+          "ext-dom": "*",
+          "ext-libxml": "*",
+          "php": "^7.4 || ^8.0",
+          "symfony/css-selector": "^5.4 || ^6.0 || ^7.0 || ^8.0"
+        },
+        "type": "library"
+      },
+      {
+        "name": "upgrade-lab/credit-ledger",
+        "version": "2.0.0",
+        "require": {
+          "laravel/framework": "^13.0"
+        },
+        "type": "metapackage"
+      },
+      {
+        "name": "upgrade-lab/price-catalog",
+        "version": "2.0.0",
+        "require": {
+          "laravel/framework": "^13.0"
+        },
+        "type": "metapackage"
+      },
+      {
+        "name": "vlucas/phpdotenv",
+        "version": "v5.8.1",
+        "require": {
+          "ext-pcre": "*",
+          "graham-campbell/result-type": "^1.2",
+          "php": "^7.2.5 || ^8.0",
+          "phpoption/phpoption": "^1.10",
+          "symfony/polyfill-ctype": "^1.26",
+          "symfony/polyfill-mbstring": "^1.26",
+          "symfony/polyfill-php80": "^1.26"
+        },
+        "type": "library"
+      },
+      {
+        "name": "voku/portable-ascii",
+        "version": "2.1.1",
+        "require": {
+          "php": ">=7.1.0"
+        },
+        "type": "library"
+      }
+    ]
+  },
+  "rule_version": "laravel-pricing-1.0",
+  "rules": [
+    {
+      "id": "sale-amount",
+      "old_type": "PricingLab\\LegacyAmount",
+      "old_method": "normalize",
+      "new_type": "PricingLab\\SaleAmount",
+      "new_method": "normalize",
+      "guide": "https://github.com/axin2024/upgrade-agent/blob/main/examples/laravel-pricing/MIGRATION.md",
+      "risk": "high",
+      "requires_targets": [
+        "laravel/framework"
+      ],
+      "verify": [
+        "Migrate the sale quote. Credits can be negative and must retain their original behavior."
+      ]
+    }
+  ],
+  "tasks": [
+    {
+      "kind": "composer-lock",
+      "id": "dependency-lock"
+    },
+    {
+      "kind": "php-lint",
+      "id": "syntax"
+    },
+    {
+      "path": "tests/contracts.php",
+      "kind": "php-test",
+      "id": "pricing-contract"
+    }
+  ],
+  "model_budget_tokens": 0
+}

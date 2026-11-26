@@ -32,6 +32,7 @@ type Decision struct {
 	Evidence  string   `json:"validation,omitempty"`
 	Affected  []string `json:"affected_batches,omitempty"`
 	Reason    string   `json:"reason"`
+	RequestID string   `json:"review_batch,omitempty"`
 }
 
 type Selection struct {
@@ -75,76 +76,88 @@ func latestReport(ctx context.Context, db rowScanner, i Identity, candidate stri
 	return report, err
 }
 
-func (s *Store) Decide(ctx context.Context, i Identity, key, candidate string, in DecisionInput) (Decision, error) {
+func normalizeDecision(in DecisionInput) (DecisionInput, error) {
 	in.Reason = strings.TrimSpace(in.Reason)
 	if len(in.Reason) < 3 || len(in.Reason) > 500 || !slices.Contains([]string{"adopt", "reject", "withdraw"}, in.Action) ||
 		!digest.MatchString(in.ExpectedBaseline) || len(in.ConfirmAffected) > 100 {
-		return Decision{}, ErrInvalid
+		return DecisionInput{}, ErrInvalid
+	}
+	return in, nil
+}
+
+func (s *Store) Decide(ctx context.Context, i Identity, key, candidate string, in DecisionInput) (Decision, error) {
+	in, err := normalizeDecision(in)
+	if err != nil {
+		return Decision{}, err
 	}
 	signature := struct {
 		Candidate string
 		Input     DecisionInput
 	}{candidate, in}
 	return mutate(ctx, s, i, key, "decide", signature, []string{"reviewer", "maintainer"}, func(tx *sql.Tx, ws Workspace) (Decision, error) {
-		c, err := readJSON[planning.Candidate](ctx, tx, i, candidate, selectCandidate)
-		if err != nil {
+		return decide(ctx, tx, i, ws, candidate, in, "")
+	})
+}
+
+func decide(ctx context.Context, tx *sql.Tx, i Identity, ws Workspace, candidate string, in DecisionInput, batchKey string) (Decision, error) {
+	c, err := readJSON[planning.Candidate](ctx, tx, i, candidate, selectCandidate)
+	if err != nil {
+		return Decision{}, err
+	}
+	if ws.Baseline != in.ExpectedBaseline || c.Baseline != ws.Baseline {
+		return Decision{}, ErrConflict
+	}
+	p, err := readJSON[planning.Plan](ctx, tx, i, c.Plan, selectPlan)
+	if err != nil {
+		return Decision{}, err
+	}
+	available, err := selections(ctx, tx, i, p.Digest)
+	if err != nil {
+		return Decision{}, err
+	}
+	selected := make(map[string]Selection, len(available))
+	for _, item := range available {
+		selected[item.Batch] = item
+	}
+	out := Decision{Action: in.Action, Plan: p.Digest, Candidate: c.Digest, Batch: c.Batch, Baseline: ws.Baseline,
+		Revision: ws.Revision, Reason: in.Reason, RequestID: batchKey}
+	switch in.Action {
+	case "adopt":
+		if selected[c.Batch].Candidate != "" && selected[c.Batch].Candidate != c.Digest {
+			return Decision{}, fmt.Errorf("%w: withdraw the existing selection first", ErrConflict)
+		}
+		if err := readyToAdopt(ctx, tx, i, ws, p, c, in.Evidence, selected); err != nil {
 			return Decision{}, err
 		}
-		if ws.Baseline != in.ExpectedBaseline || c.Baseline != ws.Baseline {
-			return Decision{}, ErrConflict
+		_, err = tx.ExecContext(ctx, `INSERT INTO selections(tenant,workspace,plan,batch,candidate,evidence)
+			VALUES(?,?,?,?,?,?) ON DUPLICATE KEY UPDATE evidence=?`, i.Tenant, i.Workspace, p.Digest,
+			c.Batch, c.Digest, in.Evidence, in.Evidence)
+		out.Evidence = in.Evidence
+	case "reject":
+		if selected[c.Batch].Candidate == c.Digest {
+			return Decision{}, fmt.Errorf("%w: withdrawing a selected candidate requires its own decision", ErrConflict)
 		}
-		p, err := readJSON[planning.Plan](ctx, tx, i, c.Plan, selectPlan)
-		if err != nil {
-			return Decision{}, err
+	case "withdraw":
+		if selected[c.Batch].Candidate != c.Digest {
+			return Decision{}, fmt.Errorf("%w: candidate is not selected", ErrConflict)
 		}
-		available, err := selections(ctx, tx, i, p.Digest)
-		if err != nil {
-			return Decision{}, err
+		out.Affected = affectedBatches(p, c.Batch, selected)
+		confirmed := slices.Clone(in.ConfirmAffected)
+		slices.Sort(confirmed)
+		if !slices.Equal(out.Affected, confirmed) {
+			return Decision{}, fmt.Errorf("%w: confirm affected batches %s", ErrConflict, strings.Join(out.Affected, ","))
 		}
-		selected := make(map[string]Selection, len(available))
-		for _, item := range available {
-			selected[item.Batch] = item
-		}
-		out := Decision{Action: in.Action, Plan: p.Digest, Candidate: c.Digest, Batch: c.Batch, Baseline: ws.Baseline,
-			Revision: ws.Revision, Reason: in.Reason}
-		switch in.Action {
-		case "adopt":
-			if selected[c.Batch].Candidate != "" && selected[c.Batch].Candidate != c.Digest {
-				return Decision{}, fmt.Errorf("%w: withdraw the existing selection first", ErrConflict)
-			}
-			if err := readyToAdopt(ctx, tx, i, ws, p, c, in.Evidence, selected); err != nil {
+		for _, batch := range append(slices.Clone(out.Affected), c.Batch) {
+			if _, err := tx.ExecContext(ctx, `DELETE FROM selections WHERE tenant=? AND workspace=? AND plan=? AND batch=?`,
+				i.Tenant, i.Workspace, p.Digest, batch); err != nil {
 				return Decision{}, err
 			}
-			_, err = tx.ExecContext(ctx, `INSERT INTO selections(tenant,workspace,plan,batch,candidate,evidence)
-				VALUES(?,?,?,?,?,?) ON DUPLICATE KEY UPDATE evidence=?`, i.Tenant, i.Workspace, p.Digest,
-				c.Batch, c.Digest, in.Evidence, in.Evidence)
-			out.Evidence = in.Evidence
-		case "reject":
-			if selected[c.Batch].Candidate == c.Digest {
-				return Decision{}, fmt.Errorf("%w: withdrawing a selected candidate requires its own decision", ErrConflict)
-			}
-		case "withdraw":
-			if selected[c.Batch].Candidate != c.Digest {
-				return Decision{}, fmt.Errorf("%w: candidate is not selected", ErrConflict)
-			}
-			out.Affected = affectedBatches(p, c.Batch, selected)
-			confirmed := slices.Clone(in.ConfirmAffected)
-			slices.Sort(confirmed)
-			if !slices.Equal(out.Affected, confirmed) {
-				return Decision{}, fmt.Errorf("%w: confirm affected batches %s", ErrConflict, strings.Join(out.Affected, ","))
-			}
-			for _, batch := range append(slices.Clone(out.Affected), c.Batch) {
-				if _, err := tx.ExecContext(ctx, `DELETE FROM selections WHERE tenant=? AND workspace=? AND plan=? AND batch=?`,
-					i.Tenant, i.Workspace, p.Digest, batch); err != nil {
-					return Decision{}, err
-				}
-			}
 		}
-		if err != nil {
-			return Decision{}, err
-		}
-		return out, audit(ctx, tx, i, in.Action, c.Digest, out)
-	})
+	}
+	if err != nil {
+		return Decision{}, err
+	}
+	return out, audit(ctx, tx, i, in.Action, c.Digest, out)
 }
 
 func readyToAdopt(ctx context.Context, tx *sql.Tx, i Identity, ws Workspace, p planning.Plan,

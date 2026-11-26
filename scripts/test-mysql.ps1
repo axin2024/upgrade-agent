@@ -1,11 +1,25 @@
 param(
     [Parameter(Mandatory)][string]$MySQLBin,
     [Parameter(Mandatory)][string]$Php,
-    [Parameter(Mandatory)][string]$Composer
+    [Parameter(Mandatory)][string]$Composer,
+    [string]$PreviousCLI,
+    [string]$EvidenceDirectory,
+    [string]$LaravelPhp,
+    [string]$LaravelComposerCache
 )
 
 $ErrorActionPreference = 'Stop'
 $project = Split-Path $PSScriptRoot -Parent
+if ([bool]$PreviousCLI -ne [bool]$EvidenceDirectory) {
+    throw 'PreviousCLI and EvidenceDirectory must be provided together'
+}
+if ([bool]$LaravelPhp -ne [bool]$LaravelComposerCache) {
+    throw 'LaravelPhp and LaravelComposerCache must be provided together'
+}
+if ($PreviousCLI) {
+    $PreviousCLI = (Resolve-Path -LiteralPath $PreviousCLI).Path
+    $EvidenceDirectory = (New-Item -ItemType Directory -Force -Path $EvidenceDirectory).FullName
+}
 $MySQLBin = (Resolve-Path -LiteralPath $MySQLBin).Path
 $mysql = Join-Path $MySQLBin 'mysql.exe'
 $mysqld = Join-Path $MySQLBin 'mysqld.exe'
@@ -30,6 +44,11 @@ $variables = @{
     UPGRADE_TEST_PHP = (Resolve-Path -LiteralPath $Php).Path
     UPGRADE_TEST_COMPOSER = (Resolve-Path -LiteralPath $Composer).Path
 }
+if ($LaravelPhp) {
+    $variables.UPGRADE_TEST_LARAVEL_DSN = "test_upgrade:$password@tcp(127.0.0.1:$port)/upgrade_laravel"
+    $variables.UPGRADE_TEST_LARAVEL_PHP = (Resolve-Path -LiteralPath $LaravelPhp).Path
+    $variables.UPGRADE_TEST_LARAVEL_CACHE = (Resolve-Path -LiteralPath $LaravelComposerCache).Path
+}
 $original = @{}
 $process = $null
 $locationChanged = $false
@@ -37,11 +56,27 @@ foreach ($item in $variables.Keys) { $original[$item] = [Environment]::GetEnviro
 try {
     $initial = Start-Process -FilePath $mysqld -ArgumentList ($argsForMySQL + '--initialize-insecure') -PassThru -Wait -WindowStyle Hidden
     if ($initial.ExitCode -ne 0) { throw 'Unable to initialize disposable MySQL' }
+    $extraSchemas = if ($PreviousCLI) {
+        @"
+CREATE DATABASE upgrade_rehearsal CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_bin;
+CREATE DATABASE upgrade_restore CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_bin;
+GRANT ALL ON upgrade_rehearsal.* TO 'test_upgrade'@'127.0.0.1';
+GRANT ALL ON upgrade_restore.* TO 'test_upgrade'@'127.0.0.1';
+"@
+    }
+    if ($LaravelPhp) {
+        $extraSchemas += @"
+
+CREATE DATABASE upgrade_laravel CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_bin;
+GRANT ALL ON upgrade_laravel.* TO 'test_upgrade'@'127.0.0.1';
+"@
+    }
     @"
 ALTER USER 'root'@'localhost' IDENTIFIED BY '$rootPassword';
 CREATE DATABASE upgrade_test CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_bin;
 CREATE USER 'test_upgrade'@'127.0.0.1' IDENTIFIED BY '$password';
 GRANT ALL ON upgrade_test.* TO 'test_upgrade'@'127.0.0.1';
+$extraSchemas
 "@ | Set-Content -LiteralPath $init -Encoding ascii
     $process = Start-Process -FilePath $mysqld -ArgumentList ($argsForMySQL + @('--bind-address=127.0.0.1', "--port=$port", ('--init-file="{0}"' -f $init))) -PassThru -WindowStyle Hidden
     foreach ($item in $variables.Keys) { [Environment]::SetEnvironmentVariable($item, $variables[$item], 'Process') }
@@ -57,6 +92,10 @@ GRANT ALL ON upgrade_test.* TO 'test_upgrade'@'127.0.0.1';
     Write-Output "Disposable MySQL $version"
     Push-Location -LiteralPath $project
     $locationChanged = $true
+    if ($PreviousCLI) {
+        & (Join-Path $PSScriptRoot 'rehearsal.ps1') -PreviousCLI $PreviousCLI -EvidenceDirectory $EvidenceDirectory `
+            -FixtureDirectory $fixture -MySQLBin $MySQLBin -Port $port -MySQLVersion $version
+    }
     go test -count=1 -timeout 4m -v ./...
     if ($LASTEXITCODE -ne 0) { throw 'Workspace integration failed' }
 } finally {

@@ -40,11 +40,20 @@ func (d Docker) Check(ctx context.Context, directory, kind, file string) Observa
 		if !snapshot.SafePath(file) || !strings.HasSuffix(file, ".php") {
 			return Observation{State: "unavailable", ExitCode: -1}
 		}
-		command = []string{"php", "-d", "memory_limit=128M"}
 		if kind == "php-lint" {
-			command = append(command, "-l")
+			command = []string{"php", "-d", "memory_limit=128M", "-l", "/work/" + file}
+		} else {
+			command = []string{"sh", "-eu", "-c", `
+if [ ! -f composer.lock ]; then
+    exec php -d memory_limit=128M "/work/$1"
+fi
+mkdir /tmp/test
+cp -R /work/. /tmp/test
+cd /tmp/test
+php /opt/upgrade-agent/composer.phar install --no-ansi --no-interaction --no-plugins --no-scripts --no-progress || exit 78
+exec php -d memory_limit=128M "$1"
+`, "upgrade-php-test", file}
 		}
-		command = append(command, "/work/"+file)
 	case "composer-lock":
 		command = []string{"sh", "-eu", "-c", `
 php /opt/upgrade-agent/composer.phar validate --check-lock --no-check-publish --no-ansi --no-interaction --no-plugins --no-scripts
@@ -54,6 +63,9 @@ php /opt/upgrade-agent/composer.phar install --dry-run --no-ansi --no-interactio
 		return Observation{State: "unavailable", ExitCode: -1}
 	}
 	observed, _, _ := d.run(ctx, directory, 256<<10, command...)
+	if kind == "php-test" && observed.State == "failed" && observed.ExitCode == 78 {
+		observed.State = "unavailable"
+	}
 	return observed
 }
 
@@ -85,7 +97,8 @@ func (d Docker) run(parent context.Context, directory string, outputLimit int, c
 		"--cap-drop", "ALL", "--security-opt", "no-new-privileges", "--log-driver", "none",
 		"--tmpfs", "/tmp:rw,nosuid,nodev,noexec,size=64m,mode=1777",
 		"--env", "HOME=/tmp", "--env", "COMPOSER_HOME=/tmp/composer",
-		"--env", "COMPOSER_CACHE_DIR=/tmp/cache", "--env", "COMPOSER_DISABLE_NETWORK=1",
+		"--env", "COMPOSER_CACHE_DIR=/opt/upgrade-agent/composer-cache",
+		"--env", "COMPOSER_CACHE_READ_ONLY=1", "--env", "COMPOSER_DISABLE_NETWORK=1",
 		"--mount", "type=bind,source=" + directory + ",target=/work,readonly",
 		"--workdir", "/work", "--entrypoint", command[0], d.image}
 	process := exec.CommandContext(ctx, d.binary, append(flags, command[1:]...)...)

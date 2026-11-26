@@ -51,12 +51,19 @@ details { margin-top: 10px; }
 summary { cursor: pointer; color: var(--accent); }
 pre { font: .83rem/1.5 ui-monospace, Consolas, monospace; margin: 8px 0; color: #202d23; background: #eef0e7; padding: 12px; border-radius: 7px; max-height: 320px; overflow: auto; }
 .patch { background: #202e26; color: #eaf2e8; }
+#source-lines span { display: block; }
+#source-lines .matched { background: #d4e6ce; font-weight: 700; }
 .history { list-style: none; padding: 0; margin: 0; }
 .history li { min-width: 0; overflow-wrap: anywhere; border-bottom: 1px solid var(--border); padding: 6px 0; }
 .history small { display: block; color: var(--muted); }
 #blockers:empty, .history:empty { display: none; }
 #blockers p { font: .8rem/1.5 ui-monospace, monospace; background: #f8eee7; padding: 6px; overflow-wrap: anywhere; }
 #verify { margin-top: 10px; }
+#pin-preview { margin: 12px 0; }
+#pin-comparison { overflow-wrap: anywhere; }
+#pin-delta { max-height: 240px; overflow-y: auto; }
+#review-draft, #load-reviews, #review-result button { margin: 10px 0; }
+#review-result td { overflow-wrap: anywhere; }
 @media (max-width: 790px) {
   .grid { grid-template-columns: 1fr; }
   .access { display: grid; }

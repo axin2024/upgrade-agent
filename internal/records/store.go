@@ -66,8 +66,15 @@ func Open(ctx context.Context, dsn string) (*Store, error) {
 func (s *Store) Close() error { return s.db.Close() }
 
 func (s *Store) Ready(ctx context.Context) error {
-	var result int
-	return s.db.QueryRowContext(ctx, "SELECT COUNT(*) FROM work_jobs WHERE request_id=''").Scan(&result)
+	var version int
+	var dirty bool
+	if err := s.db.QueryRowContext(ctx, "SELECT version,dirty FROM schema_migrations").Scan(&version, &dirty); err != nil {
+		return err
+	}
+	if version != 4 || dirty {
+		return errors.New("workspace schema requires a completed migration to version 4")
+	}
+	return nil
 }
 
 func Migrate(dsn string, steps int) error {
@@ -229,6 +236,16 @@ func transaction[T any](ctx context.Context, s *Store, action func(*sql.Tx) (T, 
 	return value, nil
 }
 
+func checkGrant(ctx context.Context, tx *sql.Tx, i Identity) error {
+	var role string
+	err := tx.QueryRowContext(ctx, `SELECT role FROM access_grants WHERE secret=? AND tenant=? AND workspace=?
+		AND actor=? AND revoked IS NULL AND expires>UTC_TIMESTAMP(6)`, i.secret[:], i.Tenant, i.Workspace, i.Actor).Scan(&role)
+	if errors.Is(err, sql.ErrNoRows) || err == nil && role != i.Role {
+		return ErrDenied
+	}
+	return err
+}
+
 func mutate[T any](ctx context.Context, s *Store, i Identity, key, action string, input any, roles []string,
 	perform func(*sql.Tx, Workspace) (T, error)) (T, error) {
 	var zero T
@@ -248,13 +265,7 @@ func mutate[T any](ctx context.Context, s *Store, i Identity, key, action string
 		if err != nil {
 			return zero, err
 		}
-		var role string
-		err = tx.QueryRowContext(ctx, `SELECT role FROM access_grants WHERE secret=? AND tenant=? AND workspace=?
-			AND actor=? AND revoked IS NULL AND expires>UTC_TIMESTAMP(6)`, i.secret[:], i.Tenant, i.Workspace, i.Actor).Scan(&role)
-		if errors.Is(err, sql.ErrNoRows) || err == nil && role != i.Role {
-			return zero, ErrDenied
-		}
-		if err != nil {
+		if err := checkGrant(ctx, tx, i); err != nil {
 			return zero, err
 		}
 		var fingerprint string

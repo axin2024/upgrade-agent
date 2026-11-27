@@ -71,8 +71,8 @@ func (s *Store) Ready(ctx context.Context) error {
 	if err := s.db.QueryRowContext(ctx, "SELECT version,dirty FROM schema_migrations").Scan(&version, &dirty); err != nil {
 		return err
 	}
-	if version != 4 || dirty {
-		return errors.New("workspace schema requires a completed migration to version 4")
+	if version != 5 || dirty {
+		return errors.New("workspace schema requires a completed migration to version 5")
 	}
 	return nil
 }
@@ -247,7 +247,7 @@ func checkGrant(ctx context.Context, tx *sql.Tx, i Identity) error {
 }
 
 func mutate[T any](ctx context.Context, s *Store, i Identity, key, action string, input any, roles []string,
-	perform func(*sql.Tx, Workspace) (T, error)) (T, error) {
+	perform func(*sql.Tx, Workspace) (T, error), checkReplay ...func(*sql.Tx, T) error) (T, error) {
 	var zero T
 	if !i.Can(roles...) {
 		return zero, ErrDenied
@@ -277,8 +277,15 @@ func mutate[T any](ctx context.Context, s *Store, i Identity, key, action string
 				return zero, ErrConflict
 			}
 			var response T
-			err := json.Unmarshal(stored, &response)
-			return response, err
+			if err := json.Unmarshal(stored, &response); err != nil {
+				return zero, err
+			}
+			for _, check := range checkReplay {
+				if err := check(tx, response); err != nil {
+					return zero, err
+				}
+			}
+			return response, nil
 		}
 		if !errors.Is(err, sql.ErrNoRows) {
 			return zero, err

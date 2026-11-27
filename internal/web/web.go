@@ -50,6 +50,9 @@ func (a App) Handler() http.Handler {
 	mux.Handle("GET /{$}", files)
 	mux.Handle("GET /app.js", files)
 	mux.Handle("GET /app.css", files)
+	mux.Handle("GET /campaign.js", files)
+	a.estateRoutes(mux)
+	a.campaignRoutes(mux)
 	mux.HandleFunc("GET "+root+"/workspace", a.auth(func(w http.ResponseWriter, r *http.Request, i records.Identity) {
 		ws, err := a.Store.Current(r.Context(), i)
 		a.result(w, struct {

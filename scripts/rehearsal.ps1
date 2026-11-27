@@ -103,7 +103,8 @@ try {
     Use-Schema 'upgrade_rehearsal'
     $null = Invoke-CLI $PreviousCLI @('migrate')
     $schemaBefore = & $mysql @client --database=upgrade_rehearsal --batch --skip-column-names '--execute=SELECT version FROM schema_migrations'
-    if ($LASTEXITCODE -ne 0 -or $schemaBefore -ne '2') { throw 'Expected the v1.0.0 schema' }
+    $expectedOldSchema = if ($previousVersion -match '^upgrade-agent v1\.1\.0 ') { '4' } elseif ($previousVersion -match '^upgrade-agent v1\.0\.0 ') { '2' } else { '' }
+    if ($LASTEXITCODE -ne 0 -or !$expectedOldSchema -or $schemaBefore -ne $expectedOldSchema) { throw 'Expected the previous release schema' }
     $scenario = @('-workspace', 'pricing', '-actor', 'fixture-reviewer', '-ttl', '1h')
     $maintainer = (Invoke-CLI $PreviousCLI (@('provision', '-tenant', 'rehearsal', '-role', 'maintainer', '-workspace', 'pricing', '-actor', 'fixture-maintainer', '-ttl', '1h')) | ConvertFrom-Json).token
     $reviewer = (Invoke-CLI $PreviousCLI (@('provision', '-tenant', 'rehearsal', '-role', 'reviewer') + $scenario) | ConvertFrom-Json).token
@@ -125,13 +126,17 @@ try {
 
     $null = Invoke-CLI $current @('migrate')
     $schemaAfter = & $mysql @client --database=upgrade_rehearsal --batch --skip-column-names '--execute=SELECT version FROM schema_migrations'
-    if ($LASTEXITCODE -ne 0 -or $schemaAfter -ne '4') { throw 'Expected the migrated schema' }
+    if ($LASTEXITCODE -ne 0 -or $schemaAfter -ne '5') { throw 'Expected the migrated schema' }
     $upgraded = Start-Workspace $current 'upgraded'
     $after = Get-WorkspaceEvidence $upgraded
     if ((ConvertTo-Json $before -Compress) -cne (ConvertTo-Json $after -Compress)) { throw 'Upgrade changed existing workbench evidence' }
     $plans = Invoke-Workspace $upgraded.Origin $reviewer 'plans?package=upgrade-lab%2Fframework&version=%5E2.0'
     if ($plans.items.Count -ne 1 -or $plans.items[0].sha256 -cne $created.sha256) {
         throw 'Upgrade did not index the old plan target'
+    }
+    $legacy = Invoke-Workspace $upgraded.Origin $maintainer 'migration-campaigns/legacy' 'POST' 'import-existing-plan' @{name = 'Legacy pricing plan'; plan_id = $created.sha256}
+    if ($legacy.state -ne 'legacy' -or $legacy.legacy_plan -cne $created.sha256 -or $legacy.producer.old_snapshot -cne $after.baseline) {
+        throw 'New campaign did not bind the original plan and baseline'
     }
 
     $restoreInput = @{revision = $after.revision; items = @(@{
@@ -140,6 +145,13 @@ try {
     $pending = Invoke-Workspace $upgraded.Origin $reviewer 'review-batches' 'POST' 'restore-pending' $restoreInput
     if ($pending.completed -ne 0 -or $pending.items.Count -ne 1) { throw 'Expected a saved pending batch' }
     Stop-Workspace $upgraded.Process
+
+    $restarted = Start-Workspace $current 'restarted'
+    $restartedCampaign = Invoke-Workspace $restarted.Origin $maintainer "migration-campaigns/$($legacy.campaign_id)"
+    if ((ConvertTo-Json $legacy -Depth 20 -Compress) -cne (ConvertTo-Json $restartedCampaign -Depth 20 -Compress)) {
+        throw 'New campaign changed after process restart'
+    }
+    Stop-Workspace $restarted.Process
 
     $dump = Join-Path $MySQLBin 'mysqldump.exe'
     & $dump @client --single-transaction --hex-blob --no-tablespaces "--result-file=$dumpFile" upgrade_rehearsal
@@ -152,6 +164,11 @@ try {
     $restored = Start-Workspace $current 'restored'
     $recovered = Get-WorkspaceEvidence $restored
     if ((ConvertTo-Json $before -Compress) -cne (ConvertTo-Json $recovered -Compress)) { throw 'Backup restore changed upstream evidence' }
+    $restoredCampaign = Invoke-Workspace $restored.Origin $maintainer "migration-campaigns/$($legacy.campaign_id)"
+    if ((ConvertTo-Json $legacy -Depth 20 -Compress) -cne (ConvertTo-Json $restoredCampaign -Depth 20 -Compress)) {
+        throw 'Backup restore changed the imported legacy campaign'
+    }
+    $null = Invoke-Workspace $restored.Origin $outsider "migration-campaigns/$($legacy.campaign_id)" 'GET' '' $null 404
     $recoveredBatch = Invoke-Workspace $restored.Origin $reviewer 'review-batches/restore-pending'
     if ((ConvertTo-Json $pending -Depth 20 -Compress) -cne (ConvertTo-Json $recoveredBatch -Depth 20 -Compress)) {
         throw 'Backup restore changed the original ordered review selection'
@@ -177,7 +194,10 @@ try {
         UPGRADE_REHEARSAL_MAINTAINER = $maintainer; UPGRADE_REHEARSAL_PLAN = $created.sha256;
         UPGRADE_REHEARSAL_PROPOSED = $proposedFile; UPGRADE_REHEARSAL_COMPETING = $competingFile;
         UPGRADE_REHEARSAL_SALE = $sale.artifact; UPGRADE_REHEARSAL_CURRENCY = $currency.artifact;
-        UPGRADE_REHEARSAL_REPORT = $validation.artifact; UPGRADE_REHEARSAL_BROWSER_RESULT = (Join-Path $EvidenceDirectory 'review-browser.json')
+        UPGRADE_REHEARSAL_REPORT = $validation.artifact; UPGRADE_REHEARSAL_BROWSER_RESULT = (Join-Path $EvidenceDirectory 'review-browser.json');
+        UPGRADE_CAMPAIGN_BROWSER_RESULT = (Join-Path $EvidenceDirectory 'campaign-browser.json');
+        UPGRADE_REHEARSAL_CLI = $current; UPGRADE_REHEARSAL_LEGACY_CAMPAIGN = $legacy.campaign_id;
+        UPGRADE_REHEARSAL_CAMPAIGN_FIXTURE = $FixtureDirectory
     }
     $previousSettings = @{}
     foreach ($name in $browserSettings.Keys) {
@@ -187,6 +207,8 @@ try {
     try {
         node (Join-Path $PSScriptRoot 'browser-review.cjs')
         if ($LASTEXITCODE -ne 0) { throw 'Browser batch rehearsal failed' }
+        node (Join-Path $PSScriptRoot 'browser-campaign.cjs')
+        if ($LASTEXITCODE -ne 0) { throw 'Browser campaign rehearsal failed' }
     } finally {
         foreach ($name in $previousSettings.Keys) { [Environment]::SetEnvironmentVariable($name, $previousSettings[$name], 'Process') }
     }
@@ -197,7 +219,8 @@ try {
         original_records = $before; records_preserved_through_upgrade = $true; records_preserved_through_restore = $true
         backup_sha256 = $dumpDigest; original_batch_after_restore_execution = [int]$stillPending; indexed_previous_target = $true
         restored_batch = $resumed; cross_tenant_statuses = @{review = 404; patch = 404; export = 404}
-        browser_result = 'review-browser.json'
+        browser_result = 'review-browser.json'; campaign_browser_result = 'campaign-browser.json'
+        legacy_campaign = $legacy.campaign_id; legacy_campaign_preserved_through_restart_and_restore = $true
     }
     $result | ConvertTo-Json -Depth 30 | Set-Content -LiteralPath (Join-Path $EvidenceDirectory 'upgrade-rehearsal.json') -Encoding utf8
     Write-Output 'Previous release, isolated restore and browser review passed.'

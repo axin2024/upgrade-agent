@@ -1,0 +1,17 @@
+{
+  "affected_calls": 49,
+  "affected_target": "go:example.test/capacity/provider/module.Shared",
+  "analysis_ms": 1219,
+  "approval": "isolated synthetic snapshots",
+  "current_snapshot": "8b0e82f126a7809f0828904576c401ceb1cedf2b968f50ef504ba6b49d1c1332",
+  "go": "go1.26.0",
+  "indexing_ms": 11076,
+  "logical_processors": 22,
+  "mysql": "8.4.13",
+  "previous_snapshot": "000cef4a64b29e153353425768e840c5de3f1995d256727319d3cb10269986b6",
+  "producer": "c247397a7562a54453b0287b8959d22345609e37b1a1d2282143c6ac20683151",
+  "repositories": 50,
+  "symbols": 50000,
+  "system": "windows",
+  "unresolved": 49
+}

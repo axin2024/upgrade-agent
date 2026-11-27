@@ -1,0 +1,14 @@
+{
+  "browser": "158.0.8127.36",
+  "mobile_width": 390,
+  "legacy_campaign": "bc87cbaf13f7ee93336d4b869183df5d21f590df0bf3e45eed47c0ba124c7d28",
+  "new_campaign": "6e8dbea1f610e779c7dbee239747db37d772accd3b0161ae38712efa0048fdde",
+  "revision": 2,
+  "waves": [
+    "W1",
+    "W2",
+    "W3"
+  ],
+  "scope_rejected_before_decode": true,
+  "page_errors": []
+}

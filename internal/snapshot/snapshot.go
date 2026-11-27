@@ -221,8 +221,11 @@ func (s Snapshot) Verify() error {
 }
 
 func sourceFile(name string) bool {
+	if name == "go.mod" || name == "go.sum" {
+		return true
+	}
 	switch path.Ext(name) {
-	case ".php", ".json", ".lock", ".md", ".xml", ".yml", ".yaml", ".txt":
+	case ".php", ".go", ".json", ".lock", ".md", ".xml", ".yml", ".yaml", ".txt":
 		return true
 	default:
 		return false

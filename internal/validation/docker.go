@@ -84,6 +84,10 @@ cat composer.lock
 }
 
 func (d Docker) run(parent context.Context, directory string, outputLimit int, command ...string) (Observation, []byte, error) {
+	return d.runIsolated(parent, directory, outputLimit, false, command...)
+}
+
+func (d Docker) runIsolated(parent context.Context, directory string, outputLimit int, matrix bool, command ...string) (Observation, []byte, error) {
 	start := time.Now()
 	state := Observation{State: "unavailable", ExitCode: -1}
 	if strings.ContainsAny(directory, ",\x00") || !filepath.IsAbs(directory) {
@@ -92,15 +96,23 @@ func (d Docker) run(parent context.Context, directory string, outputLimit int, c
 	ctx, cancel := context.WithTimeout(parent, d.timeout)
 	defer cancel()
 	name := "upgrade-check-" + snapshot.Digest([]byte(directory + start.String()))[:24]
+	memory := "256m"
+	if matrix {
+		memory = "640m"
+	}
 	flags := []string{"run", "--rm", "--name", name, "--pull", "never", "--network", "none",
-		"--read-only", "--user", "65534:65534", "--pids-limit", "64", "--memory", "256m", "--cpus", "1",
+		"--read-only", "--user", "65534:65534", "--pids-limit", "64", "--memory", memory, "--cpus", "1",
 		"--cap-drop", "ALL", "--security-opt", "no-new-privileges", "--log-driver", "none",
 		"--tmpfs", "/tmp:rw,nosuid,nodev,noexec,size=64m,mode=1777",
 		"--env", "HOME=/tmp", "--env", "COMPOSER_HOME=/tmp/composer",
 		"--env", "COMPOSER_CACHE_DIR=/opt/upgrade-agent/composer-cache",
 		"--env", "COMPOSER_CACHE_READ_ONLY=1", "--env", "COMPOSER_DISABLE_NETWORK=1",
-		"--mount", "type=bind,source=" + directory + ",target=/work,readonly",
-		"--workdir", "/work", "--entrypoint", command[0], d.image}
+		"--mount", "type=bind,source=" + directory + ",target=/work,readonly", "--workdir", "/work"}
+	if matrix {
+		// Go's compiler executes only from the isolated work disk. The source mount stays read-only.
+		flags = append(flags, "--tmpfs", "/scratch:rw,nosuid,nodev,exec,size=384m,mode=1777")
+	}
+	flags = append(flags, "--entrypoint", command[0], d.image)
 	process := exec.CommandContext(ctx, d.binary, append(flags, command[1:]...)...)
 	process.WaitDelay = time.Second
 	stdout, stderr := &limitedBuffer{limit: outputLimit}, &limitedBuffer{limit: 256 << 10}

@@ -191,6 +191,8 @@ func serve(ctx context.Context, args []string) error {
 	}
 	logger := slog.New(slog.NewJSONHandler(os.Stderr, nil))
 	app := web.App{Store: store, Logger: logger}
+	workerCtx, stopWorker := context.WithCancel(ctx)
+	defer stopWorker()
 	if binary, image := os.Getenv("UPGRADE_DOCKER"), os.Getenv("UPGRADE_VALIDATION_IMAGE"); binary != "" || image != "" {
 		if !filepath.IsAbs(binary) {
 			return errors.New("UPGRADE_DOCKER must be an absolute local executable path")
@@ -200,6 +202,15 @@ func serve(ctx context.Context, args []string) error {
 			return err
 		}
 		app.Validation = backend
+		profile := os.Getenv("UPGRADE_REHEARSAL_PROFILE")
+		if profile == "" {
+			profile = "isolated-local"
+		}
+		matrix, err := validation.NewDocker(binary, image, 120*time.Second)
+		if err != nil {
+			return err
+		}
+		go runMatrixQueue(workerCtx, store, profile, matrix, logger)
 	}
 	if endpoint := os.Getenv("UPGRADE_MODEL_URL"); endpoint != "" {
 		app.Model, err = model.New(endpoint, os.Getenv("UPGRADE_MODEL_NAME"), os.Getenv("UPGRADE_MODEL_TOKEN"), 60*time.Second)
@@ -221,6 +232,25 @@ func serve(ctx context.Context, args []string) error {
 		shutdown, cancel := context.WithTimeout(context.Background(), 20*time.Second)
 		defer cancel()
 		return server.Shutdown(shutdown)
+	}
+}
+
+func runMatrixQueue(ctx context.Context, store *records.Store, profile string, runner validation.MatrixRunner, logger *slog.Logger) {
+	tick := time.NewTicker(time.Second)
+	defer tick.Stop()
+	for ctx.Err() == nil {
+		ran, err := store.RunCampaignPair(ctx, profile, runner)
+		if err != nil && ctx.Err() == nil {
+			logger.Error("rehearsal queue temporarily unavailable", "error_type", fmt.Sprintf("%T", err))
+		}
+		if ran && err == nil {
+			continue
+		}
+		select {
+		case <-ctx.Done():
+			return
+		case <-tick.C:
+		}
 	}
 }
 

@@ -7,6 +7,7 @@
 | MySQL | `UPGRADE_MYSQL_DSN`，连接使用 UTC、绑定变量和单语句模式 |
 | API | `serve -listen 127.0.0.1:8101`，远程访问由 HTTPS 反向代理提供 |
 | 验证 | `UPGRADE_DOCKER` 绝对路径与 `UPGRADE_VALIDATION_IMAGE` 的本地镜像 ID |
+| 多仓联合演练 | `UPGRADE_REHEARSAL_PROFILE`，默认 `isolated-local`，需与各仓授权匹配 |
 | 凭据 | `UPGRADE_WORKSPACE_TOKEN` 只用于客户端。运维可按工作区和操作者撤销 |
 | 可选模型 | `UPGRADE_MODEL_URL` 完整路径，`UPGRADE_MODEL_NAME`，可选 `UPGRADE_MODEL_TOKEN` |
 
@@ -39,6 +40,8 @@ Composer 查询还有平台、替换包、插件和外部仓库语义。内建�
 
 含 `composer.lock` 的 PHP 测试先在容器临时目录按锁安装依赖，再运行批准的 PHP 文件。依赖安装失败时验证显示不可用。外部依赖由运维在受控准备环境预缓存，放入镜像内只读的 `/opt/upgrade-agent/composer-cache`。生产验证容器保持无网络，输入挂载保持只读，并禁用 Composer 脚本和插件。依赖规模需适配容器时限与 64 MiB 临时目录。 [Laravel 准备步骤](../examples/laravel-pricing/MIGRATION.md)
 
+多仓矩阵每个组合限时 120 秒，1 CPU、640 MiB 内存和 384 MiB 临时工作盘。测试只使用该容器内回环服务。工作进程重启后继续处理排队任务，4 分钟的租约到期后可重新认领未完成组合。对于依赖缺失，保留失败回执，可在同一快照组合上重新验证；生产应把批准的 PHP 依赖和固定运行镜像一起准备。 [矩阵与交付操作](contract-estate.md)
+
 ## 模型与预算
 
 只允许管理员配置 HTTPS 服务或字面回环地址的 HTTP 服务，模型连接不走环境代理或重定向。应用根据获批片段的字节数保守预留预算，收到服务计量后更新实际 token 数。缺失计量保留预留值，费用需要结合服务方费率。回放只用于演示，记录标为 `replay`。
@@ -46,6 +49,8 @@ Composer 查询还有平台、替换包、插件和外部仓库语义。内建�
 ## 备份与恢复
 
 用及时备份保留工作区、快照、计划、证据、审阅和任务回执。数据库凭据与模型配置由部署环境管理。MySQL 包含二进制凭据摘要，备份要使用 `mysqldump --single-transaction --hex-blob`。恢复到独立数据库后，用原有工作区令牌检查历史批次、验证记录和导出摘要。迁移 3 增加批量审阅表，迁移 4 为已有计划回填目标索引。升级后检查服务就绪端点，再用旧凭据读取已有计划与报告，验证目标查询。 [升级与恢复记录](results/upgrade-rehearsal.json)
+
+迁移 5 添加仓群与活动对象。升级前应备份现有数据库并在副本核对原计划、补丁及报告；部署后验证仓库权限、旧计划导入和矩阵队列。回退前停收活动、导出未交付清单并保存 Git 实际采纳回执。恢复存档时使用单独库，逐项对照过去的采纳提交，防止重复应用。 [2.0 实测恢复](results/contract-upgrade-v2.json)
 
 ## 数据保留
 

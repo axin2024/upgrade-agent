@@ -1,0 +1,57 @@
+{
+  "previous_version": "upgrade-agent v1.1.0 (0e28a446a2b6d2fd425dd5c4ca4d92e081895535)",
+  "current_version": "upgrade-agent dev (unreleased)",
+  "mysql_version": "8.4.13",
+  "before_schema": 4,
+  "after_schema": 5,
+  "original_records": {
+    "baseline": "630d4a5011c124ef09d67d911a594bcc286ccfdc9ddb84a928f54448980e7abe",
+    "revision": 1,
+    "plan": "fbc2c0d97119f05b28dc63cde03c799b5fd1be88b8f06beb87298f315cb73a28",
+    "candidate": "f1ee59b6808f8f214014f3533b89de0ec27e9a95e1f557cb2068700b8eb6d9cd",
+    "candidate_patch_sha256": "ee2cc2e744f7c575a807b52f7e2dba8244e073f58c42fe435c67c656f7db0af5",
+    "validation": "8a0eb7d3b72c35acafe9d3e130f2ed46614762d168377e26aabfb79f2eb4c760",
+    "validation_state": "blocked",
+    "validation_job": "legacy-validate-currency",
+    "validation_payload_sha256": "27961af613b52a04db6a41f43bb5b87fed5e273e14c761e954736ec2a929fee4"
+  },
+  "records_preserved_through_upgrade": true,
+  "records_preserved_through_restore": true,
+  "backup_sha256": "6dc11f79a95a57b6b09e8c08b81bcb6a992b002278d08a48f6854fb60656b910",
+  "original_batch_after_restore_execution": 0,
+  "indexed_previous_target": true,
+  "restored_batch": {
+    "request_id": "restore-pending",
+    "baseline": "630d4a5011c124ef09d67d911a594bcc286ccfdc9ddb84a928f54448980e7abe",
+    "revision": 1,
+    "completed": 1,
+    "items": [
+      {
+        "candidate": "65fa2a92716664ae51a8ba66f27870411b57e949336907b902fa494fdf955a3b",
+        "action": "reject",
+        "baseline": "630d4a5011c124ef09d67d911a594bcc286ccfdc9ddb84a928f54448980e7abe",
+        "reason": "Restore the original review selection",
+        "state": "applied",
+        "receipt": {
+          "action": "reject",
+          "plan": "fbc2c0d97119f05b28dc63cde03c799b5fd1be88b8f06beb87298f315cb73a28",
+          "candidate": "65fa2a92716664ae51a8ba66f27870411b57e949336907b902fa494fdf955a3b",
+          "batch": "rule-currency-display",
+          "baseline": "630d4a5011c124ef09d67d911a594bcc286ccfdc9ddb84a928f54448980e7abe",
+          "revision": 1,
+          "reason": "Restore the original review selection",
+          "review_batch": "restore-pending"
+        }
+      }
+    ]
+  },
+  "cross_tenant_statuses": {
+    "review": 404,
+    "patch": 404,
+    "export": 404
+  },
+  "browser_result": "review-browser.json",
+  "campaign_browser_result": "campaign-browser.json",
+  "legacy_campaign": "bc87cbaf13f7ee93336d4b869183df5d21f590df0bf3e45eed47c0ba124c7d28",
+  "legacy_campaign_preserved_through_restart_and_restore": true
+}

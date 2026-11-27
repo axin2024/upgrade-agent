@@ -12,7 +12,7 @@ permissions:
 jobs:
   test:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 25
     services:
       mysql:
         image: mysql:8.4
@@ -38,6 +38,8 @@ jobs:
           test -z "$(gofmt -l cmd internal)"
           go vet ./...
           node --check internal/web/ui/app.js
+          node --check internal/web/ui/campaign.js
+          node --check scripts/browser-campaign.cjs
       - name: Build the isolated validation image
         run: docker build -f deploy/validation.Dockerfile -t upgrade-agent-validation:ci .
       - name: Create a disposable schema
@@ -46,17 +48,23 @@ jobs:
         run: |
           docker exec -i -e MYSQL_PWD=local-ci-root-only "$MYSQL_CONTAINER" mysql --user=root <<'SQL'
           CREATE DATABASE upgrade_test CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_bin;
+          CREATE DATABASE upgrade_estate CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_bin;
           CREATE USER 'test_upgrade'@'%' IDENTIFIED BY 'local-ci-app-only';
           GRANT ALL PRIVILEGES ON upgrade_test.* TO 'test_upgrade'@'%';
+          GRANT ALL PRIVILEGES ON upgrade_estate.* TO 'test_upgrade'@'%';
           SQL
-      - name: MySQL upgrade, isolation and Composer workspace lifecycle
+      - name: MySQL upgrade, Composer lifecycle and isolated PHP/Go matrix
         env:
           MYSQL_TEST_PORT: ${{ job.services.mysql.ports[3306] }}
         run: |
           export UPGRADE_TEST_MYSQL_DSN="test_upgrade:local-ci-app-only@tcp(127.0.0.1:$MYSQL_TEST_PORT)/upgrade_test"
+          export UPGRADE_TEST_ESTATE_DSN="test_upgrade:local-ci-app-only@tcp(127.0.0.1:$MYSQL_TEST_PORT)/upgrade_estate"
+          export UPGRADE_TEST_PHP="$(command -v php)"
+          test -n "$UPGRADE_TEST_PHP"
           export UPGRADE_TEST_DOCKER="$(command -v docker)"
           export UPGRADE_TEST_IMAGE="$(docker image inspect --format '{{.Id}}' upgrade-agent-validation:ci)"
-          go test -race -count=1 -timeout 7m -v ./...
+          export UPGRADE_TEST_MATRIX_IMAGE="$UPGRADE_TEST_IMAGE"
+          go test -race -count=1 -timeout 16m -v ./...
       - name: Verify the release command
         run: |
           go build -trimpath -o "$RUNNER_TEMP/upgrade-agent" ./cmd/upgrade-agent

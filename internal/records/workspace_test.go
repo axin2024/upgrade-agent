@@ -420,7 +420,7 @@ func TestWorkspaceLifecycle(t *testing.T) {
 	if ws.Baseline != snap.Digest {
 		t.Fatal("cleanup reset the original idempotency receipt")
 	}
-	t.Logf("tool=%s schema=1→2→3→4 regression=%s patched=%s tenant-isolation=passed batch-applied=1 batch-rejected=2 batch-audits=%d retention=passed", tool.Identity(),
+	t.Logf("tool=%s schema=1→2→3→4→5 regression=%s patched=%s tenant-isolation=passed batch-applied=1 batch-rejected=2 batch-audits=%d retention=passed", tool.Identity(),
 		rejected.State, saleReport.State, batchAudits)
 }
 

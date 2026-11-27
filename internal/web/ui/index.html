@@ -6,6 +6,7 @@
   <title>Upgrade Agent</title>
   <link rel="stylesheet" href="/app.css">
   <script src="/app.js" defer></script>
+  <script src="/campaign.js" defer></script>
 </head>
 <body>
   <header class="topbar">
@@ -26,7 +27,111 @@
         <div><span class="muted">当前基线</span><strong id="baseline">—</strong></div>
         <div><span class="muted">修订</span><strong id="revision">—</strong></div>
         <button id="refresh" class="secondary">刷新记录</button>
+        <button id="campaign-open" type="button" class="secondary" aria-expanded="false" aria-controls="campaign-workbench">多仓迁移</button>
       </section>
+      <div id="campaign-workbench" class="stack" hidden>
+        <section class="card">
+          <h2>仓库与授权</h2>
+          <div class="inline"><select id="estate-repo" aria-label="选择仓库"></select><button id="estate-catalog" type="button" class="secondary">查看契约</button></div>
+          <p id="estate-repo-info" class="muted"></p>
+          <details id="estate-registration"><summary>登记仓库</summary>
+            <form id="estate-register">
+              <div class="fields"><label>包名<input id="estate-package" required placeholder="commerce/catalog"></label>
+              <label>仓库 HTTPS 地址<input id="estate-origin" type="url" required></label></div>
+              <div class="fields"><label>版本<input id="estate-version" required></label><label>负责人<input id="estate-owner" placeholder="当前帐号"></label></div>
+              <button>登记</button>
+            </form>
+          </details>
+          <details id="estate-owner-tools" hidden><summary>设置授权与导入快照</summary>
+            <form id="estate-policy">
+              <div class="fields"><label>可索引路径<input id="estate-index" placeholder="src, contracts, go.mod"></label>
+              <label>允许提供给模型的路径<input id="estate-model" placeholder="src"></label>
+              <label>可导出路径<input id="estate-export" placeholder="src, contracts"></label>
+              <label>隔离运行器<input id="estate-runners" placeholder="isolated-local"></label></div>
+              <button>保存授权</button>
+            </form>
+            <form id="estate-import">
+              <div class="fields"><label>快照版本<input id="estate-pin-version" required></label>
+              <label>快照 JSON<input id="estate-pin-file" type="file" accept="application/json,.json" required></label></div>
+              <label><input id="estate-stage" type="checkbox"> 暂存版本供演练</label>
+              <button>导入</button>
+            </form>
+          </details>
+          <details id="estate-catalog-panel" hidden><summary>契约与调用点</summary><pre id="estate-catalog-output" tabindex="0"></pre></details>
+        </section>
+        <section class="card">
+          <h2>迁移活动</h2>
+          <div class="inline"><select id="campaign-list" aria-label="选择迁移活动"></select><button id="campaign-refresh" type="button" class="secondary">刷新</button></div>
+          <details id="campaign-create-panel"><summary>新建活动</summary>
+            <form id="campaign-create">
+              <div class="fields"><label>活动名称<input id="campaign-name" required></label>
+              <label>发布策略<select id="campaign-strategy"><option value="dual-version">双版本共存</option><option value="expand-contract">先扩展后收缩</option><option value="one-cut">一次切换</option></select></label>
+              <label>契约集<input id="campaign-contract-set" required></label><label>运行器<input id="campaign-runner" value="isolated-local" required></label></div>
+              <fieldset><legend>PHP 提供方</legend>
+                <div class="fields"><label>仓库<select id="campaign-provider" required></select></label><label>旧快照<input id="campaign-provider-old" required></label>
+                <label id="campaign-bridge-label">兼容快照<input id="campaign-provider-bridge" required></label><label>最终快照<input id="campaign-provider-next" required></label>
+                <label>回归脚本<input id="campaign-provider-test" required placeholder="tests/regression.php"></label>
+                <label>HTTP 路由脚本<input id="campaign-router" placeholder="public/router.php"></label></div>
+              </fieldset>
+              <div id="campaign-consumers"></div>
+              <button id="campaign-add-consumer" type="button" class="secondary">添加消费方</button>
+              <label for="campaign-legacy">计划移除的旧契约，每行一个</label><textarea id="campaign-legacy" rows="2" required placeholder="http:GET /v1/quote"></textarea>
+              <button>建立盘点</button>
+            </form>
+          </details>
+          <details id="campaign-legacy-panel"><summary>导入单仓计划</summary>
+            <form id="campaign-legacy-import" class="inline">
+              <input id="campaign-legacy-name" aria-label="活动名称" placeholder="活动名称" maxlength="160" required>
+              <input id="campaign-legacy-plan" aria-label="原计划摘要" placeholder="原计划 SHA-256" pattern="[a-f0-9]{64}" required>
+              <button>导入计划</button>
+            </form>
+          </details>
+          <div id="campaign-detail" hidden>
+            <p id="campaign-state"></p>
+            <div id="campaign-legacy-details" hidden></div>
+            <button id="campaign-freeze" type="button">冻结版本与波次</button>
+            <div class="table-wrap"><table><thead><tr><th>波次</th><th>发布内容</th><th>仓库</th></tr></thead><tbody id="campaign-waves"></tbody></table></div>
+            <details><summary>策略对比与调用影响</summary><p id="campaign-impact-summary"></p><div id="campaign-impact"></div></details>
+            <div id="campaign-actions" class="stack" hidden>
+              <section>
+                <h3>差异审阅</h3>
+                <form id="campaign-generate" class="inline">
+                  <select id="campaign-change-repo" aria-label="待修改仓库" required></select>
+                  <select id="campaign-mode" aria-label="建议来源"><option value="rule">确定性差异</option><option value="model">本地模型</option></select>
+                  <button>生成候选</button>
+                </form>
+                <form id="campaign-find-candidate" class="inline"><input id="campaign-candidate-id" aria-label="候选编号" placeholder="候选编号" required><button class="secondary">读回候选</button></form>
+                <p id="campaign-model-status" class="muted"></p>
+                <div id="campaign-hunks" class="stack"></div>
+              </section>
+              <section>
+                <h3>联合演练</h3>
+                <button id="campaign-submit-rehearsal" type="button">排入演练</button>
+                <form id="campaign-find-rehearsal" class="inline"><input id="campaign-rehearsal-id" aria-label="演练编号" placeholder="演练编号" required><button class="secondary">读回矩阵</button></form>
+                <p id="campaign-matrix-state" class="muted"></p>
+                <button id="campaign-retry-rehearsal" type="button" hidden>重试失败组合</button>
+                <div class="table-wrap"><table><thead><tr><th>组合</th><th>消费方</th><th>结果</th><th>证据</th></tr></thead><tbody id="campaign-pairs"></tbody></table></div>
+              </section>
+              <section>
+                <h3>仓库交付</h3>
+                <button id="campaign-export-bundle" type="button">导出获批补丁</button>
+                <form id="campaign-find-bundle" class="inline"><input id="campaign-bundle-id" aria-label="交付编号" placeholder="交付编号" required><button class="secondary">查交付回执</button></form>
+                <p id="campaign-bundle-state" class="muted"></p>
+                <form id="campaign-rebase" class="inline" hidden>
+                  <input id="campaign-rebase-target" aria-label="重算目标快照摘要" placeholder="已暂存的重算目标 SHA-256" pattern="[a-f0-9]{64}" required>
+                  <button>重新核定基线</button>
+                </form>
+                <button id="campaign-download" type="button" class="secondary" hidden>下载补丁及回执</button>
+                <form id="campaign-adopt" class="inline" hidden>
+                  <input id="campaign-adoption-ref" aria-label="实际采纳提交" placeholder="实际采纳提交 SHA" pattern="[a-f0-9]{40}|[a-f0-9]{64}" required>
+                  <input id="campaign-observed" aria-label="实际采纳的快照摘要" placeholder="已暂存的采纳快照 SHA-256" pattern="[a-f0-9]{64}" required>
+                  <button>登记采纳</button>
+                </form>
+              </section>
+            </div>
+          </div>
+        </section>
+      </div>
       <div class="grid">
         <div class="stack">
           <section class="card">
@@ -134,5 +239,13 @@
       </div>
     </div>
   </main>
+  <template id="campaign-consumer-template">
+    <fieldset><legend>消费方</legend><div class="fields">
+      <label>仓库<select name="repository" required></select></label>
+      <label>语言<select name="language"><option value="php">PHP</option><option value="go">Go</option></select></label>
+      <label>旧快照<input name="old" required></label><label>目标快照<input name="next" required></label>
+      <label>回归脚本或测试文件<input name="test" required></label>
+    </div><button type="button" class="secondary remove-consumer">移除消费方</button></fieldset>
+  </template>
 </body>
 </html>

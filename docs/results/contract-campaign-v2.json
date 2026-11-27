@@ -1,0 +1,43 @@
+{
+  "environment": "Windows, Go 1.26.0, MySQL 8.4.13, trusted PHP and Go fixture processes",
+  "coverage": [
+    "A1",
+    "A2",
+    "A3",
+    "A4",
+    "A5",
+    "A6",
+    "A7",
+    "A8",
+    "A9",
+    "A10",
+    "A11",
+    "A12"
+  ],
+  "workflow": "TestMigrationCampaign",
+  "status": "passed",
+  "duration_seconds": 68.89,
+  "repository_count": 3,
+  "final_frozen_pair_outputs": 14,
+  "unresolved_calls": 3,
+  "live_usage": {
+    "provider": "openai-compatible",
+    "model": "qwen2.5-0.5b-instruct",
+    "mode": "live",
+    "request_sha256": "1f45a29d4d958a4b8c8fb6d767a4caa161f5be0e24d3cbc2381f7535c489657e",
+    "response_sha256": "86c21ff120bd1d4b4a8ff10b9fcd713d0caa7c49a02b6e613fb87fa43ad6b4a3",
+    "state": "complete",
+    "prompt_tokens": 215,
+    "completion_tokens": 26,
+    "metered": true,
+    "duration_ms": 605
+  },
+  "rejected_usage": {
+    "origin": "loopback response fixture",
+    "prompt_tokens": 249,
+    "completion_tokens": 11
+  },
+  "retry_evidence": "unchanged passed pair digests",
+  "adoption_validation": "apply reviewed patch in isolated Git, stage observed capture and verify the actual commit",
+  "drift_recalculated": true
+}

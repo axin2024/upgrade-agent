@@ -64,6 +64,14 @@ pre { font: .83rem/1.5 ui-monospace, Consolas, monospace; margin: 8px 0; color: 
 #pin-delta { max-height: 240px; overflow-y: auto; }
 #review-draft, #load-reviews, #review-result button { margin: 10px 0; }
 #review-result td { overflow-wrap: anywhere; }
+#campaign-workbench { margin-bottom: 15px; }
+#campaign-workbench .inline { flex-wrap: wrap; align-items: start; }
+#campaign-workbench .inline > input, #campaign-workbench .inline > select { flex: 1 1 10rem; min-width: 0; }
+#campaign-workbench .fields { grid-template-columns: repeat(auto-fit, minmax(min(11rem, 100%), 1fr)); }
+#campaign-workbench fieldset { min-width: 0; border: 1px solid var(--border); margin: 10px 0; }
+#campaign-workbench fieldset input[type=checkbox], #campaign-workbench input[type=checkbox] { width: auto; }
+#campaign-workbench p, #campaign-workbench summary { overflow-wrap: anywhere; }
+#campaign-actions { margin-top: 12px; }
 @media (max-width: 790px) {
   .grid { grid-template-columns: 1fr; }
   .access { display: grid; }

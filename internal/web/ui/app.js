@@ -30,12 +30,12 @@ function can(...roles) {
   return workspace?.role === 'admin' || roles.includes(workspace?.role);
 }
 
-async function api(path, data, key) {
+async function api(path, data, key, method = 'POST') {
   const expected = generation;
   const headers = { Authorization: 'Bearer ' + token };
   const options = { headers, cache: 'no-store' };
   if (data !== undefined) {
-    options.method = 'POST';
+    options.method = method;
     headers['Content-Type'] = 'application/json';
     headers['Idempotency-Key'] = key || crypto.randomUUID();
     options.body = JSON.stringify(data);
@@ -46,8 +46,9 @@ async function api(path, data, key) {
     throw new Error('工作区凭据已更换');
   }
   if (!response.ok) {
-    const error = new Error(body.error || '工作区操作失败');
+    const error = new Error(body.error || (body.state === 'drifted' ? '仓库当前基线已变更，请重新计算补丁。' : '工作区操作失败'));
     error.status = response.status;
+    error.receipt = body;
     throw error;
   }
   return body;
@@ -385,6 +386,7 @@ async function loadReviewBatch(key) {
 
 handle('connect', 'submit', async () => {
   generation++;
+  resetCampaignWorkspace();
   token = value('token');
   currentCandidate = currentPlan = workspace = undefined;
   planSearch = undefined;

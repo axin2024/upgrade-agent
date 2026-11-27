@@ -5,7 +5,8 @@ param(
     [string]$PreviousCLI,
     [string]$EvidenceDirectory,
     [string]$LaravelPhp,
-    [string]$LaravelComposerCache
+    [string]$LaravelComposerCache,
+    [string]$TestPattern
 )
 
 $ErrorActionPreference = 'Stop'
@@ -41,6 +42,7 @@ $client = @('--no-defaults', '--protocol=TCP', '--host=127.0.0.1', "--port=$port
 $variables = @{
     MYSQL_PWD = $password
     UPGRADE_TEST_MYSQL_DSN = "test_upgrade:$password@tcp(127.0.0.1:$port)/upgrade_test"
+    UPGRADE_TEST_ESTATE_DSN = "test_upgrade:$password@tcp(127.0.0.1:$port)/upgrade_estate"
     UPGRADE_TEST_PHP = (Resolve-Path -LiteralPath $Php).Path
     UPGRADE_TEST_COMPOSER = (Resolve-Path -LiteralPath $Composer).Path
 }
@@ -74,8 +76,10 @@ GRANT ALL ON upgrade_laravel.* TO 'test_upgrade'@'127.0.0.1';
     @"
 ALTER USER 'root'@'localhost' IDENTIFIED BY '$rootPassword';
 CREATE DATABASE upgrade_test CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_bin;
+CREATE DATABASE upgrade_estate CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_bin;
 CREATE USER 'test_upgrade'@'127.0.0.1' IDENTIFIED BY '$password';
 GRANT ALL ON upgrade_test.* TO 'test_upgrade'@'127.0.0.1';
+GRANT ALL ON upgrade_estate.* TO 'test_upgrade'@'127.0.0.1';
 $extraSchemas
 "@ | Set-Content -LiteralPath $init -Encoding ascii
     $process = Start-Process -FilePath $mysqld -ArgumentList ($argsForMySQL + @('--bind-address=127.0.0.1', "--port=$port", ('--init-file="{0}"' -f $init))) -PassThru -WindowStyle Hidden
@@ -96,7 +100,9 @@ $extraSchemas
         & (Join-Path $PSScriptRoot 'rehearsal.ps1') -PreviousCLI $PreviousCLI -EvidenceDirectory $EvidenceDirectory `
             -FixtureDirectory $fixture -MySQLBin $MySQLBin -Port $port -MySQLVersion $version
     }
-    go test -count=1 -timeout 4m -v ./...
+    $testArgs = @('test', '-count=1', '-timeout', '6m', '-v')
+    if ($TestPattern) { $testArgs += @('-run', $TestPattern) }
+    go @testArgs ./...
     if ($LASTEXITCODE -ne 0) { throw 'Workspace integration failed' }
 } finally {
     if ($locationChanged) { Pop-Location }

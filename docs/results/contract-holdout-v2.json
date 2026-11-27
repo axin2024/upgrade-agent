@@ -1,0 +1,1302 @@
+{
+  "corpus_sha256": "d3b2ed251308f9525c7186194d037f7437e313f4c3cd90c64f369bc628a519a0",
+  "cases": 20,
+  "must_keep_legacy": 6,
+  "runtime": "windows PHP trusted fixture, actual loopback model",
+  "rule": {
+    "valid_patches": 14,
+    "regressions_passed": 14,
+    "rejected": 6,
+    "prompt_tokens": 0,
+    "completion_tokens": 0
+  },
+  "model": {
+    "valid_patches": 14,
+    "regressions_passed": 14,
+    "rejected": 6,
+    "prompt_tokens": 4312,
+    "completion_tokens": 440
+  },
+  "results": [
+    {
+      "consumer_candidate_snapshot": "196953caedcab62fe41f842c872d10153b049e77a08060e7d8c79d886b1db75e",
+      "consumer_old_snapshot": "bfbee5c7ab384e36bf33c0f70c30931082f2b679f28fdedd07ebdaf229d74266",
+      "model": {
+        "valid_patch": false,
+        "rejected": true,
+        "business_pass": false,
+        "selected_paths": [
+          "src/checkout.php",
+          "src/export.php"
+        ],
+        "run": {
+          "state": "failed",
+          "exit_code": 1,
+          "milliseconds": 0,
+          "output_bytes": 0,
+          "image": "trusted-fixture-host",
+          "command": "fixture PHP and Go regression",
+          "provider_snapshot": "ff3e40938b6f4d7d6d210bf55964ff3b75175972ac88e17935a76713686c4ff8",
+          "consumer_snapshot": "4b3a31fe6bb0cb0e568aa33b514a8385478b6db3d858b6172c020481e0efd7a2",
+          "dependency_sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7",
+          "response_excerpt": "warehouse-wire-contract",
+          "evidence_sha256": "5633eb24208ced8dee07dd4d076d97f2e34fd826a876099ee29ad78dbc8e185e"
+        },
+        "model_usage": {
+          "provider": "openai-compatible",
+          "model": "qwen2.5-0.5b-instruct",
+          "mode": "live",
+          "request_sha256": "768dbc96546d6a8af2772a55a2926449068557cc8c2329fc09299b92f759c434",
+          "response_sha256": "ca022011fc73168cb9a5f5a94bce1c52f72aaea611d6fba0713737245f42c3a9",
+          "state": "complete",
+          "prompt_tokens": 220,
+          "completion_tokens": 22,
+          "metered": true,
+          "duration_ms": 1229
+        }
+      },
+      "name": "tax-rounding",
+      "preserve_legacy": true,
+      "provider_compatible_snapshot": "ff3e40938b6f4d7d6d210bf55964ff3b75175972ac88e17935a76713686c4ff8",
+      "provider_old_snapshot": "3b363109a860fa8110468700eb0c0b0dd0bf9a9d8463774b57a91203a4e29c1b",
+      "rule": {
+        "valid_patch": false,
+        "rejected": true,
+        "business_pass": false,
+        "selected_paths": [
+          "src/checkout.php",
+          "src/export.php"
+        ],
+        "run": {
+          "state": "failed",
+          "exit_code": 1,
+          "milliseconds": 0,
+          "output_bytes": 0,
+          "image": "trusted-fixture-host",
+          "command": "fixture PHP and Go regression",
+          "provider_snapshot": "ff3e40938b6f4d7d6d210bf55964ff3b75175972ac88e17935a76713686c4ff8",
+          "consumer_snapshot": "4b3a31fe6bb0cb0e568aa33b514a8385478b6db3d858b6172c020481e0efd7a2",
+          "dependency_sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7",
+          "response_excerpt": "warehouse-wire-contract",
+          "evidence_sha256": "5633eb24208ced8dee07dd4d076d97f2e34fd826a876099ee29ad78dbc8e185e"
+        }
+      }
+    },
+    {
+      "consumer_candidate_snapshot": "7793c8383714f2bd466e2e2c9fae4fd8a9c52b3e7095257552df79afc435ad92",
+      "consumer_old_snapshot": "a5538cf3e0490710860827110c0f3be7d9beb77d4b496d45562b1df859181192",
+      "model": {
+        "valid_patch": true,
+        "rejected": false,
+        "business_pass": true,
+        "selected_paths": [
+          "src/checkout.php",
+          "src/export.php"
+        ],
+        "run": {
+          "state": "passed",
+          "exit_code": 0,
+          "milliseconds": 200,
+          "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "output_bytes": 0,
+          "image": "trusted-fixture-host",
+          "command": "fixture PHP and Go regression",
+          "provider_snapshot": "9439915ab04ed7d85d5d9ec1fdbf2a636744103304c1a3141660c2becc7b9352",
+          "consumer_snapshot": "ba512f0f86ddc37b2cb51131b18bfcdc7242f50440cc19f6a8f66367ab0517a6",
+          "dependency_sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7",
+          "evidence_sha256": "2c4c166a502df28acc9a9b6032cb489010a3eb2b70df17475be3aa31063aef66"
+        },
+        "model_usage": {
+          "provider": "openai-compatible",
+          "model": "qwen2.5-0.5b-instruct",
+          "mode": "live",
+          "request_sha256": "6a7a31f6fe3e86bce0ab1417dc9334bce567b54820aff851542e5af15905a41c",
+          "response_sha256": "1988b5cf9f388ff7e346c004d19ca6e3931e16e507b48126d2998cf6ce376cb3",
+          "state": "complete",
+          "prompt_tokens": 214,
+          "completion_tokens": 22,
+          "metered": true,
+          "duration_ms": 1078
+        }
+      },
+      "name": "backorder-eta",
+      "preserve_legacy": false,
+      "provider_compatible_snapshot": "9439915ab04ed7d85d5d9ec1fdbf2a636744103304c1a3141660c2becc7b9352",
+      "provider_old_snapshot": "15ce6eeef045e422e513b61a54f3ebedc3bea7c17529babfb8546dc4da02bfd0",
+      "rule": {
+        "valid_patch": true,
+        "rejected": false,
+        "business_pass": true,
+        "selected_paths": [
+          "src/checkout.php",
+          "src/export.php"
+        ],
+        "run": {
+          "state": "passed",
+          "exit_code": 0,
+          "milliseconds": 206,
+          "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "output_bytes": 0,
+          "image": "trusted-fixture-host",
+          "command": "fixture PHP and Go regression",
+          "provider_snapshot": "9439915ab04ed7d85d5d9ec1fdbf2a636744103304c1a3141660c2becc7b9352",
+          "consumer_snapshot": "ba512f0f86ddc37b2cb51131b18bfcdc7242f50440cc19f6a8f66367ab0517a6",
+          "dependency_sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7",
+          "evidence_sha256": "0d3a47324f2d0e07152c9cb2d20b6960f0c1c1479b55f41337ce7c1d0f258e35"
+        }
+      }
+    },
+    {
+      "consumer_candidate_snapshot": "b325991dcc967965ae78b26b67841d534b93b80a56bceb9e9e3764e8a2688c09",
+      "consumer_old_snapshot": "bc1510562e9241d711ffb5425161e15a39b3bee2acf7447a3a93401b25f52c79",
+      "model": {
+        "valid_patch": true,
+        "rejected": false,
+        "business_pass": true,
+        "selected_paths": [
+          "src/checkout.php",
+          "src/export.php"
+        ],
+        "run": {
+          "state": "passed",
+          "exit_code": 0,
+          "milliseconds": 181,
+          "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "output_bytes": 0,
+          "image": "trusted-fixture-host",
+          "command": "fixture PHP and Go regression",
+          "provider_snapshot": "341e3d86172faab030b665ab7636a2234918add50577f7ba74ca6837570663f9",
+          "consumer_snapshot": "534c700eba33dcbbc9f9c9580fea69aee12ec2289f2782c3c401d360e408f486",
+          "dependency_sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7",
+          "evidence_sha256": "7e7f76c8b42321467bba32f164b318ba6783bcdfbdba3d17e738cca4d05baaf8"
+        },
+        "model_usage": {
+          "provider": "openai-compatible",
+          "model": "qwen2.5-0.5b-instruct",
+          "mode": "live",
+          "request_sha256": "82f2acacbb23a69411524b1ccbf568e506df6f54f89aef0f77383866abefe2b4",
+          "response_sha256": "9578514d0c627c5e4effa56e8eefe13e39380ef1f193d82775921569849730b4",
+          "state": "complete",
+          "prompt_tokens": 210,
+          "completion_tokens": 22,
+          "metered": true,
+          "duration_ms": 1059
+        }
+      },
+      "name": "shipment-proof",
+      "preserve_legacy": false,
+      "provider_compatible_snapshot": "341e3d86172faab030b665ab7636a2234918add50577f7ba74ca6837570663f9",
+      "provider_old_snapshot": "382be99f16aacd23272aa43cca27e5adf1914b773a3f9efe9e17d926e17a5241",
+      "rule": {
+        "valid_patch": true,
+        "rejected": false,
+        "business_pass": true,
+        "selected_paths": [
+          "src/checkout.php",
+          "src/export.php"
+        ],
+        "run": {
+          "state": "passed",
+          "exit_code": 0,
+          "milliseconds": 177,
+          "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "output_bytes": 0,
+          "image": "trusted-fixture-host",
+          "command": "fixture PHP and Go regression",
+          "provider_snapshot": "341e3d86172faab030b665ab7636a2234918add50577f7ba74ca6837570663f9",
+          "consumer_snapshot": "534c700eba33dcbbc9f9c9580fea69aee12ec2289f2782c3c401d360e408f486",
+          "dependency_sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7",
+          "evidence_sha256": "b97b3f9d5141275a9a65d2d31f555118d4fad81a3f1ca54d3254ad1fe09aed66"
+        }
+      }
+    },
+    {
+      "consumer_candidate_snapshot": "7eaf47e62cad6509615a5201e9b2a0dc3887676d13ca5fdbb6a16d73bfde7230",
+      "consumer_old_snapshot": "22afa24d08b02293ce5ccb85d99033b06468c179512dfeca8f6124c58b60ea4f",
+      "model": {
+        "valid_patch": true,
+        "rejected": false,
+        "business_pass": true,
+        "selected_paths": [
+          "src/checkout.php",
+          "src/export.php"
+        ],
+        "run": {
+          "state": "passed",
+          "exit_code": 0,
+          "milliseconds": 178,
+          "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "output_bytes": 0,
+          "image": "trusted-fixture-host",
+          "command": "fixture PHP and Go regression",
+          "provider_snapshot": "ab13ab70024b12d4381df8b3a8f28a361a02a534eab7a74eb8fedd40260d943f",
+          "consumer_snapshot": "158b192d5431d3c794f848efe90823a52bf3865d0b51efd4dd69b5fc07680d6a",
+          "dependency_sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7",
+          "evidence_sha256": "d74caf72939648ce4e4af980f620988d981d8a7d5f443e87c279e0d5f3f887bd"
+        },
+        "model_usage": {
+          "provider": "openai-compatible",
+          "model": "qwen2.5-0.5b-instruct",
+          "mode": "live",
+          "request_sha256": "1aad321cc7a426fdd5bd13a83eb5ee08865c2c5253dda4746f3d69763f31e12a",
+          "response_sha256": "b840fd1a4d5b9f8ec2ed396d58cdaecd353403025240768c8e9e8d7e9635ca74",
+          "state": "complete",
+          "prompt_tokens": 210,
+          "completion_tokens": 22,
+          "metered": true,
+          "duration_ms": 1106
+        }
+      },
+      "name": "pick-weight",
+      "preserve_legacy": false,
+      "provider_compatible_snapshot": "ab13ab70024b12d4381df8b3a8f28a361a02a534eab7a74eb8fedd40260d943f",
+      "provider_old_snapshot": "14d51a813649ecd0ddd1f3094f78d7804f68e9887f2d2b5b70b7a5bd125ce968",
+      "rule": {
+        "valid_patch": true,
+        "rejected": false,
+        "business_pass": true,
+        "selected_paths": [
+          "src/checkout.php",
+          "src/export.php"
+        ],
+        "run": {
+          "state": "passed",
+          "exit_code": 0,
+          "milliseconds": 194,
+          "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "output_bytes": 0,
+          "image": "trusted-fixture-host",
+          "command": "fixture PHP and Go regression",
+          "provider_snapshot": "ab13ab70024b12d4381df8b3a8f28a361a02a534eab7a74eb8fedd40260d943f",
+          "consumer_snapshot": "158b192d5431d3c794f848efe90823a52bf3865d0b51efd4dd69b5fc07680d6a",
+          "dependency_sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7",
+          "evidence_sha256": "c81c045933c105adcd971d345889eae69d1fc9b764f2cbc2fc4385ec52175a79"
+        }
+      }
+    },
+    {
+      "consumer_candidate_snapshot": "24b1904f17dd2e895c57e6467dc355d54d285255f6d26649f1c9a1be6366bd5f",
+      "consumer_old_snapshot": "93d98c4bc316f7ee42b074fb00f59873f4495468878e4e4a6a2ea1e28f51ec44",
+      "model": {
+        "valid_patch": false,
+        "rejected": true,
+        "business_pass": false,
+        "selected_paths": [
+          "src/checkout.php",
+          "src/export.php"
+        ],
+        "run": {
+          "state": "failed",
+          "exit_code": 1,
+          "milliseconds": 0,
+          "output_bytes": 0,
+          "image": "trusted-fixture-host",
+          "command": "fixture PHP and Go regression",
+          "provider_snapshot": "f9f64ee2a1d6b55d4a5820a39e701ddf15af036e1f5d129ea7cedc44c6b92481",
+          "consumer_snapshot": "e121199349107696fb6d7e018e70a65cadd302a40d902d53795094d952f42104",
+          "dependency_sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7",
+          "response_excerpt": "warehouse-wire-contract",
+          "evidence_sha256": "f1183a374f92edf69612874f628557dbb95bddd45b3eda405fdb33cb301ed871"
+        },
+        "model_usage": {
+          "provider": "openai-compatible",
+          "model": "qwen2.5-0.5b-instruct",
+          "mode": "live",
+          "request_sha256": "ccf348ed78458f45d0918f3b8be6cdb3d1f84ef6656acc12968aa56eb0f9e5f4",
+          "response_sha256": "95dc515576d996c670bf73d6be9a0e06adcbd2c3c116f28eda82defdfb61b650",
+          "state": "complete",
+          "prompt_tokens": 244,
+          "completion_tokens": 22,
+          "metered": true,
+          "duration_ms": 1202
+        }
+      },
+      "name": "point-expiry",
+      "preserve_legacy": true,
+      "provider_compatible_snapshot": "f9f64ee2a1d6b55d4a5820a39e701ddf15af036e1f5d129ea7cedc44c6b92481",
+      "provider_old_snapshot": "6963c4fa292e35db8efdf58bb63d9c0b9a0ee3fe3863b08dc65f4da567202438",
+      "rule": {
+        "valid_patch": false,
+        "rejected": true,
+        "business_pass": false,
+        "selected_paths": [
+          "src/checkout.php",
+          "src/export.php"
+        ],
+        "run": {
+          "state": "failed",
+          "exit_code": 1,
+          "milliseconds": 0,
+          "output_bytes": 0,
+          "image": "trusted-fixture-host",
+          "command": "fixture PHP and Go regression",
+          "provider_snapshot": "f9f64ee2a1d6b55d4a5820a39e701ddf15af036e1f5d129ea7cedc44c6b92481",
+          "consumer_snapshot": "e121199349107696fb6d7e018e70a65cadd302a40d902d53795094d952f42104",
+          "dependency_sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7",
+          "response_excerpt": "warehouse-wire-contract",
+          "evidence_sha256": "f1183a374f92edf69612874f628557dbb95bddd45b3eda405fdb33cb301ed871"
+        }
+      }
+    },
+    {
+      "consumer_candidate_snapshot": "463347df39503a6fe54acc3d71cafd3f81703dd1997929c627c3f849ccbfbe4c",
+      "consumer_old_snapshot": "b4c5b6e3bc3533cf23ddb32ac526f4db808ca57abdd57de015e117f764ad03f9",
+      "model": {
+        "valid_patch": true,
+        "rejected": false,
+        "business_pass": true,
+        "selected_paths": [
+          "src/checkout.php",
+          "src/export.php"
+        ],
+        "run": {
+          "state": "passed",
+          "exit_code": 0,
+          "milliseconds": 167,
+          "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "output_bytes": 0,
+          "image": "trusted-fixture-host",
+          "command": "fixture PHP and Go regression",
+          "provider_snapshot": "0075688c2527df1aef550c77fbb2db0d3cf008bf3e8d018b4946773b3dc589af",
+          "consumer_snapshot": "78d4bd03bce7fd28b74da0b231867a5514e957196b1a7f2da72d9cda5e38e7e1",
+          "dependency_sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7",
+          "evidence_sha256": "a6f3c5bd86f1e9715b170fa419aca9f4e8fdfc869bc5d9af096ec0918ac69dc3"
+        },
+        "model_usage": {
+          "provider": "openai-compatible",
+          "model": "qwen2.5-0.5b-instruct",
+          "mode": "live",
+          "request_sha256": "14b03594b973eead14f86ccc07d7fb7a86014c0d523e61fb493c797c7b40db84",
+          "response_sha256": "80938ba71a8edf9d89bb7b2e7b968aff6ef3a9f9e4c6a962826d8b28d270af27",
+          "state": "complete",
+          "prompt_tokens": 206,
+          "completion_tokens": 22,
+          "metered": true,
+          "duration_ms": 1043
+        }
+      },
+      "name": "commission-tiers",
+      "preserve_legacy": false,
+      "provider_compatible_snapshot": "0075688c2527df1aef550c77fbb2db0d3cf008bf3e8d018b4946773b3dc589af",
+      "provider_old_snapshot": "202357e9e4ed99937816a5337450eb1114e493c6249266461dff8a32a6db6d8b",
+      "rule": {
+        "valid_patch": true,
+        "rejected": false,
+        "business_pass": true,
+        "selected_paths": [
+          "src/checkout.php",
+          "src/export.php"
+        ],
+        "run": {
+          "state": "passed",
+          "exit_code": 0,
+          "milliseconds": 203,
+          "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "output_bytes": 0,
+          "image": "trusted-fixture-host",
+          "command": "fixture PHP and Go regression",
+          "provider_snapshot": "0075688c2527df1aef550c77fbb2db0d3cf008bf3e8d018b4946773b3dc589af",
+          "consumer_snapshot": "78d4bd03bce7fd28b74da0b231867a5514e957196b1a7f2da72d9cda5e38e7e1",
+          "dependency_sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7",
+          "evidence_sha256": "625465bb0145e6e5435eca508781f76d3038e6f3e93b6131970692521da5e8e8"
+        }
+      }
+    },
+    {
+      "consumer_candidate_snapshot": "292e0d482403eab4eaaa1d7bc1030abd3699e0f48482a7170b91bf3544aaf26b",
+      "consumer_old_snapshot": "e4a292b3e9c26158dd7994c31ca0855dd637b589345213bd704e8fe51dff8f9d",
+      "model": {
+        "valid_patch": false,
+        "rejected": true,
+        "business_pass": false,
+        "selected_paths": [
+          "src/checkout.php",
+          "src/export.php"
+        ],
+        "run": {
+          "state": "failed",
+          "exit_code": 1,
+          "milliseconds": 0,
+          "output_bytes": 0,
+          "image": "trusted-fixture-host",
+          "command": "fixture PHP and Go regression",
+          "provider_snapshot": "81d830b775f05ff0e954870ac32e9d220af3c9aec7442da1982b9c71889afe90",
+          "consumer_snapshot": "d3b85ea3700d067e66341f33e68d617816931e2f0df04de01802475eaa6d9ec1",
+          "dependency_sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7",
+          "response_excerpt": "warehouse-wire-contract",
+          "evidence_sha256": "48a6517578c9508ea0c8ca617c370708e1fb266a5853d6044e4f91e8279c3c07"
+        },
+        "model_usage": {
+          "provider": "openai-compatible",
+          "model": "qwen2.5-0.5b-instruct",
+          "mode": "live",
+          "request_sha256": "124315ed9aac9e5325f32144a8dfbb09832b3fef403a7db263bbcf5a6cd5754f",
+          "response_sha256": "93f9333cc2564bfbd97a28fbda3a9e0ccb1e0ea140ada7b0f78b2b31aedfa5c5",
+          "state": "complete",
+          "prompt_tokens": 216,
+          "completion_tokens": 22,
+          "metered": true,
+          "duration_ms": 1166
+        }
+      },
+      "name": "refund-line",
+      "preserve_legacy": true,
+      "provider_compatible_snapshot": "81d830b775f05ff0e954870ac32e9d220af3c9aec7442da1982b9c71889afe90",
+      "provider_old_snapshot": "ef2373ec83fefb7c8b879650c0ae5845487261b3345565d430cdedc2b2587211",
+      "rule": {
+        "valid_patch": false,
+        "rejected": true,
+        "business_pass": false,
+        "selected_paths": [
+          "src/checkout.php",
+          "src/export.php"
+        ],
+        "run": {
+          "state": "failed",
+          "exit_code": 1,
+          "milliseconds": 0,
+          "output_bytes": 0,
+          "image": "trusted-fixture-host",
+          "command": "fixture PHP and Go regression",
+          "provider_snapshot": "81d830b775f05ff0e954870ac32e9d220af3c9aec7442da1982b9c71889afe90",
+          "consumer_snapshot": "d3b85ea3700d067e66341f33e68d617816931e2f0df04de01802475eaa6d9ec1",
+          "dependency_sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7",
+          "response_excerpt": "warehouse-wire-contract",
+          "evidence_sha256": "48a6517578c9508ea0c8ca617c370708e1fb266a5853d6044e4f91e8279c3c07"
+        }
+      }
+    },
+    {
+      "consumer_candidate_snapshot": "580a1753e67ed433ba5011da215855ce8ac25f8ba42494caad99fddbe2093d9e",
+      "consumer_old_snapshot": "11ba2c0bf184a9001036cffbb7e38d9bdbe575b55456f4b2e9a4a3a53b964b40",
+      "model": {
+        "valid_patch": true,
+        "rejected": false,
+        "business_pass": true,
+        "selected_paths": [
+          "src/checkout.php",
+          "src/export.php"
+        ],
+        "run": {
+          "state": "passed",
+          "exit_code": 0,
+          "milliseconds": 197,
+          "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "output_bytes": 0,
+          "image": "trusted-fixture-host",
+          "command": "fixture PHP and Go regression",
+          "provider_snapshot": "6ca1cf14abb904c2ef7877dda455befdbf8b87222f71f03f88825fa22143a0f9",
+          "consumer_snapshot": "7736de3985243b1ac21350fdb9fd077c5dc4dff9ff3be2c7912777ca5b849112",
+          "dependency_sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7",
+          "evidence_sha256": "7473f868faf7a079965723faee70cdb5583c6f0eaae3de8d8a48b67e31adf58c"
+        },
+        "model_usage": {
+          "provider": "openai-compatible",
+          "model": "qwen2.5-0.5b-instruct",
+          "mode": "live",
+          "request_sha256": "4206588f4b4eb79efe681c4dd7e99ef38f4323456881d6f858987dddb228e990",
+          "response_sha256": "2d36b1b9a62480ba817f26c25b70fcae4dfc836644e8419cbf2ab4332e3e4001",
+          "state": "complete",
+          "prompt_tokens": 210,
+          "completion_tokens": 22,
+          "metered": true,
+          "duration_ms": 1027
+        }
+      },
+      "name": "sku-damage",
+      "preserve_legacy": false,
+      "provider_compatible_snapshot": "6ca1cf14abb904c2ef7877dda455befdbf8b87222f71f03f88825fa22143a0f9",
+      "provider_old_snapshot": "d7075d66dc3c4a271c7565752e2a7e45f508aac1c3c31aa978bc6369fd7748fc",
+      "rule": {
+        "valid_patch": true,
+        "rejected": false,
+        "business_pass": true,
+        "selected_paths": [
+          "src/checkout.php",
+          "src/export.php"
+        ],
+        "run": {
+          "state": "passed",
+          "exit_code": 0,
+          "milliseconds": 230,
+          "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "output_bytes": 0,
+          "image": "trusted-fixture-host",
+          "command": "fixture PHP and Go regression",
+          "provider_snapshot": "6ca1cf14abb904c2ef7877dda455befdbf8b87222f71f03f88825fa22143a0f9",
+          "consumer_snapshot": "7736de3985243b1ac21350fdb9fd077c5dc4dff9ff3be2c7912777ca5b849112",
+          "dependency_sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7",
+          "evidence_sha256": "68ebbf98b9b2e174a9968891c81e74502bdd068d75f52a38b370c4094b6f6930"
+        }
+      }
+    },
+    {
+      "consumer_candidate_snapshot": "c5b7f070156e40617e994ad19215af125899ce02fe0bcedcd2a18340cc68fb3c",
+      "consumer_old_snapshot": "fd42f48dbf82b334d6d35911bbe337b3e29cbc0f1b4681326197dea7fe0e43be",
+      "model": {
+        "valid_patch": true,
+        "rejected": false,
+        "business_pass": true,
+        "selected_paths": [
+          "src/checkout.php",
+          "src/export.php"
+        ],
+        "run": {
+          "state": "passed",
+          "exit_code": 0,
+          "milliseconds": 175,
+          "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "output_bytes": 0,
+          "image": "trusted-fixture-host",
+          "command": "fixture PHP and Go regression",
+          "provider_snapshot": "1c4dfb0f9035ff0d62e90caccc5d11e1c218ecfc0db2663e1c009faf871cb7d1",
+          "consumer_snapshot": "ba5dd9661d6d8068bbf03a7661e35b16b6f24865f89075fd1245257a840b9f8a",
+          "dependency_sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7",
+          "evidence_sha256": "0d74935f4e13b453394c29d0bf50a30eae6ce1d5d70b8b5f572c9ee958fab8e4"
+        },
+        "model_usage": {
+          "provider": "openai-compatible",
+          "model": "qwen2.5-0.5b-instruct",
+          "mode": "live",
+          "request_sha256": "4807d6e03c9a37d4dbabb36dcaec4a5329fe4292f61399a3b83c07951a641b13",
+          "response_sha256": "66554d116f34f4df00c66a603783cf9bef71114347862d6a7001257bc6a57d63",
+          "state": "complete",
+          "prompt_tokens": 210,
+          "completion_tokens": 22,
+          "metered": true,
+          "duration_ms": 1062
+        }
+      },
+      "name": "shipment-zone",
+      "preserve_legacy": false,
+      "provider_compatible_snapshot": "1c4dfb0f9035ff0d62e90caccc5d11e1c218ecfc0db2663e1c009faf871cb7d1",
+      "provider_old_snapshot": "1cad82c90dc6f399433d6c7201240580add8f406cfb0d89f7cd9a895826aab1e",
+      "rule": {
+        "valid_patch": true,
+        "rejected": false,
+        "business_pass": true,
+        "selected_paths": [
+          "src/checkout.php",
+          "src/export.php"
+        ],
+        "run": {
+          "state": "passed",
+          "exit_code": 0,
+          "milliseconds": 270,
+          "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "output_bytes": 0,
+          "image": "trusted-fixture-host",
+          "command": "fixture PHP and Go regression",
+          "provider_snapshot": "1c4dfb0f9035ff0d62e90caccc5d11e1c218ecfc0db2663e1c009faf871cb7d1",
+          "consumer_snapshot": "ba5dd9661d6d8068bbf03a7661e35b16b6f24865f89075fd1245257a840b9f8a",
+          "dependency_sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7",
+          "evidence_sha256": "8ef9773295dcaa827588fb1227e4678243d6f1cb74e07b58679a554b731e00b7"
+        }
+      }
+    },
+    {
+      "consumer_candidate_snapshot": "932f78f034ddd7f478fd08b3cb6008a90f22344e30a5be20402a212ceaf8fda3",
+      "consumer_old_snapshot": "2f29a2158bc5053654823e15a0bd5c10a72d78a7d63e801fb9ab12c3b52d8e28",
+      "model": {
+        "valid_patch": true,
+        "rejected": false,
+        "business_pass": true,
+        "selected_paths": [
+          "src/checkout.php",
+          "src/export.php"
+        ],
+        "run": {
+          "state": "passed",
+          "exit_code": 0,
+          "milliseconds": 159,
+          "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "output_bytes": 0,
+          "image": "trusted-fixture-host",
+          "command": "fixture PHP and Go regression",
+          "provider_snapshot": "b98629eca2c6fdb463478b676520f01914eb5ad9f163c5abe8a331fa9188a56f",
+          "consumer_snapshot": "64c1422f63456f6803b8a88859b509852ec38aa091d54692ba0190f72eb31a9c",
+          "dependency_sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7",
+          "evidence_sha256": "7b6a9772be0f179c66b3f90ea8c987e278bc4b6415a72db74f62d1ac38726b7c"
+        },
+        "model_usage": {
+          "provider": "openai-compatible",
+          "model": "qwen2.5-0.5b-instruct",
+          "mode": "live",
+          "request_sha256": "9a5e7cf444617642939fabe552f802d447cdceeaaa49682bb4c5f5a143ce41f2",
+          "response_sha256": "50b6708da326ec3d1d20a0644f7f872b88b667b9b48a6db65daf78a5c4728ba0",
+          "state": "complete",
+          "prompt_tokens": 210,
+          "completion_tokens": 22,
+          "metered": true,
+          "duration_ms": 1083
+        }
+      },
+      "name": "coupon-use",
+      "preserve_legacy": false,
+      "provider_compatible_snapshot": "b98629eca2c6fdb463478b676520f01914eb5ad9f163c5abe8a331fa9188a56f",
+      "provider_old_snapshot": "cb2e9324af7c4658008f6bb31c327cb0437d0c528294414745b601d6c99d27f8",
+      "rule": {
+        "valid_patch": true,
+        "rejected": false,
+        "business_pass": true,
+        "selected_paths": [
+          "src/checkout.php",
+          "src/export.php"
+        ],
+        "run": {
+          "state": "passed",
+          "exit_code": 0,
+          "milliseconds": 195,
+          "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "output_bytes": 0,
+          "image": "trusted-fixture-host",
+          "command": "fixture PHP and Go regression",
+          "provider_snapshot": "b98629eca2c6fdb463478b676520f01914eb5ad9f163c5abe8a331fa9188a56f",
+          "consumer_snapshot": "64c1422f63456f6803b8a88859b509852ec38aa091d54692ba0190f72eb31a9c",
+          "dependency_sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7",
+          "evidence_sha256": "f91135bab1a43363204225d6902346501074916ba792b1a9d38b4d73463f3a0e"
+        }
+      }
+    },
+    {
+      "consumer_candidate_snapshot": "db5f712ae48d8a5b5f6469a2ccc9203bb06c6ff514f98f6763b239130b182caa",
+      "consumer_old_snapshot": "c9dab72323ac112aadc0e97ed0c8965fe2d2e18c7a83b25ea821fdd58ca09529",
+      "model": {
+        "valid_patch": false,
+        "rejected": true,
+        "business_pass": false,
+        "selected_paths": [
+          "src/checkout.php",
+          "src/export.php"
+        ],
+        "run": {
+          "state": "failed",
+          "exit_code": 1,
+          "milliseconds": 0,
+          "output_bytes": 0,
+          "image": "trusted-fixture-host",
+          "command": "fixture PHP and Go regression",
+          "provider_snapshot": "88a072c291c6975e130e87382893b970b6cae7feb8306d9c2e34921f8cfd6fe1",
+          "consumer_snapshot": "2648c364647953563e6cd771ad52fdbd8821357f2aa1bf70997446b9947142b2",
+          "dependency_sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7",
+          "response_excerpt": "warehouse-wire-contract",
+          "evidence_sha256": "55abf7a1bae0ba6a78d9ddbca2597ce51b5c3fa0b2ec7e67530bf1ae0fa1fd91"
+        },
+        "model_usage": {
+          "provider": "openai-compatible",
+          "model": "qwen2.5-0.5b-instruct",
+          "mode": "live",
+          "request_sha256": "aaa2089ac60e957225d06e10f55a9b545c0c1c3f7910d68db36c64ef32b5464e",
+          "response_sha256": "4b0ac6fa520b42238842ebb1fb40ffeaf2106f5cc6f92466eefa0fd5c1c908d4",
+          "state": "complete",
+          "prompt_tokens": 220,
+          "completion_tokens": 22,
+          "metered": true,
+          "duration_ms": 1102
+        }
+      },
+      "name": "bulk-invoice",
+      "preserve_legacy": true,
+      "provider_compatible_snapshot": "88a072c291c6975e130e87382893b970b6cae7feb8306d9c2e34921f8cfd6fe1",
+      "provider_old_snapshot": "0ec0a19b6fa9995f461504b013b251a1e81ca2e552f9501b321075ff6e98416c",
+      "rule": {
+        "valid_patch": false,
+        "rejected": true,
+        "business_pass": false,
+        "selected_paths": [
+          "src/checkout.php",
+          "src/export.php"
+        ],
+        "run": {
+          "state": "failed",
+          "exit_code": 1,
+          "milliseconds": 0,
+          "output_bytes": 0,
+          "image": "trusted-fixture-host",
+          "command": "fixture PHP and Go regression",
+          "provider_snapshot": "88a072c291c6975e130e87382893b970b6cae7feb8306d9c2e34921f8cfd6fe1",
+          "consumer_snapshot": "2648c364647953563e6cd771ad52fdbd8821357f2aa1bf70997446b9947142b2",
+          "dependency_sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7",
+          "response_excerpt": "warehouse-wire-contract",
+          "evidence_sha256": "55abf7a1bae0ba6a78d9ddbca2597ce51b5c3fa0b2ec7e67530bf1ae0fa1fd91"
+        }
+      }
+    },
+    {
+      "consumer_candidate_snapshot": "704aeb573e392253b319a51c537ee8d5277c59c6a0948c216a6aa78ff70b8ef3",
+      "consumer_old_snapshot": "8f36761ec1a8e59d60d46ad43b3964059e24b5b8e5ce4da575c8f1b17b9e4f1a",
+      "model": {
+        "valid_patch": true,
+        "rejected": false,
+        "business_pass": true,
+        "selected_paths": [
+          "src/checkout.php",
+          "src/export.php"
+        ],
+        "run": {
+          "state": "passed",
+          "exit_code": 0,
+          "milliseconds": 184,
+          "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "output_bytes": 0,
+          "image": "trusted-fixture-host",
+          "command": "fixture PHP and Go regression",
+          "provider_snapshot": "650b11f0a6647b28196ea217bae47c29dd85a2c464202e47d0e866329a505074",
+          "consumer_snapshot": "19c27f6956427a1e6b49265fd473f83012ffe93333491ac7a6ca3cb5c4cdbcfc",
+          "dependency_sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7",
+          "evidence_sha256": "427457b5cbf4432b95a49ebb66f941c4c0bf86ad928b6500497785c665279823"
+        },
+        "model_usage": {
+          "provider": "openai-compatible",
+          "model": "qwen2.5-0.5b-instruct",
+          "mode": "live",
+          "request_sha256": "ac875a6c003002a38995756668ff73b0b9861fad50f616f40b25ba437366bd87",
+          "response_sha256": "e0759e8bcb328e2214cc630763b64957d5f22c959183d924bbc89397043f8d4d",
+          "state": "complete",
+          "prompt_tokens": 206,
+          "completion_tokens": 22,
+          "metered": true,
+          "duration_ms": 1147
+        }
+      },
+      "name": "reserved-stock",
+      "preserve_legacy": false,
+      "provider_compatible_snapshot": "650b11f0a6647b28196ea217bae47c29dd85a2c464202e47d0e866329a505074",
+      "provider_old_snapshot": "266c87da3887d10669b65c3d7e9805c56cadc5dcc02f6aa6a6b6ea831a21f22c",
+      "rule": {
+        "valid_patch": true,
+        "rejected": false,
+        "business_pass": true,
+        "selected_paths": [
+          "src/checkout.php",
+          "src/export.php"
+        ],
+        "run": {
+          "state": "passed",
+          "exit_code": 0,
+          "milliseconds": 195,
+          "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "output_bytes": 0,
+          "image": "trusted-fixture-host",
+          "command": "fixture PHP and Go regression",
+          "provider_snapshot": "650b11f0a6647b28196ea217bae47c29dd85a2c464202e47d0e866329a505074",
+          "consumer_snapshot": "19c27f6956427a1e6b49265fd473f83012ffe93333491ac7a6ca3cb5c4cdbcfc",
+          "dependency_sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7",
+          "evidence_sha256": "79248776101628f09cb91acf171f0db1cde69689a63c982c016251c5a002d80f"
+        }
+      }
+    },
+    {
+      "consumer_candidate_snapshot": "03705703adfb7e27a67ef34c7b3a4c8686bf72e504659596365f69ffe4d53712",
+      "consumer_old_snapshot": "ba2a723fd58036fa4c0ee29ec4dc59aab2bb0ac48582b81be416597deb40a51b",
+      "model": {
+        "valid_patch": true,
+        "rejected": false,
+        "business_pass": true,
+        "selected_paths": [
+          "src/checkout.php",
+          "src/export.php"
+        ],
+        "run": {
+          "state": "passed",
+          "exit_code": 0,
+          "milliseconds": 191,
+          "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "output_bytes": 0,
+          "image": "trusted-fixture-host",
+          "command": "fixture PHP and Go regression",
+          "provider_snapshot": "93c2fd3b3a22f486fd1708e8fea7bb20aefe912ffd0bd37045e3706f7179dc5e",
+          "consumer_snapshot": "bb197be88fea4bee8e4eff62c4a7280c55da8b37b1966d4a37d19481b4345e44",
+          "dependency_sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7",
+          "evidence_sha256": "db453298c999e70780cd8fb2256bcd1309d3db906f58565e7693efe889413190"
+        },
+        "model_usage": {
+          "provider": "openai-compatible",
+          "model": "qwen2.5-0.5b-instruct",
+          "mode": "live",
+          "request_sha256": "667d772d7317e0de4aa7ba6baeaa20c5ab9c6b7cb0a86dc84713d9d5c0e3e45c",
+          "response_sha256": "f71d6fdf0341fead69a90c5eb02628d003b0512abff47e554447c184d30751c2",
+          "state": "complete",
+          "prompt_tokens": 238,
+          "completion_tokens": 22,
+          "metered": true,
+          "duration_ms": 1205
+        }
+      },
+      "name": "voucher-expiry",
+      "preserve_legacy": false,
+      "provider_compatible_snapshot": "93c2fd3b3a22f486fd1708e8fea7bb20aefe912ffd0bd37045e3706f7179dc5e",
+      "provider_old_snapshot": "4a2e89c8c7858a962378f679dcdb456d2128138fbc88e7e92a5db14c8a4882b1",
+      "rule": {
+        "valid_patch": true,
+        "rejected": false,
+        "business_pass": true,
+        "selected_paths": [
+          "src/checkout.php",
+          "src/export.php"
+        ],
+        "run": {
+          "state": "passed",
+          "exit_code": 0,
+          "milliseconds": 245,
+          "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "output_bytes": 0,
+          "image": "trusted-fixture-host",
+          "command": "fixture PHP and Go regression",
+          "provider_snapshot": "93c2fd3b3a22f486fd1708e8fea7bb20aefe912ffd0bd37045e3706f7179dc5e",
+          "consumer_snapshot": "bb197be88fea4bee8e4eff62c4a7280c55da8b37b1966d4a37d19481b4345e44",
+          "dependency_sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7",
+          "evidence_sha256": "3e35b65097c0b2c9f65e50b9d26cdb3462d6787686e32154c2deed9b13cd3641"
+        }
+      }
+    },
+    {
+      "consumer_candidate_snapshot": "2e0ab3c0fcfb82cb0847d61e3c424af0aa85f3503a7bdaf9e397743ad33cb320",
+      "consumer_old_snapshot": "1ac394ec8325b932aa7df740226dceae826a342e1d6817f60a8e4577f7b16e73",
+      "model": {
+        "valid_patch": true,
+        "rejected": false,
+        "business_pass": true,
+        "selected_paths": [
+          "src/checkout.php",
+          "src/export.php"
+        ],
+        "run": {
+          "state": "passed",
+          "exit_code": 0,
+          "milliseconds": 195,
+          "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "output_bytes": 0,
+          "image": "trusted-fixture-host",
+          "command": "fixture PHP and Go regression",
+          "provider_snapshot": "f5aa7d9ac76ed09f9828f86f4758014a2456bc52a4647aff713580318ac18d3c",
+          "consumer_snapshot": "cd38f2a73a72a98f2de12a352f7e5097b7640ae79c5c97b14ad1ebeeccdec01d",
+          "dependency_sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7",
+          "evidence_sha256": "6f1be70e3121a0bdb7c193cf8dcef12061276b86c2dc44aeb2b52d3bde62e9dd"
+        },
+        "model_usage": {
+          "provider": "openai-compatible",
+          "model": "qwen2.5-0.5b-instruct",
+          "mode": "live",
+          "request_sha256": "48ed9747100179379865842462d8a6d4dd83f4a60374059b45e0314a9cd9ca5a",
+          "response_sha256": "21098b7bfca5c17b41500c5c19e04a3151450d551d2e26871d5c0a64238fbba8",
+          "state": "complete",
+          "prompt_tokens": 210,
+          "completion_tokens": 22,
+          "metered": true,
+          "duration_ms": 1134
+        }
+      },
+      "name": "return-reason",
+      "preserve_legacy": false,
+      "provider_compatible_snapshot": "f5aa7d9ac76ed09f9828f86f4758014a2456bc52a4647aff713580318ac18d3c",
+      "provider_old_snapshot": "a745cce57f6331ea506f6b657c76f739244f4d94a4030b52814cbfa508be82b7",
+      "rule": {
+        "valid_patch": true,
+        "rejected": false,
+        "business_pass": true,
+        "selected_paths": [
+          "src/checkout.php",
+          "src/export.php"
+        ],
+        "run": {
+          "state": "passed",
+          "exit_code": 0,
+          "milliseconds": 281,
+          "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "output_bytes": 0,
+          "image": "trusted-fixture-host",
+          "command": "fixture PHP and Go regression",
+          "provider_snapshot": "f5aa7d9ac76ed09f9828f86f4758014a2456bc52a4647aff713580318ac18d3c",
+          "consumer_snapshot": "cd38f2a73a72a98f2de12a352f7e5097b7640ae79c5c97b14ad1ebeeccdec01d",
+          "dependency_sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7",
+          "evidence_sha256": "59d601dcb1ed7793b9f610c570ae88157e6174646c0c05dc5ddd4b9b68fb3d7e"
+        }
+      }
+    },
+    {
+      "consumer_candidate_snapshot": "81afe5fae275ec55a9120ddee9f0d90fad4b00451b1747b7a2b6078350012639",
+      "consumer_old_snapshot": "d2e88470df80e0a2d31b526d5b363c7337e47b4b2b3efb6392340d89b2471b82",
+      "model": {
+        "valid_patch": false,
+        "rejected": true,
+        "business_pass": false,
+        "selected_paths": [
+          "src/checkout.php",
+          "src/export.php"
+        ],
+        "run": {
+          "state": "failed",
+          "exit_code": 1,
+          "milliseconds": 0,
+          "output_bytes": 0,
+          "image": "trusted-fixture-host",
+          "command": "fixture PHP and Go regression",
+          "provider_snapshot": "e0cd7559dd1af43c012ceda3084ffd6e54341839a6c7e90d4f916f88e1d51ab0",
+          "consumer_snapshot": "5ab5f9ae97754986d715fac1344b2aa503b30afce26118d22a9f64838e08d167",
+          "dependency_sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7",
+          "response_excerpt": "warehouse-wire-contract",
+          "evidence_sha256": "f98c86e7f9a05b85c92541551926c9658619eedc8dbf5ca580d51b2093db9d2f"
+        },
+        "model_usage": {
+          "provider": "openai-compatible",
+          "model": "qwen2.5-0.5b-instruct",
+          "mode": "live",
+          "request_sha256": "80185c68c04c69636412ce12707f90fb26ca5ef3c5e2a587b582caf2d2f58267",
+          "response_sha256": "a9a7bb752ef06feceae55f20da347707659adc40397cbac64694204b40a587cb",
+          "state": "complete",
+          "prompt_tokens": 220,
+          "completion_tokens": 22,
+          "metered": true,
+          "duration_ms": 1240
+        }
+      },
+      "name": "settlement-rate",
+      "preserve_legacy": true,
+      "provider_compatible_snapshot": "e0cd7559dd1af43c012ceda3084ffd6e54341839a6c7e90d4f916f88e1d51ab0",
+      "provider_old_snapshot": "98854f146be3b10da125c7fceeeddb644fd2c4822c6189e295d3066d2273c5b8",
+      "rule": {
+        "valid_patch": false,
+        "rejected": true,
+        "business_pass": false,
+        "selected_paths": [
+          "src/checkout.php",
+          "src/export.php"
+        ],
+        "run": {
+          "state": "failed",
+          "exit_code": 1,
+          "milliseconds": 0,
+          "output_bytes": 0,
+          "image": "trusted-fixture-host",
+          "command": "fixture PHP and Go regression",
+          "provider_snapshot": "e0cd7559dd1af43c012ceda3084ffd6e54341839a6c7e90d4f916f88e1d51ab0",
+          "consumer_snapshot": "5ab5f9ae97754986d715fac1344b2aa503b30afce26118d22a9f64838e08d167",
+          "dependency_sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7",
+          "response_excerpt": "warehouse-wire-contract",
+          "evidence_sha256": "f98c86e7f9a05b85c92541551926c9658619eedc8dbf5ca580d51b2093db9d2f"
+        }
+      }
+    },
+    {
+      "consumer_candidate_snapshot": "5d3d65a65615a1911cce83c4492239a11bd291e534447cd2b8e316c2b3781e35",
+      "consumer_old_snapshot": "77dcba0f945fab2bab0eea7c274d7590115bcbba2aa3b93d948581bd649c44fd",
+      "model": {
+        "valid_patch": true,
+        "rejected": false,
+        "business_pass": true,
+        "selected_paths": [
+          "src/checkout.php",
+          "src/export.php"
+        ],
+        "run": {
+          "state": "passed",
+          "exit_code": 0,
+          "milliseconds": 160,
+          "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "output_bytes": 0,
+          "image": "trusted-fixture-host",
+          "command": "fixture PHP and Go regression",
+          "provider_snapshot": "57302ea22c33908db81b596c17aef874b73542753b681af8840e9cc955e0e2d8",
+          "consumer_snapshot": "44bfb9012d2350f2203fc6ba0dc44dd6d5527aaa53354b1dc440846ba688e5b9",
+          "dependency_sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7",
+          "evidence_sha256": "8a7929864e0b7a3b1dfbc8eb5a0c36a661cfd30973be110851fc8496b4f483c7"
+        },
+        "model_usage": {
+          "provider": "openai-compatible",
+          "model": "qwen2.5-0.5b-instruct",
+          "mode": "live",
+          "request_sha256": "580a877b9d1c6bffc5e5a655e5024dbb80541130b1c73330a66d5e8c9978288d",
+          "response_sha256": "d99b2830a0421fdc9f7e5453eb49f8849dad414afd089f100ca0044c45ec190a",
+          "state": "complete",
+          "prompt_tokens": 214,
+          "completion_tokens": 22,
+          "metered": true,
+          "duration_ms": 1167
+        }
+      },
+      "name": "partner-credit",
+      "preserve_legacy": false,
+      "provider_compatible_snapshot": "57302ea22c33908db81b596c17aef874b73542753b681af8840e9cc955e0e2d8",
+      "provider_old_snapshot": "df16352c241bb99c7edb436c7b9184fd94b0010078cf6f5170893142060c4930",
+      "rule": {
+        "valid_patch": true,
+        "rejected": false,
+        "business_pass": true,
+        "selected_paths": [
+          "src/checkout.php",
+          "src/export.php"
+        ],
+        "run": {
+          "state": "passed",
+          "exit_code": 0,
+          "milliseconds": 158,
+          "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "output_bytes": 0,
+          "image": "trusted-fixture-host",
+          "command": "fixture PHP and Go regression",
+          "provider_snapshot": "57302ea22c33908db81b596c17aef874b73542753b681af8840e9cc955e0e2d8",
+          "consumer_snapshot": "44bfb9012d2350f2203fc6ba0dc44dd6d5527aaa53354b1dc440846ba688e5b9",
+          "dependency_sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7",
+          "evidence_sha256": "9fe9238d0d5875ec108cf61a85d4139ef66f52c255de599347f480ba43d9cdd9"
+        }
+      }
+    },
+    {
+      "consumer_candidate_snapshot": "a73925fb950ac7598ee2a516a72269578a9bc1905f7b28f809f5d297ef8f938f",
+      "consumer_old_snapshot": "f4cefebf9bed2b2bd2d09b4f8dca4bee62d5bf4935f3ed2e2cb4df2b7c390de9",
+      "model": {
+        "valid_patch": true,
+        "rejected": false,
+        "business_pass": true,
+        "selected_paths": [
+          "src/checkout.php",
+          "src/export.php"
+        ],
+        "run": {
+          "state": "passed",
+          "exit_code": 0,
+          "milliseconds": 197,
+          "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "output_bytes": 0,
+          "image": "trusted-fixture-host",
+          "command": "fixture PHP and Go regression",
+          "provider_snapshot": "9fa1cbdd8bd1c0f39e2bff651523208386b6aadb55bccbe0cebb0e0bd381347c",
+          "consumer_snapshot": "35d3676ea8ca0aad1a687749b2150416e87e392e4e13cdd2e24cfd12fcb8c52f",
+          "dependency_sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7",
+          "evidence_sha256": "c3261cd425b9beb1b3199ff3c3fbdba07d1bcdcfab0eb70fe8dacf834238e0c2"
+        },
+        "model_usage": {
+          "provider": "openai-compatible",
+          "model": "qwen2.5-0.5b-instruct",
+          "mode": "live",
+          "request_sha256": "cc297379488ff6122fb7206b2850f494f289bb86f0ae43d9ffa2cdc5597f5345",
+          "response_sha256": "26b940ef89f3d7805fcbf6ee452ac7df0bf08dea627b8fdd48f423215ba1b9cc",
+          "state": "complete",
+          "prompt_tokens": 214,
+          "completion_tokens": 22,
+          "metered": true,
+          "duration_ms": 1227
+        }
+      },
+      "name": "replenishment",
+      "preserve_legacy": false,
+      "provider_compatible_snapshot": "9fa1cbdd8bd1c0f39e2bff651523208386b6aadb55bccbe0cebb0e0bd381347c",
+      "provider_old_snapshot": "3849878cd1dd81d36eb768107ce05ae06a8dc8b5b334ff0dd59f142fe63201bd",
+      "rule": {
+        "valid_patch": true,
+        "rejected": false,
+        "business_pass": true,
+        "selected_paths": [
+          "src/checkout.php",
+          "src/export.php"
+        ],
+        "run": {
+          "state": "passed",
+          "exit_code": 0,
+          "milliseconds": 162,
+          "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "output_bytes": 0,
+          "image": "trusted-fixture-host",
+          "command": "fixture PHP and Go regression",
+          "provider_snapshot": "9fa1cbdd8bd1c0f39e2bff651523208386b6aadb55bccbe0cebb0e0bd381347c",
+          "consumer_snapshot": "35d3676ea8ca0aad1a687749b2150416e87e392e4e13cdd2e24cfd12fcb8c52f",
+          "dependency_sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7",
+          "evidence_sha256": "75fcb542b3c354c01293efa438665ae307c7128a1436956a0188a5f7be297bb7"
+        }
+      }
+    },
+    {
+      "consumer_candidate_snapshot": "3927f4e252637bd7a17dc313cc13ba514de9cec7b2548ab75605cd9edafc83e6",
+      "consumer_old_snapshot": "ed3aa3346b918c7c53a485474892236812ced065f7a5859ba66582c03d514058",
+      "model": {
+        "valid_patch": true,
+        "rejected": false,
+        "business_pass": true,
+        "selected_paths": [
+          "src/checkout.php",
+          "src/export.php"
+        ],
+        "run": {
+          "state": "passed",
+          "exit_code": 0,
+          "milliseconds": 162,
+          "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "output_bytes": 0,
+          "image": "trusted-fixture-host",
+          "command": "fixture PHP and Go regression",
+          "provider_snapshot": "33e92824d4199774dca528cfc8c9f6b9c8388f0be14546f0856cb9364859102c",
+          "consumer_snapshot": "a623d63c1cd9a059e14e0d11de7365b26fea41d5308a329a9413bcb9403edcaf",
+          "dependency_sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7",
+          "evidence_sha256": "61905e371796b3cc66b857cb85b5b6da38df13968b655a953801101b1cd08017"
+        },
+        "model_usage": {
+          "provider": "openai-compatible",
+          "model": "qwen2.5-0.5b-instruct",
+          "mode": "live",
+          "request_sha256": "33577d798736c5c3309e8c83dbf21343c2f433fb34c8787debb99f76b45725c9",
+          "response_sha256": "a1b11742203398710a8b738feff6ed75312ecc2066f12eb073a68806bfc0c730",
+          "state": "complete",
+          "prompt_tokens": 214,
+          "completion_tokens": 22,
+          "metered": true,
+          "duration_ms": 1135
+        }
+      },
+      "name": "checkout-deposit",
+      "preserve_legacy": false,
+      "provider_compatible_snapshot": "33e92824d4199774dca528cfc8c9f6b9c8388f0be14546f0856cb9364859102c",
+      "provider_old_snapshot": "284f715d1658a555a5cc676952206f3dbf9af79657c4d65e87a95c7e365ba75b",
+      "rule": {
+        "valid_patch": true,
+        "rejected": false,
+        "business_pass": true,
+        "selected_paths": [
+          "src/checkout.php",
+          "src/export.php"
+        ],
+        "run": {
+          "state": "passed",
+          "exit_code": 0,
+          "milliseconds": 182,
+          "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "output_bytes": 0,
+          "image": "trusted-fixture-host",
+          "command": "fixture PHP and Go regression",
+          "provider_snapshot": "33e92824d4199774dca528cfc8c9f6b9c8388f0be14546f0856cb9364859102c",
+          "consumer_snapshot": "a623d63c1cd9a059e14e0d11de7365b26fea41d5308a329a9413bcb9403edcaf",
+          "dependency_sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7",
+          "evidence_sha256": "6d684fdb7b0e222a2b3955dfe0c1020e9b895ee741974cc640ad6400d6929237"
+        }
+      }
+    },
+    {
+      "consumer_candidate_snapshot": "34502a60f715440ff54b1ec6f8d5f993f57e083ed5a655040a0100baf4130491",
+      "consumer_old_snapshot": "0ac0cc01306cadb7999614dc9d9b0156ec8fef9ff92cf2a3099fefcaaddd6623",
+      "model": {
+        "valid_patch": false,
+        "rejected": true,
+        "business_pass": false,
+        "selected_paths": [
+          "src/checkout.php",
+          "src/export.php"
+        ],
+        "run": {
+          "state": "failed",
+          "exit_code": 1,
+          "milliseconds": 0,
+          "output_bytes": 0,
+          "image": "trusted-fixture-host",
+          "command": "fixture PHP and Go regression",
+          "provider_snapshot": "acc902dbea0ec288b089f30c8f8a376f93192b7b32a327789ed02aef91e1a9fb",
+          "consumer_snapshot": "820a9824ff738d3c3f2a6ecf66ff392657ca85722c27e10cc1c9b17a6603e6b4",
+          "dependency_sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7",
+          "response_excerpt": "warehouse-wire-contract",
+          "evidence_sha256": "e6f6d25f6cf9a3253ac1ba39d54723d6973db8422838035eb3bd602550ce51ec"
+        },
+        "model_usage": {
+          "provider": "openai-compatible",
+          "model": "qwen2.5-0.5b-instruct",
+          "mode": "live",
+          "request_sha256": "8d0401e8463927ba50d9fee99e9728836b9b7992355106bfa427292811d72ce7",
+          "response_sha256": "bcce66967fc72ae2dff9d65f0ad5dd087a66d919a5bbbd1af6d89eeceb221cea",
+          "state": "complete",
+          "prompt_tokens": 216,
+          "completion_tokens": 22,
+          "metered": true,
+          "duration_ms": 1124
+        }
+      },
+      "name": "receiving-window",
+      "preserve_legacy": true,
+      "provider_compatible_snapshot": "acc902dbea0ec288b089f30c8f8a376f93192b7b32a327789ed02aef91e1a9fb",
+      "provider_old_snapshot": "a82b3aac7caae07afbe127fffa6f27b88f8658953590e855edad2c2289dc873f",
+      "rule": {
+        "valid_patch": false,
+        "rejected": true,
+        "business_pass": false,
+        "selected_paths": [
+          "src/checkout.php",
+          "src/export.php"
+        ],
+        "run": {
+          "state": "failed",
+          "exit_code": 1,
+          "milliseconds": 0,
+          "output_bytes": 0,
+          "image": "trusted-fixture-host",
+          "command": "fixture PHP and Go regression",
+          "provider_snapshot": "acc902dbea0ec288b089f30c8f8a376f93192b7b32a327789ed02aef91e1a9fb",
+          "consumer_snapshot": "820a9824ff738d3c3f2a6ecf66ff392657ca85722c27e10cc1c9b17a6603e6b4",
+          "dependency_sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7",
+          "response_excerpt": "warehouse-wire-contract",
+          "evidence_sha256": "e6f6d25f6cf9a3253ac1ba39d54723d6973db8422838035eb3bd602550ce51ec"
+        }
+      }
+    },
+    {
+      "consumer_candidate_snapshot": "822d3cb5f0385a5ed65effb9472124d413f5f18f0f1fce9f011d645cbd5297a5",
+      "consumer_old_snapshot": "0bb44f83c72e983c8b09c2b6e36076367ede743829fff7e115f4e3b2ad178006",
+      "model": {
+        "valid_patch": true,
+        "rejected": false,
+        "business_pass": true,
+        "selected_paths": [
+          "src/checkout.php",
+          "src/export.php"
+        ],
+        "run": {
+          "state": "passed",
+          "exit_code": 0,
+          "milliseconds": 160,
+          "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "output_bytes": 0,
+          "image": "trusted-fixture-host",
+          "command": "fixture PHP and Go regression",
+          "provider_snapshot": "8fbceb24c8cb99d4d604d5800f1ac362d86e9afb88addb528664b6f842e3ef71",
+          "consumer_snapshot": "8c92b1cbb0e90b8377eee5213dde113789d3e26eff839543a70e4328815d2eaa",
+          "dependency_sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7",
+          "evidence_sha256": "bb2bc630f2a391785dd70ec4a4c62611b3b704218b9c891b06ada4cc29decb3e"
+        },
+        "model_usage": {
+          "provider": "openai-compatible",
+          "model": "qwen2.5-0.5b-instruct",
+          "mode": "live",
+          "request_sha256": "dd84e730f662f37402948366b0e2555aa0628c7c3136b6dfc382b61f4209d977",
+          "response_sha256": "7115b60b6eecf12ea8c839af34af293413cff3ecc9dbc5c7b987c50992f3b88f",
+          "state": "complete",
+          "prompt_tokens": 210,
+          "completion_tokens": 22,
+          "metered": true,
+          "duration_ms": 1153
+        }
+      },
+      "name": "print-count",
+      "preserve_legacy": false,
+      "provider_compatible_snapshot": "8fbceb24c8cb99d4d604d5800f1ac362d86e9afb88addb528664b6f842e3ef71",
+      "provider_old_snapshot": "a6a5a094d0bda5a2bc5d0814a198168c755bb38db640af4ed298f30804dc3e11",
+      "rule": {
+        "valid_patch": true,
+        "rejected": false,
+        "business_pass": true,
+        "selected_paths": [
+          "src/checkout.php",
+          "src/export.php"
+        ],
+        "run": {
+          "state": "passed",
+          "exit_code": 0,
+          "milliseconds": 199,
+          "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "output_bytes": 0,
+          "image": "trusted-fixture-host",
+          "command": "fixture PHP and Go regression",
+          "provider_snapshot": "8fbceb24c8cb99d4d604d5800f1ac362d86e9afb88addb528664b6f842e3ef71",
+          "consumer_snapshot": "8c92b1cbb0e90b8377eee5213dde113789d3e26eff839543a70e4328815d2eaa",
+          "dependency_sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7",
+          "evidence_sha256": "bf1372b0886ec9745b25249cea087defcfd0afa4aef0fc4f0bb81cda906d26aa"
+        }
+      }
+    }
+  ]
+}

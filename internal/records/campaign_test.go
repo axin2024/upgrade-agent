@@ -49,25 +49,6 @@ namespace Retail;
 class Quotes {
     public static function legacy(): array { return ['minor' => 1200]; }
 }
-
-func TestDockerCampaignMissingDependency(t *testing.T) {
-	image, docker := os.Getenv("UPGRADE_TEST_MATRIX_IMAGE"), os.Getenv("UPGRADE_TEST_DOCKER")
-	if image == "" || docker == "" {
-		t.Skip("requires the pinned PHP and Go validation image")
-	}
-	backend, err := validation.NewDocker(docker, image, 90*time.Second)
-	must(t, err)
-	provider := captureEstateFixture(t, "provider", []string{"src"}, map[string]string{"src/test.php": "<?php exit(0);\n"})
-	consumer := captureEstateFixture(t, "consumer", []string{"go.mod", "src"}, map[string]string{
-		"go.mod": "module example.invalid/consumer\n\ngo 1.26.0\n\nrequire example.invalid/locked v1.0.0\n",
-		"src/quote_test.go": "package quote\nimport _ \"example.invalid/locked\"\n",
-	})
-	proof := backend.RunMatrix(t.Context(), validation.MatrixInput{Provider: provider, Consumer: consumer,
-		ProviderTest: "src/test.php", ConsumerTest: "src/quote_test.go", Language: "go"})
-	if proof.State != "dependency-unavailable" || proof.ExitCode != 78 || proof.Evidence == "" || proof.DependencySHA == "" {
-		t.Fatalf("offline missing module was not classified as an execution error: %+v", proof)
-	}
-}
 `
 	const compatibility = `<?php
 namespace Retail;
@@ -355,6 +336,25 @@ func Fetch() (map[string]int, error) {
 		t.Fatalf("campaign outcome=%s proof=%d", campaign.State, len(reportIDs))
 	}
 	t.Logf("A1–A6, A9–A12: three scoped repositories, %d unresolved calls, %d frozen pair outputs, failed-only retry and drift-guarded adoption", impact.Unresolved, len(reportIDs))
+}
+
+func TestDockerCampaignMissingDependency(t *testing.T) {
+	image, docker := os.Getenv("UPGRADE_TEST_MATRIX_IMAGE"), os.Getenv("UPGRADE_TEST_DOCKER")
+	if image == "" || docker == "" {
+		t.Skip("requires the pinned PHP and Go validation image")
+	}
+	backend, err := validation.NewDocker(docker, image, 90*time.Second)
+	must(t, err)
+	provider := captureEstateFixture(t, "provider", []string{"src"}, map[string]string{"src/test.php": "<?php exit(0);\n"})
+	consumer := captureEstateFixture(t, "consumer", []string{"go.mod", "src"}, map[string]string{
+		"go.mod":            "module example.invalid/consumer\n\ngo 1.26.0\n\nrequire example.invalid/locked v1.0.0\n",
+		"src/quote_test.go": "package quote\nimport _ \"example.invalid/locked\"\n",
+	})
+	proof := backend.RunMatrix(t.Context(), validation.MatrixInput{Provider: provider, Consumer: consumer,
+		ProviderTest: "src/test.php", ConsumerTest: "src/quote_test.go", Language: "go"})
+	if proof.State != "dependency-unavailable" || proof.ExitCode != 78 || proof.Evidence == "" || proof.DependencySHA == "" {
+		t.Fatalf("offline missing module was not classified as an execution error: %+v", proof)
+	}
 }
 
 func verifyCampaignModel(t *testing.T, store *Store, owner Identity, campaign MigrationCampaign, provider string, key func() string) {
